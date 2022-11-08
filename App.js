@@ -11,7 +11,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       
-      <MapView
+      {/* <MapView
         style={styles.map}
         region={{
             latitude: 51.5078788,
@@ -25,7 +25,7 @@ export default function App() {
         coordinate={{latitude: 51.5078788, longitude: -0.0877321}}
         >
         </Marker>
-      </MapView>
+      </MapView> */}
     </View>
   );
 }
