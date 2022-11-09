@@ -11,15 +11,15 @@ const Container = styled.View`
 `;
 
 
-export default function NotVerified({navigation}) {
+export default function MyPoint({navigation}) {
 
   return (
     <Container>
-      <Button 
-      title='인증 성공' 
-      onPress={()=> navigation.navigate('Login')}/>
+      {/* <Button 
+      title='Sign up' 
+      onPress={()=> navigation.navigate('Signup')}/> */}
 
-      <Text>NotVerified</Text>
+      <Text>MyPoint</Text>
       
     </Container>
   );

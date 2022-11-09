@@ -14,6 +14,7 @@ import EmerBoard from "./EmerBoard";
 import Board from "./Board";
 import PostCreation from "./PostCreation";
 import Post from "./Post";
+import MyPoint from "./MyPoint";
 
 //import MyPosts from "./MyPosts";
 //import MyBoards from "./MyBoards";
@@ -35,4 +36,5 @@ export {
   Board,
   PostCreation,
   Post,
+  MyPoint,
 };

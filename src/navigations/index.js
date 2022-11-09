@@ -19,7 +19,7 @@ const Navigation = () => {
 
       {/* 로그인 여부에 따라 다른 화면 렌더링 */}
       {/* {user.uid ? <Main/> : <Auth />}   */}
-      <AuthStack/>
+      <MainStack/>
       {/* <MainStack/> */}
       
       

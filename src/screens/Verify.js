@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import {Text} from 'react-native';
+import {Text, Button} from 'react-native';
 //import Button from './Button';
 
 
@@ -15,9 +15,9 @@ export default function Verify({navigation}) {
 
   return (
     <Container>
-      {/* <Button 
-      title='Sign up' 
-      onPress={()=> navigation.navigate('Signup')}/> */}
+      <Button 
+      title='인증 성공' 
+      onPress={()=> navigation.navigate('Login')}/> 
 
       <Text>Verify</Text>
       
