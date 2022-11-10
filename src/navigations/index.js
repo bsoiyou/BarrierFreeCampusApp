@@ -17,9 +17,9 @@ const Navigation = () => {
     //Navigation Container
     <NavigationContainer>
 
-      {/* 로그인 여부에 따라 다른 화면 렌더링 */}
+      {/* 로그인 +인증 여부에 따라 다른 화면 렌더링 */}
       {/* {user.uid ? <Main/> : <Auth />}   */}
-      <MainStack/>
+      <AuthStack/>
       {/* <MainStack/> */}
       
       

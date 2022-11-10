@@ -6,10 +6,14 @@ import Navigation from './navigations';
 //import { UserProvider, ProgressProvider } from './contexts';
 //import {Login} from './screens';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+//import { auth } from './firebase';
 
 
 
 const App = () => {
+
+  //firebase test
+  //console.log(auth.currentUser);
 
   return (
     //<ThemeProvider theme={theme}>
