@@ -1,8 +1,9 @@
 # FirstExpo
-1. Download
-  //expo file이 정상적으로 작동하도록
-  yarn add expo-file-dl
-  
-  //사용한 추가 API
-  react-native-maps
-  react-native-paper
+## Download 
+  expo file이 정상적으로 작동하도록    
+  <pre><code>yarn add expo-file-dl  </code></pre> 
+    
+### 사용한 추가 API   
+react-native-maps   
+react-native-paper   
+react-native-gesture-handler   
