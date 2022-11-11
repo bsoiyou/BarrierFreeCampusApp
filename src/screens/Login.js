@@ -6,6 +6,7 @@ import {Button, ErrorMsg, Input, Image} from '../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../util';
+import {UserContext} from '../contexts';
 //import {UserContext, ProgressContext} from '../contexts';
 
 import { auth } from '../firebase';
@@ -45,7 +46,10 @@ const Login = ({navigation})=> {
   const refPw=useRef(null);
 
   // user 정보 업데이트 위해 불러옴
-  //const {setUser} = useContext(UserContext);
+  const {setUser} = useContext(UserContext);
+  //test
+  const {user} = useContext(UserContext);
+  
   //const {spinner} = useContext(ProgressContext);
 
   const [email, setEmail] = useState('');
@@ -89,13 +93,20 @@ const Login = ({navigation})=> {
       
       // 수정 
       //user 업데이트
-      //setUser(userInfo.user);
+      console.log(userInfo.user);
+      setUser(userInfo.user);
+      
       
       setEmail('');
       setPw('');
 
-      // 임시
-      navigation.navigate('Home');
+      // 미인증인 경우
+      if (!auth.currentUser.emailVerified) {
+        navigation.navigate('NotVerified');
+      }
+      // else {
+      //   navigation.navigate('NotVerified');
+      // }
     }
     // 로그인 실패
     catch(err){
@@ -105,6 +116,7 @@ const Login = ({navigation})=> {
     finally{
       // spinner 중지
       //spinner.stop();
+      console.log(user);
     }
   }
 
