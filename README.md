@@ -7,6 +7,7 @@
     
 ### 사용한 추가 API   
 styled-components    
+prop-types    
 react-native-maps   
 react-native-paper   
 react-native-gesture-handler   
