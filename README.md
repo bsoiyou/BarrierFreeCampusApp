@@ -1,7 +1,9 @@
 # FirstExpo
 ## Download 
-  expo file이 정상적으로 작동하도록    
-  <pre><code> yarn install </code></pre> 
+  expo file을처음 다운 받으면 .lock파일들을 모두 삭제한 뒤,
+  <pre><code> npm install</code></pre>     
+  or     
+ <pre><code> yarn install </code></pre>
     
 ### 사용한 추가 API   
 react-native-maps   
