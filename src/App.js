@@ -4,6 +4,7 @@ import {StatusBar} from 'react-native';
 //import {theme} from './theme';
 import Navigation from './navigations';
 //import { UserProvider, ProgressProvider } from './contexts';
+import { UserProvider } from './contexts';
 //import {Login} from './screens';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 //import { auth } from './firebase';
@@ -22,7 +23,7 @@ const App = () => {
       {/* <ProgressProvider> */}
 
       {/* UserProvider */}
-      {/* <UserProvider> */}
+      <UserProvider>
         {/* 상태바 */}
         <StatusBar 
         backgroundColor='white'
@@ -31,9 +32,9 @@ const App = () => {
         {/* 네비게이션 */}
         <Navigation />  
        
-      {/* </UserProvider>
+      </UserProvider>
 
-      </ProgressProvider>  */}
+     {/*</ProgressProvider>  */}
       </SafeAreaProvider>
     //</ThemeProvider>
   );

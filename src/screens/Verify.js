@@ -36,9 +36,8 @@ const Verify = ({navigation}) => {
     auth.currentUser.reload();
     if(auth.currentUser.emailVerified) {
       Alert.alert("인증되었습니다.");
-      setUser(userInfo.user);
-      // 지우기
-      console.log(auth.currentUser);
+      setUser(auth.currentUser);
+      
       //setUser로 수정  
       //avigation.navigate('Login');
     }

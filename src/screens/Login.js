@@ -47,8 +47,7 @@ const Login = ({navigation})=> {
 
   // user 정보 업데이트 위해 불러옴
   const {setUser} = useContext(UserContext);
-  //test
-  const {user} = useContext(UserContext);
+  
   
   //const {spinner} = useContext(ProgressContext);
 
@@ -91,9 +90,8 @@ const Login = ({navigation})=> {
       //Signin 함수
       const userInfo = await signInWithEmailAndPassword(auth, email, pw);
       
-      // 수정 
+      
       //user 업데이트
-      console.log(userInfo.user);
       setUser(userInfo.user);
       
       
@@ -116,7 +114,6 @@ const Login = ({navigation})=> {
     finally{
       // spinner 중지
       //spinner.stop();
-      console.log(user);
     }
   }
 
