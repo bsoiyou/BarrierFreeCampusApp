@@ -6,6 +6,7 @@
  <pre><code> yarn install </code></pre>
     
 ### 사용한 추가 API   
+styled-components    
 react-native-maps   
 react-native-paper   
 react-native-gesture-handler   
