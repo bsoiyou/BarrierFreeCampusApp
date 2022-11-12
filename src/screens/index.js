@@ -10,11 +10,12 @@ import Notice from "./Notice";
 import Map from "./Map";
 import BoardList from "./BoardList";
 import EmerBoard from "./EmerBoard";
-//import Profile from "./Profile";
+import Profile from "./Profile";
 import Board from "./Board";
 import PostCreation from "./PostCreation";
 import Post from "./Post";
 import MyPoint from "./MyPoint";
+import Settings from "./Settings";
 
 //import MyPosts from "./MyPosts";
 //import MyBoards from "./MyBoards";
@@ -37,4 +38,6 @@ export {
   PostCreation,
   Post,
   MyPoint,
+  Profile,
+  Settings,
 };

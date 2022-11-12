@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, View, Alert, Dimensions, Text } from "react-native";
 
-//import DrawerNav from "./DrawerNav";
+import MainDrawer from "./MainDrawer";
 
 import {
   Home,
@@ -21,8 +21,7 @@ const MainStack = () => {
   //const theme = useContext(ThemeContext);
   return (
     <Stack.Navigator
-    // MainDrawer으로 수정
-      initialRouteName="Home"
+      initialRouteName="MainDrawer"
       screenOptions={{
         cardStyle: { 
             backgroundColor: 'white' 
@@ -31,8 +30,7 @@ const MainStack = () => {
       }}
     >
         
-      {/* <Stack.Screen name="Main" component={DrawerNav} /> */}
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="MainDrawer" component={MainDrawer} />
       <Stack.Screen name="Notice" component={Notice} />
       <Stack.Screen name="Map" component={Map} />
       <Stack.Screen name="EmerBoard" component={EmerBoard} />

@@ -11,12 +11,12 @@ const Container = styled.View`
 `;
 
 
-export default function Board({navigation}) {
+export default function Settings({navigation}) {
 
   return (
     <Container>
 
-      <Text>Board</Text>
+      <Text>Settings</Text>
       
     </Container>
   );
