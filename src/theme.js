@@ -37,10 +37,13 @@ const Colors = {
     // bigText: Colors.red,
     // smallText: Colors.main,
   
-    // //SideMenuBar
-    // activeMenuBg: Colors.bg_green,
-    // activeMenuText: Colors.main,
+
+    // SideMenuBar
+    activeMenuText: Colors.ewha_green,
     // menuText: Colors.black,
+
+    //Header
+    headerTitle: Colors.ewha_green,
   
     // //Spinner
     // spinnerBg: Colors.black,

@@ -18,23 +18,27 @@ export default function MainDrawer() {
     screenOptions={{
       //배경색 지정
       cardStyle: {
-        backgroundColor: theme.bgColor
+        backgroundColor: 'white'
+      },
+      drawerStyle:{
+        //width
       },
       
       //header 설정
       headerShadowVisible: false,
       headerTitleStyle: {
         fontSize: 20,
-        color: theme.ewha_green,
+        color: 'black',
+        fontWeight: 'bold',
       },
-      headerTintColor: theme.ewha_green,
+      headerTintColor: 'black',
       headerTitleAlign: 'left',
       headerBackTitleVisible: false,
 
       //메뉴 설정
-      drawerActiveTintColor: theme.activeMenuText,
-      drawerActiveBackgroundColor :theme.activeMenuBg,  
-      drawerInactiveTintColor: theme.menuText,
+      drawerActiveTintColor: 'green',
+      drawerActiveBackgroundColor :'white',  
+      drawerInactiveTintColor: 'black',
       drawerLabelStyle: {fontSize: 20, marginLeft: 5, fontWeight: 'bold'}
     }}>
         
@@ -42,20 +46,22 @@ export default function MainDrawer() {
       <Drawer.Screen 
       name='Home' 
       component={Home} 
+      // 오른쪽 포인트 버튼 추가
       options={{
         drawerLabel: '홈',
-        headerTitle:()=> {
-          return (
-            <Image
-            url='https://i.imgur.com/qcXJOHK.png'
-            containerStyle={{
-              width: 200,
-              height: 30,
-              resizeMode: 'cover',
-              // borderRadius: 15,
-            }} />
-          )
-        }
+        title: 'BF Campus',
+        // headerTitle:()=> {
+        //   return (
+        //     <Image
+        //     url='https://i.imgur.com/qcXJOHK.png'
+        //     containerStyle={{
+        //       width: 200,
+        //       height: 30,
+        //       resizeMode: 'cover',
+        //       // borderRadius: 15,
+        //     }} />
+        //  )
+        //}
       }}/>
       <Drawer.Screen 
       name='Notice' 
@@ -68,8 +74,8 @@ export default function MainDrawer() {
       name='Map' 
       component={Map} 
       options={{
-        drawerLabel: '지도',
-        title: '지도',
+        drawerLabel: '캠퍼스 지도',
+        title: '캠퍼스 지도',
       }}/>
       {/* <Drawer.Screen 
       name='BoardsList' 
@@ -92,15 +98,14 @@ export default function MainDrawer() {
       options={{
         drawerLabel: '긴급 게시판',
         title: '긴급 게시판',
-        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/>
       <Drawer.Screen 
       name='Board' 
       component={Board} 
       options={{
-        drawerLabel: '즐겨찾는 게시판 이름',
-        title: '즐겨찾는 게시판 이름',
-        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
+        drawerLabel: '즐겨찾는 게시판',
+        title: '즐겨찾는 게시판',
+        
       }}/>
       <Drawer.Screen 
       name='Profile' 
@@ -122,14 +127,16 @@ export default function MainDrawer() {
       component={MyPoint} 
       options={{
         drawerLabel: '포인트 현황',
-        title: '포인트 현황'
+        title: '포인트 현황',
+        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/>
       <Drawer.Screen 
       name='Settings' 
       component={Settings} 
       options={{
         drawerLabel: '환경 설정',
-        title: '환경 설정'
+        title: '환경 설정',
+        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/>
     </Drawer.Navigator>
   );
