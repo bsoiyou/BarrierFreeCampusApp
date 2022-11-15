@@ -9,6 +9,6 @@
 styled-components    
 prop-types    
 react-native-maps   
-react-native-paper   
+
 react-native-gesture-handler   
 firebase    
