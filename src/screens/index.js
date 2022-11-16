@@ -12,7 +12,8 @@ import BoardList from "./BoardList";
 import EmerBoard from "./EmerBoard";
 import Profile from "./Profile";
 import Board from "./Board";
-import PostCreation from "./PostCreation";
+import AllPost from "./AllPost";
+import CreatePost from "./CreatePost";
 import Post from "./Post";
 import MyPoint from "./MyPoint";
 import Settings from "./Settings";
@@ -35,7 +36,8 @@ export {
   BoardList,
   EmerBoard,
   Board,
-  PostCreation,
+  AllPost,
+  CreatePost,
   Post,
   MyPoint,
   Profile,

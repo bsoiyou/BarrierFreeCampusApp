@@ -19,10 +19,10 @@ const Navigation = () => {
     <NavigationContainer>
 
       {/* 로그인 +인증 여부에 따라 다른 화면 렌더링 */}
-      {(user.uid && user.emailVerified) ? <MainStack/> : <AuthStack />}
-      
+      {/* {(user.uid && user.emailVerified) ? <MainStack/> : <AuthStack />}
+       */}
       {/* <AuthStack/> */}
-      {/* <MainStack/> */}
+      <MainStack/>
       
       
 

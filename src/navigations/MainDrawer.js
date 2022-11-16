@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import {Home, Notice, Map, EmerBoard, Board, Profile, MyPoint, Settings} from '../screens'; 
+import {Home, Notice, Map, BoardList, EmerBoard, Board, Profile, MyPoint, Settings} from '../screens'; 
 import styled, { ThemeContext } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import { Image, Button } from '../components';
@@ -77,13 +77,13 @@ export default function MainDrawer() {
         drawerLabel: '캠퍼스 지도',
         title: '캠퍼스 지도',
       }}/>
-      {/* <Drawer.Screen 
-      name='BoardsList' 
-      component={BoardsList} 
+      <Drawer.Screen 
+      name='BoardList' 
+      component={BoardList} 
       options={{
-        drawerLabel: '게시판',
+        drawerLabel: '게시판 목록',
         title: '게시판 목록'
-      }}/> */}
+      }}/>
       {/* <Drawer.Screen 
       name='MainBoard' 
       component={MainBoard} 

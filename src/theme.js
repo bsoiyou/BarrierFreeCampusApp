@@ -48,5 +48,8 @@ const Colors = {
     // //Spinner
     // spinnerBg: Colors.black,
     // spinnerIndicator: Colors.white, 
+
+    //List
+    lstContainer: Colors.ewha_green,
   
   }
