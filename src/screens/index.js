@@ -14,6 +14,10 @@ import Profile from "./Profile";
 import Board from "./Board";
 import AllPost from "./AllPost";
 import CreatePost from "./CreatePost";
+import CreateMarker from "./CreateMarker";
+import SetBoard from "./SetBoard";
+import SetDay from "./SetDay";
+import Preview from "./Preview";
 import Post from "./Post";
 import MyPoint from "./MyPoint";
 import Settings from "./Settings";
@@ -38,6 +42,10 @@ export {
   Board,
   AllPost,
   CreatePost,
+  CreateMarker,
+  SetBoard,
+  SetDay,
+  Preview,
   Post,
   MyPoint,
   Profile,

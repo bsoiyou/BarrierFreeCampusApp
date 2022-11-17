@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import MapView,{Marker} from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
 import { addDoc, collection, query, onSnapshot, GeoPoint, getGeoPoint} from "firebase/firestore";
 import {DB} from '../firebase';
 
@@ -45,10 +45,21 @@ export default function Map({navigation}) {
               description="this is a marker example"
             />
            );
-          
           }
         )}
-      </MapView>
+      </MapView> 
+
+      {/* 장애물 제보 버튼 */}
+      <View
+          style={{
+            position: 'absolute',
+            bottom: '20%', 
+            alignSelf: 'center' 
+          }}>
+        <Button 
+          title='장애물 제보' 
+          onPress={()=> navigation.navigate('CreatePost')}/>
+        </View> 
     </View>
   );
 }

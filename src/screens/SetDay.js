@@ -9,19 +9,21 @@ const Container = styled.View`
   align-items: center;
 `;
 
-// 내용 작성 화면
-export default function CreatePost({navigation, route}) {
+//기간 설정 화면
+export default function SetDay({navigation, route}) {
 
   return (
     <Container>
-      <Text>CreatePost</Text>
+      
+      <Text>SetDay</Text>
+
       <Button 
       title='다음' 
       onPress={()=> {
-        // param이 없으면 장애물 - 화면 다르게 이동
+        // param이 있으면 게시물 - 해당 board로 이동(완료), 장애물은 이어서
         (route.params!==undefined)?
-        navigation.navigate('SetDay', route.params):
-        navigation.navigate('CreateMarker');
+        navigation.navigate('Board',route.params):
+        navigation.navigate('SetBoard');
       }
       }/>
       

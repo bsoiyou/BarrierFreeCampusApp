@@ -4,15 +4,19 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, View, Alert, Dimensions, Text } from "react-native";
 
-import MainDrawer from "./MainDrawer";
-
 import {
-  Home,
   Map,
   Notice,
+  BoardList,
   EmerBoard,
+  Board,
+  CreatePost,
+  CreateMarker,
+  SetBoard,
+  SetDay
 } from "../screens";
-import Navigation from ".";
+import MainDrawer from "./MainDrawer";
+
 
 const Stack = createStackNavigator();
 
@@ -26,15 +30,34 @@ const MainStack = () => {
         cardStyle: { 
             backgroundColor: 'white' 
         },
-        headerShown: false,
       }}
     >
         
-      <Stack.Screen name="MainDrawer" component={MainDrawer} />
-      <Stack.Screen name="Notice" component={Notice} />
-      <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="MainDrawer" 
+      component={MainDrawer} 
+      options={{headerShown: false}}/>
+      <Stack.Screen name="Notice" component={Notice}/>
+      <Stack.Screen name="Map" component={Map} 
+      // Map은 무조건 뒤로가기하면 Home으로
+      options={({ navigation }) => ({
+        headerLeft: () => (
+          <Ionicons 
+            name="chevron-back-outline" 
+            size={30}
+            style={{marginLeft:5,}}
+            onPress={()=> navigation.navigate('Home')}/> 
+        ),
+      })}
+      />
       <Stack.Screen name="EmerBoard" component={EmerBoard} />
-     
+      <Stack.Screen name="BoardList" component={BoardList} />
+      <Stack.Screen name="Board" component={Board} />
+      <Stack.Screen name="CreatePost" component={CreatePost} />
+      <Stack.Screen name="CreateMarker" component={CreateMarker} />
+      <Stack.Screen name="SetBoard" component={SetBoard} />
+      <Stack.Screen name="SetDay" component={SetDay} />
+      {/* <Stack.Screen name="Post" component={Post} /> */}
+      
       {/* <Stack.Screen
         name="Board"
         component={Board}

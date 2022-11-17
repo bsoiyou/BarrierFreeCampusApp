@@ -70,7 +70,7 @@ export default function MainDrawer() {
         drawerLabel: '공지사항',
         title: '공지사항',
       }}/>
-      <Drawer.Screen 
+      {/* <Drawer.Screen 
       name='Map' 
       component={Map} 
       options={{
@@ -83,7 +83,7 @@ export default function MainDrawer() {
       options={{
         drawerLabel: '게시판 목록',
         title: '게시판 목록'
-      }}/>
+      }}/> */}
       {/* <Drawer.Screen 
       name='MainBoard' 
       component={MainBoard} 
@@ -92,7 +92,7 @@ export default function MainDrawer() {
         title: '전체 글',
         drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/> */}
-      <Drawer.Screen 
+      {/* <Drawer.Screen 
       name='EmerBoard' 
       component={EmerBoard} 
       options={{
@@ -106,7 +106,7 @@ export default function MainDrawer() {
         drawerLabel: '즐겨찾는 게시판',
         title: '즐겨찾는 게시판',
         
-      }}/>
+      }}/> */}
       <Drawer.Screen 
       name='Profile' 
       component={Profile} 

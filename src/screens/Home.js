@@ -24,8 +24,14 @@ export default function Home({navigation}) {
       title='지도' 
       onPress={()=> navigation.navigate('Map')}/>
       <Button 
+      title='게시판 목록' 
+      onPress={()=> navigation.navigate('BoardList')}/>
+      <Button 
       title='긴급 게시판' 
       onPress={()=> navigation.navigate('EmerBoard')}/>
+      <Button 
+      title='게시판' 
+      onPress={()=> navigation.navigate('Board','Art')}/>
       
     </Container>
   );
