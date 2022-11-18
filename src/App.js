@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StatusBar} from 'react-native';
-//import {ThemeProvider} from 'styled-components';
-//import {theme} from './theme';
+import {ThemeProvider} from 'styled-components';
+import {theme} from './theme';
 import Navigation from './navigations';
 //import { UserProvider, ProgressProvider } from './contexts';
 import { UserProvider } from './contexts';
@@ -17,7 +17,7 @@ const App = () => {
   //console.log(auth.currentUser);
 
   return (
-    //<ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <SafeAreaProvider>
       {/* ProgressProvider */}
       {/* <ProgressProvider> */}
@@ -36,7 +36,7 @@ const App = () => {
 
      {/*</ProgressProvider>  */}
       </SafeAreaProvider>
-    //</ThemeProvider>
+    </ThemeProvider>
   );
 }
 

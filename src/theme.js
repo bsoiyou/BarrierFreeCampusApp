@@ -21,6 +21,7 @@ const Colors = {
     //Input
     inputLabel: Colors.ewha_green,
     inputPlaceholder: Colors.dark_grey,
+    inputBorder: Colors.dark_grey,
     inputFocused: Colors.ewha_green, 
     inputNotFocused: Colors.mid_grey,
   
@@ -51,5 +52,6 @@ const Colors = {
 
     //List
     lstContainer: Colors.ewha_green,
+    lstBorder: Colors.dark_grey,
   
   }

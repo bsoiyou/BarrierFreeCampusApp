@@ -13,7 +13,8 @@ import {
   CreatePost,
   CreateMarker,
   SetBoard,
-  SetDay
+  SetDay,
+  Post
 } from "../screens";
 import MainDrawer from "./MainDrawer";
 
@@ -56,7 +57,7 @@ const MainStack = () => {
       <Stack.Screen name="CreateMarker" component={CreateMarker} />
       <Stack.Screen name="SetBoard" component={SetBoard} />
       <Stack.Screen name="SetDay" component={SetDay} />
-      {/* <Stack.Screen name="Post" component={Post} /> */}
+      <Stack.Screen name="Post" component={Post} />
       
       {/* <Stack.Screen
         name="Board"
