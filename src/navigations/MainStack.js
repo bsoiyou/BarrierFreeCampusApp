@@ -11,6 +11,7 @@ import {
   EmerBoard,
   Board,
   CreatePost,
+  AddImage,
   CreateMarker,
   SetBoard,
   SetDay,
@@ -54,6 +55,7 @@ const MainStack = () => {
       <Stack.Screen name="BoardList" component={BoardList} />
       <Stack.Screen name="Board" component={Board} />
       <Stack.Screen name="CreatePost" component={CreatePost} />
+      <Stack.Screen name="AddImage" component={AddImage} />
       <Stack.Screen name="CreateMarker" component={CreateMarker} />
       <Stack.Screen name="SetBoard" component={SetBoard} />
       <Stack.Screen name="SetDay" component={SetDay} />

@@ -3,8 +3,8 @@ import styled, { ThemeContext }  from 'styled-components';
 import { TimeStamp } from '../components';
 import { TouchableOpacity, Text, FlatList, Dimensions, Alert} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {DB, createPost} from '../firebase';
-import { collection, getDocs, onSnapshot, query,doc, orderBy } from "firebase/firestore";
+import {DB} from '../firebase';
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 const Container = styled.View`
   flex : 1;
@@ -23,7 +23,7 @@ const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   border-bottom-width: 1px;
-  border-color: ${ ({theme}) => theme.dark_grey};
+  border-color: ${ ({theme}) => theme.lstBorder};
   padding: 20px 25px;
   padding-right: 15px;
 `;
@@ -48,18 +48,16 @@ const ItemTime = styled.Text`
 const ItemIcon = styled(Ionicons).attrs(({theme}) => ({
   name: 'chevron-forward-sharp',
   size: 22,
-  color: theme.light_grey,
+  color: 'black',
 }))``;
 
 
 //item 컴포넌트
 const Item= React.memo(
-  // image 추가
-  ({item: {title, content, createdAt, uid, isEmer, id}, onPress}) => {
+  ({item: {title, content, createdAt, uid, isEmer, id, image}, onPress}) => {
 
-  // image 추가
   return (
-    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id})}>
+    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id, image})}>
       <ItemTextContainer>
         <ItemTitle>{title}</ItemTitle>
       </ItemTextContainer>

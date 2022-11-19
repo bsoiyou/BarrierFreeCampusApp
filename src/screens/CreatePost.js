@@ -4,18 +4,11 @@ import styled from 'styled-components';
 import { Button, ErrorMsg } from '../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ThemeContext } from 'styled-components';
-import { TouchableOpacity, View, Alert, Platform, ScrollView, Dimensions} from 'react-native';
+import { TouchableOpacity, View, Alert, ScrollView, Dimensions} from 'react-native';
 import Checkbox from 'expo-checkbox';
+import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import {ProgressContext} from '../contexts';
-import {createPost, getCurUser} from '../firebase';
-//import * as ImagePicker from 'expo-image-picker';
-import PropTypes from 'prop-types';
-// import { useNavigation } from '@react-navigation/native';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {storage, DB} from "../firebase";
-import { getFirestore, collection, addDoc, setDoc, doc,updateDoc  } from "firebase/firestore";
-
 
 
 const Container = styled.View`
@@ -65,7 +58,6 @@ export default function CreatePost({navigation, route}) {
   const [errMsg, setErrMsg] =useState('');
   const [disabled, setDisabled] = useState(true);
   const [isEmer, setIsEmer] = useState(false);
-  //const [image, setImage] = useState(null);
 
   const refContent = useRef(null);
 
@@ -86,59 +78,75 @@ export default function CreatePost({navigation, route}) {
       setErrMsg(content.trim() ? '' : '내용을 입력해주세요.')
     }
 
-    //버튼 활성화 여부 업데이트
-    //  image 추가
-  useEffect(()=> {
-    setDisabled(!(title && content&& !errMsg));
-  }, [title, content, errMsg])
-
-  //header
-  useLayoutEffect(()=>{
-    navigation.setOptions({
-      headerLeft: ({onPress}) => {
-        return (
-          <TouchableOpacity onPress={onPress}>
-          <Text
-          style={{
-            fontSize: 18,
-            color: theme.text,
-            marginLeft: 15,
-          }}
-          >취소</Text>
-          </TouchableOpacity>
-        );
-      },
-      headerRight: ()=> {
-        return (
-          <TouchableOpacity 
-          onPress={ ()=> {
-            // param이 없으면 장애물 - 화면 다르게 이동
-            (route.params!==undefined)?
-            navigation.navigate('SetDay', route.params):
-            // 작성한 글 내용 다음 화면으로 넘겨주기
-            // image 추가
-            navigation.navigate('CreateMarker', {title: title, content: content, isEmer: isEmer});
-          }}
-          disabled={disabled}
-          style={{
-            borderRadius: 20,
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            backgroundColor: theme.errText,
-            marginRight: 10,
-          }}
-          >
-          <Text
-          style={{
-            fontSize: 17,
-            color: 'white',
-          }}
-          >다음</Text>
-          </TouchableOpacity>
-        );
+    //사진 권한 요청 함수
+    const photoPermission = async ()=> {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+          Alert.alert(
+          'Photo Permission',
+          'Please turn on the camera permission.'
+          );
+          navigation.goBack();
       }
-    })
-  });
+    }
+
+
+    //사진 접근 권한 요청하기
+    useEffect(() => {
+      photoPermission();
+    }, []);
+
+    //버튼 활성화 여부 업데이트
+    useEffect(()=> {
+      setDisabled(!(title && content&& !errMsg));
+    }, [title, content, errMsg])
+
+
+    //header
+    useLayoutEffect(()=>{
+      navigation.setOptions({
+        headerLeft: ({onPress}) => {
+          return (
+            <TouchableOpacity onPress={onPress}>
+            <Text
+            style={{
+              fontSize: 18,
+              color: theme.text,
+              marginLeft: 15,
+            }}
+            >취소</Text>
+            </TouchableOpacity>
+          );
+        },
+        headerRight: ()=> {
+          return (
+            <TouchableOpacity 
+            onPress={ ()=> {
+              // param이 없으면 장애물 - 화면 다르게 이동
+              (route.params!==undefined)?
+              navigation.navigate('AddImage', {boardId: route.params.id, title: title, content: content, isEmer: isEmer}):
+              navigation.navigate('CreateMarker', {title: title, content: content, isEmer: isEmer});
+            }}
+            disabled={disabled}
+            style={{
+              borderRadius: 20,
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              backgroundColor: theme.errText,
+              marginRight: 10,
+            }}
+            >
+            <Text
+            style={{
+              fontSize: 17,
+              color: 'white',
+            }}
+            >다음</Text>
+            </TouchableOpacity>
+          );
+        }
+      })
+    });
 
 
 return (
@@ -207,33 +215,6 @@ return (
           fontWeight: 'bold'}}>긴급</Text>
       </View>
     </Footer>
-
-    {/* 이미지 */}
-
-    {/* <TouchableOpacity
-    // 사진 수정 버튼
-    onPress={_handlePhotoBtnPress}
-    style={{
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: theme.bgColor,
-      borderWidth: 2,
-      borderColor: theme.ewha_green,
-      width: 100,
-      padding: 10,
-      marginTop: 0,
-      borderRadius: 30,
-      position: 'absolute',
-      bottom: 40,
-      left: (Dimensions.get('window').width / 2)-(100/2),
-    }}
-    >
-    <Text style={{
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: theme.ewha_green,
-    }}>사진 수정</Text>
-    </TouchableOpacity> */}
 
   </Container>
   </KeyboardAwareScrollView>

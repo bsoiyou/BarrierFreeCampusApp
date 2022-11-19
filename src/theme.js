@@ -25,9 +25,11 @@ const Colors = {
     inputFocused: Colors.ewha_green, 
     inputNotFocused: Colors.mid_grey,
   
-    // //Image
+    //Image
     // imgBtnBg: Colors.main,
     // imgBtnIcon: Colors.white,
+    imgBg: Colors.light_grey,
+    imgBtn: Colors.ewha_green,
    
     //Walkthrough
     // wText: Colors.white,

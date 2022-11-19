@@ -5,9 +5,7 @@ import { TouchableOpacity, View, Alert, Dimensions, Text, ScrollView} from 'reac
 import { Ionicons } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { TimeStamp } from '../components';
-import {getCurUser, DB} from '../firebase';
-import { deleteDoc, collectionGroup, query, where, getDocs } from "firebase/firestore";
-
+import {getCurUser} from '../firebase';
 
 
 
@@ -37,9 +35,8 @@ const StyledInput = styled.TextInput`
 `;
 
 const StyledImg= styled.Image`
-  background-color: ${({ theme }) => theme.light_grey};
-  width: 300px;
-  height: 300px;
+  width: ${Dimensions.get('window').width-50}px;
+  height: ${Dimensions.get('window').width-50}px;
   border-radius: 10px;
   margin: 20px;
   margin-bottom: 100px;
@@ -90,27 +87,27 @@ const Post = ({navigation,route})=> {
   const curUser=getCurUser();
 
   // 삭제 버튼 함수
-//   const _handleDeleteBtnPress = async () => {
-//     Alert.alert(
-//         "글 삭제",
-//         "정말로 삭제하시겠습니까?",
-//         [
-//           {
-//             text: "취소",
-//             onPress: () => {},
-//             style: "cancel"
-//           },
-//           { text: "삭제", onPress: async () => {
-//             // 컬렉션 그룹 - id 지정해서 삭제하기
-//             const q = query(collectionGroup(DB, 'posts'), where('id', '==', route.params.id));
-//             const data=await getDocs(q);  
-//             await deleteDoc(data.docs[0].ref);
-//             // 화면 이동
-//             navigation.goBack();
-//           }}
-//         ],
-//       );  
-//   }
+  //   const _handleDeleteBtnPress = async () => {
+  //     Alert.alert(
+  //         "글 삭제",
+  //         "정말로 삭제하시겠습니까?",
+  //         [
+  //           {
+  //             text: "취소",
+  //             onPress: () => {},
+  //             style: "cancel"
+  //           },
+  //           { text: "삭제", onPress: async () => {
+  //             // 컬렉션 그룹 - id 지정해서 삭제하기
+  //             const q = query(collectionGroup(DB, 'posts'), where('id', '==', route.params.id));
+  //             const data=await getDocs(q);  
+  //             await deleteDoc(data.docs[0].ref);
+  //             // 화면 이동
+  //             navigation.goBack();
+  //           }}
+  //         ],
+  //       );  
+  //   }
 
   return (
 
@@ -147,7 +144,7 @@ const Post = ({navigation,route})=> {
       editable={false}
       />
 
-      {/* 기간 추가 */}
+      {/* 기간 추가하기 */}
 
       <Footer>
         {/* 긴급 체크 버튼 */} 
@@ -173,8 +170,9 @@ const Post = ({navigation,route})=> {
       </Footer>
 
       {/* 이미지 */}
-      {/* <StyledImg source={{ uri: route.params.image }} /> 
-
+      <StyledImg source={{ uri: route.params.image }} /> 
+      
+      {/* 
       { 
       ((route.params.uid) == (curUser.uid)) &&
         <TouchableOpacity

@@ -20,7 +20,7 @@ export default function CreateMarker({navigation}) {
     {/* 설정한 위치 인자 줘야 함 - 수정 */}
       <Button 
       title='다음' 
-      onPress={()=> navigation.navigate('SetDay')}/>
+      onPress={()=> navigation.navigate('AddImage')}/>
       
     </Container>
   );
