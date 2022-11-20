@@ -80,7 +80,7 @@ const Board = ({navigation, route})=> {
   useLayoutEffect(()=>{
     navigation.setOptions({
       // board의 title을 전달받아 header title로 지정
-      headerTitle : route.params.title,
+      headerTitle : route.params.boardTitle,
       headerLeft: ({onPress}) => {
         return (
           <Ionicons 
@@ -98,7 +98,7 @@ const Board = ({navigation, route})=> {
   // 마운트될 때 동작
   // 해당 board(인자로 받은 id)의 post collection에서 모든 문서 읽어오기
   useEffect(()=> {
-    const q = query(collection(DB, "boards", `${route.params.id}/posts`), orderBy('createdAt', 'desc'));
+    const q = query(collection(DB, "boards", `${route.params.boardId}/posts`), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
       querySnapshot.forEach((doc) => {
@@ -134,7 +134,8 @@ const Board = ({navigation, route})=> {
           [
             {
               text: "게시물",
-              onPress: () => {navigation.navigate('CreatePost', route.params)},
+              onPress: () => {
+                navigation.navigate('CreatePost', route.params)},
             },
             { text: "장애물", onPress: () => navigation.navigate('CreatePost') }
           ],

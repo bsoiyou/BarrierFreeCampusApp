@@ -124,7 +124,7 @@ export default function CreatePost({navigation, route}) {
             onPress={ ()=> {
               // param이 없으면 장애물 - 화면 다르게 이동
               (route.params!==undefined)?
-              navigation.navigate('AddImage', {boardId: route.params.id, title: title, content: content, isEmer: isEmer}):
+              navigation.navigate('AddImage', {boardId: route.params.boardId, boardTitle: route.params.boardTitle, title: title, content: content, isEmer: isEmer}):
               navigation.navigate('CreateMarker', {title: title, content: content, isEmer: isEmer});
             }}
             disabled={disabled}

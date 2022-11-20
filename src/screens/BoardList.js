@@ -32,13 +32,13 @@ const ItemTitle =styled.Text`
 
 //item 컴포넌트
 const Item= React.memo( 
-  ({item: {id, title, starUsers}, onPress}) => {
+  ({item: {boardId, title, starUsers}, onPress}) => {
   const theme=useContext(ThemeContext);
   const curUser=getCurUser();
 
   return (
     <ItemContainer
-    onPress={()=> onPress({id, title})}
+    onPress={()=> onPress({boardId, title})}
     >
       {/* 해당 board의 starUsers에 가서 확인하고 uid 있으면 진한 하트 렌더링 */}
       {
@@ -53,7 +53,7 @@ const Item= React.memo(
         color='white'
         onPress={ () => {
           // 해당 board의 starUsers 배열에 가서 uid 삭제
-          const arrRef = doc(DB, 'boards', `${id}`);
+          const arrRef = doc(DB, 'boards', `${boardId}`);
           updateDoc(arrRef, {
             starUsers: arrayRemove(`${curUser.uid}`)
           });
@@ -69,7 +69,7 @@ const Item= React.memo(
         color='white'
         onPress={ () => {
           // 해당 board의 starUsers 배열에 가서 uid 추가
-          const arrRef = doc(DB, 'boards', `${id}`);
+          const arrRef = doc(DB, 'boards', `${boardId}`);
           updateDoc(arrRef, {
             starUsers: arrayUnion(`${curUser.uid}`)
           });
@@ -134,11 +134,11 @@ const BoardList = ({navigation})=> {
         item={item} 
         //클릭하면 params(id,title) 주면서 Board로 이동
         onPress={params=>{
-          navigation.navigate('Board', params);
+          navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title});
         }}
         />
       }
-      keyExtractor={item=>item['id']}
+      keyExtractor={item=>item['boardId']}
       windowSize={5}
       contentContainerStyle={{
         alignItems: 'center',

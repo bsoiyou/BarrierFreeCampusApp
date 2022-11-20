@@ -40,7 +40,6 @@ export default function SetDay({navigation, route}) {
 
   // storage에 이미지 올리기
   const uploadImage = async (image_uri, postId)=> {
-    console.log(image_uri, postId);
 
     const response = await fetch(image_uri);
     const blob = await response.blob();
@@ -86,12 +85,11 @@ const uploadPost =  async ()=>{
       endDate: endDate,
     });
 
-    //await?
-    uploadImage(route.params.image, postId);
+    await uploadImage(route.params.image, postId);
 
     // 해당 board로 다시 이동
     // board id랑 title 추가하기!
-    navigation.navigate('Board',route.params.boardId);
+    navigation.navigate('Board',{boardId: route.params.boardId, boardTitle: route.params.boardTitle});
   }
     // 로그인 실패
     catch(err){
