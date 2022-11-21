@@ -29,10 +29,10 @@ export default function Map({navigation}) {
       <MapView 
       style={styles.map} 
       initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+        latitude: 37.561025,
+        longitude: 126.946540,
+        latitudeDelta: 0.003,
+        longitudeDelta: 0.003
       }}>
         {/* marks 배열에서 하나씩 꺼내서 marker 찍기 */}
         {marks.map(
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    // 수정하기
+    height: Dimensions.get('window').height-20,
   },
 });
