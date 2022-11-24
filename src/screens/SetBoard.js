@@ -1,30 +1,271 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import styled from 'styled-components';
-import {Text, Button} from 'react-native';
+import { ThemeContext } from 'styled-components';
+import {Text,
+  FlatList,} from 'react-native';
+import { Button, ErrorMsg } from '../components';
+import { collection, getDoc, onSnapshot, query, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { TouchableOpacity, View, Alert, ScrollView, Dimensions} from 'react-native';
+import Checkbox from 'expo-checkbox';
+import {createPost, getCurUser, createBarrierPost, createMarker} from '../firebase';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {storage, DB} from "../firebase";
+
 
 
 const Container = styled.View`
   flex: 1;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `;
 
+const StyledText = styled.Text`
+  font-size: 16px;
+  color: black;
+  background-color: white;
+  padding: 20px;
+  line-height: 30px;
+`;
+
+const BoardTitle = styled.Text`
+  font-size: 18px;
+  color: black;
+`;
+
+
+
 //장애물 게시판(건물) 설정 화면
 export default function SetBoard({navigation, route}) {
+  const theme=useContext(ThemeContext);
+
+
+
+  //게시판 목록 배열 상태변수
+  const [boards, setBoards] =useState([]);
+
+
+  // storage에 이미지 올리기
+  const uploadImage = async (image_uri, postId, boardId)=> {
+
+    const response = await fetch(image_uri);
+    const blob = await response.blob();
+
+    const storageRef = ref(storage, `post/${postId}/photo.jpg`);
+
+    uploadBytes(storageRef, blob).then((snapshot) => {
+    
+    // storage에서 img 값 불러오기
+    getDownloadURL(storageRef)
+    .then((url) => {
+      const curDocRef = doc(DB, "boards", `${boardId}/posts/${postId}`);
+      updateDoc(curDocRef, {
+        image: url,
+      });
+    })  
+    .catch((error) => {
+      console.log(error.message);
+    });
+    
+  });
+}
+
+//글 업로드 함수
+const uploadPost = async ()=>{
+  try{
+    
+      //spinner 실행
+      // spinner.start();
+
+      //user 받기
+      const curUser=getCurUser();
+
+      // selected 배열 원소 각각 업로드 - 반복문
+      selected.map(async (board)=>{
+
+        //함수 호출하여 db에 올리고 post id 받기
+        const postId = await createBarrierPost({
+          boardId: board.boardId, 
+          title: route.params.title, 
+          content: route.params.content,
+          isEmer: route.params.isEmer, 
+          image: route.params.image, 
+          uid: curUser.uid, 
+          startDate: route.params.startDate, 
+          endDate: route.params.endDate,
+          lat: route.params.lat,
+          long: route.params.long,
+        });
+
+        // 여기 체크하기!
+        console.log(board.boardId);
+
+        uploadImage(route.params.image, postId, board.boardId)
+        .then(() => {
+          console.log('1');
+          createMarker(route.params.lat, route.params.long, postId);
+          console.log(postId);
+          navigation.navigate('Map');
+          console.log('2');
+        })  
+        .catch((error) => {
+          console.log(error.message);
+        });
+      })
+    }
+    
+    // 업로드 실패
+    catch(err){
+      console.log(err.message);
+      Alert.alert("업로드 실패"); 
+    }
+    finally{
+      // spinner 중지
+      //spinner.stop();
+    }
+}
+
+
+
+  // 마운트 될 때 동작
+  // board collection 모든 문서 불러오기 
+  useEffect(()=>{
+    const q = query(collection(DB, "boards"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+          list.push(doc.data());
+      });
+
+      //boards 배열 업데이트
+      let temp2 = list.map((dat) => {
+        dat.isChecked=false;
+      });
+      setBoards(list);
+    });
+    
+    return ()=> unsubscribe();
+  }, []);
+
+  //header
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      headerLeft: ({onPress}) => {
+        return (
+          <TouchableOpacity onPress={onPress}>
+          <Text
+          style={{
+            fontSize: 18,
+            color: 'black',
+            marginLeft: 15,
+          }}
+          >취소</Text>
+          </TouchableOpacity>
+        );
+      },
+      headerRight: ()=> {
+        return (
+          <TouchableOpacity 
+          onPress={()=>{
+            if(selected.length>2){
+              Alert.alert(
+                '3개 이상 선택할 수 없습니다'
+              )
+            }
+            else if(selected.length==0){
+              Alert.alert(
+                '게시판을 선택해주세요'
+              )
+            }
+            else{
+            uploadPost()
+            }
+          }}
+          style={{
+            borderRadius: 20,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            backgroundColor: theme.errText,
+            marginRight: 10,
+          }}
+          >
+          <Text
+          style={{
+            fontSize: 17,
+            color: 'white',
+          }}
+          >다음</Text>
+          </TouchableOpacity>
+        );
+      }
+    })
+  });
+
+
+
+  // 체크 박스 클릭하면
+  const handleChange = (boardId) => {
+    // board에서 isChecked 값을 변경
+    let temp = boards.map((board) => {
+      if (boardId === board.boardId) {
+        return { ...board, isChecked: !board.isChecked };
+      }
+      return board;
+    });
+    // board 업데이트
+    setBoards(temp);
+  };
+
+  // boards에서 isChecked=true인 애들만 selected에 저장
+  let selected = boards.filter((board) => board.isChecked);
+
+
+  // board flat list 렌더링
+  const renderFlatList = (renderData) => {
+    return (
+      <FlatList
+        data={renderData}
+        renderItem={({ item }) => (
+              //board container
+              <View
+                style={{
+                  width: (Dimensions.get('window').width / 2)-(40),
+                  flexDirection: 'row',
+                  flex: 1,
+                  justifyContent: 'flex-start',
+                  marginVertical: 10,
+                }}>
+                <Checkbox
+                  value={item.isChecked}
+                  onValueChange={() => {
+                    handleChange(item.boardId);
+                  }}
+                />
+                <Text style={{fontSize: 18, marginLeft: 20}}>{item.title}</Text>
+              </View>
+        )}
+        keyExtractor={item=>item.boardId}
+      />
+    );
+  };
+
 
   return (
+
     <Container>
 
-      <Text>SetBoard</Text>
-
-      <Button 
-      title='완료' 
-      onPress={()=> 
-        // 완료되면 Map으로 이동
-        navigation.navigate('Map')
-      }/>
-      
+    <StyledText>
+      {
+        `❕지도에 있는 핀을 움직여 가장 정확한 위치를 설정해 주시기 바랍니다. 
+❕정확한 위치를 모르시는 분은 제일 가깝다고 생각하는 건물에 핀을 설정해 주시기 바랍니다.`
+      }
+    </StyledText>
+      <View style={{ height: '60%' ,flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20}}>
+        <View style={{paddingHorizontal: 10}}>{renderFlatList(boards.slice(0,10))}</View>
+        <View style={{paddingHorizontal: 10}}>{renderFlatList(boards.slice(11,21))}</View>
+      </View>
     </Container>
+
   );
 };
+
 

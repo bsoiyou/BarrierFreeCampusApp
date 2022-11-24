@@ -88,10 +88,9 @@ const uploadPost =  async ()=>{
     await uploadImage(route.params.image, postId);
 
     // 해당 board로 다시 이동
-    // board id랑 title 추가하기!
     navigation.navigate('Board',{boardId: route.params.boardId, boardTitle: route.params.boardTitle});
   }
-    // 로그인 실패
+    // 업로드 실패
     catch(err){
       console.log(err.message);
       Alert.alert("업로드 실패"); 
@@ -126,7 +125,15 @@ useLayoutEffect(()=>{
         // boardId 있으면 게시물 - 업로드 함수 호출, 장애물은 params 전달하며 이어서
         (route.params.boardId)? 
         uploadPost():
-        navigation.navigate('SetBoard', {title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: route.params.image, lat: route.params.lat, long: route.params.long, startDate: startDate, endDate: endDate});
+        navigation.navigate('SetBoard', {
+          title: route.params.title, 
+          content: route.params.content, 
+          isEmer: route.params.isEmer, 
+          image: route.params.image, 
+          lat: route.params.lat, 
+          long: route.params.long, 
+          startDate: startDate, 
+          endDate: endDate});
         }}
         style={{
           borderRadius: 20,
