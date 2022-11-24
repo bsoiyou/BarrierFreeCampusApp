@@ -15,6 +15,7 @@ import {
   onSnapshot,
   GeoPoint,
   getGeoPoint,
+  getString,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
@@ -48,6 +49,24 @@ export default function Map({ navigation }) {
     return () => unsubscribe();
   }, []);
 
+  // Markers
+  const [bulMarks, setBulMarks] = useState([]);
+  //building collection에서 모든 문서 읽어와서 marks 배열에 저장
+  useEffect(() => {
+    const q = query(collection(DB, "boards"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        list.push(
+          new String(doc.data().boardId),
+          new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude)
+        );
+      });
+      setBulMarks(list);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <View style={styles.container}>
       <MapView
@@ -55,8 +74,8 @@ export default function Map({ navigation }) {
         initialRegion={{
           latitude: 37.561025,
           longitude: 126.94654,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003,
+          latitudeDelta: 0.04,
+          longitudeDelta: 0.03,
         }}
         provider={PROVIDER_GOOGLE}
         maxZoomLevel={30}
@@ -76,28 +95,44 @@ export default function Map({ navigation }) {
             />
           );
         })}
+
+        {/* boards 배열에서 하나씩 꺼내서 marker 찍기 */}
+        {bulMarks.map((item, index) => {
+          return (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: item.latitude,
+                longitude: item.longitude,
+              }}
+              title={`${item.String}`}
+              onPress={toggleBottomNavigationView}
+            />
+          );
+        })}
       </MapView>
 
       {/* 장애물 제보 버튼 */}
       <View
         style={{
           position: "absolute",
-          bottom: "20%",
+          bottom: "10%",
           alignSelf: "center",
+          backgroundColor: "#fff",
+          borderRadius: 25,
         }}
       >
         <Button
+          style={{}}
           title="장애물 제보"
           onPress={() => navigation.navigate("CreatePost")}
         />
       </View>
       <BottomSheet
+        //BottomSheet이 보이도록 설정
         visible={visible}
-        //setting the visibility state of the bottom shee
         onBackButtonPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
@@ -109,7 +144,7 @@ export default function Map({ navigation }) {
                 fontSize: 20,
               }}
             >
-              건물정보
+              INFORMATION
             </Text>
             <Button title="게시판으로 이동" onPress={alert}></Button>
           </ScrollView>
