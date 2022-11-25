@@ -5,7 +5,16 @@ import { ThemeContext } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import {ProgressContext} from '../contexts';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-
+import {
+  addDoc,
+  collection,
+  query,
+  onSnapshot,
+  GeoPoint,
+  getGeoPoint,
+  getString,
+} from "firebase/firestore";
+import { DB } from "../firebase";
 
 const Container = styled.View`
   flex : 1;
@@ -37,6 +46,26 @@ export default function CreateMarker({navigation, route}) {
     latitudeDelta: 0.003,
     longitudeDelta: 0.003
   });
+
+
+  // 건물 마커 불러오기
+  const [bulMarks, setBulMarks] = useState([]);
+  //boards collection에서 모든 문서 읽어와서 bulMarks 배열에 저장
+  useEffect(() => {
+    const q = query(collection(DB, "boards"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        // title과 위치를 배열에 저장
+        list.push({
+          title: doc.data().title,
+          loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
+        });
+      });
+      setBulMarks(list);
+    });
+    return () => unsubscribe();
+  }, []);
 
   //header
   useLayoutEffect(()=>{
@@ -80,6 +109,8 @@ export default function CreateMarker({navigation, route}) {
     })
   });
 
+  // 현재 위치로 이동하는 버튼 추가하기!! 
+
   return (
     <Container>
       <StyledText>
@@ -100,6 +131,19 @@ export default function CreateMarker({navigation, route}) {
       showsUserLocation={true}
       provider={PROVIDER_GOOGLE}
       >
+        {/* 건물 마커 찍기 */}
+        {bulMarks.map((item, index) => {
+          return (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: item.loc.latitude,
+                longitude: item.loc.longitude,
+              }}
+              title={item.title}
+            />
+          );
+        })}
         {/* 중앙 위치 나타내는 빨간색 박스 */}
         <View style={{
           width: 100,

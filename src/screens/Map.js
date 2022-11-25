@@ -57,10 +57,11 @@ export default function Map({ navigation }) {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
       querySnapshot.forEach((doc) => {
-        list.push(
-          new String(doc.data().boardId),
-          new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude)
-        );
+        list.push({
+          title: doc.data().title,
+          loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
+          boardId: doc.data().boardId
+      });
       });
       setBulMarks(list);
     });
@@ -102,10 +103,10 @@ export default function Map({ navigation }) {
             <Marker
               key={index}
               coordinate={{
-                latitude: item.latitude,
-                longitude: item.longitude,
+                latitude: item.loc.latitude,
+                longitude: item.loc.longitude,
               }}
-              title={`${item.String}`}
+              title={item.title}
               onPress={toggleBottomNavigationView}
             />
           );
@@ -146,6 +147,7 @@ export default function Map({ navigation }) {
             >
               INFORMATION
             </Text>
+            {/* boardId 사용하여 해당 게시판으로 이동 */}
             <Button title="게시판으로 이동" onPress={alert}></Button>
           </ScrollView>
         </View>
