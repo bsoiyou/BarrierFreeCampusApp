@@ -51,14 +51,14 @@ const HeaderText=styled.View`
   padding: 0 10px;
 `;
 
-
-const Footer = styled.View`
+const HeaderInfo = styled.View`
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  height: 40px;
-  margin-top: 20px;
+  height: 80px;
+  padding-top: 20px;
+  padding-horizontal: 10px;
 `;
 
 
@@ -123,6 +123,31 @@ const Post = ({navigation,route})=> {
           {TimeStamp(route.params.createdAt)}
           </StyledText>
       </HeaderText>
+
+      {/* 긴급, 기간 */}
+      <HeaderInfo style={{marginVertical: -20}}>
+        {/* 긴급 */}
+        <View style={{ 
+          width: 'auto',
+          height: 'auto',
+          flexDirection: 'row', 
+          justifyContent: 'flex-start',
+          alignContent: 'flex-start',
+          }}>
+          <Checkbox
+            value={route.params.isEmer}
+            disabled={true}
+          />
+          <Text style={{
+            marginLeft: 12, 
+            fontSize: 15, 
+            color: theme.errText, 
+            textAlign:'center', 
+            fontWeight: 'bold'}}>긴급</Text>
+        </View>
+        {/* 기간 */}
+        <StyledText style={{fontSize: 13}}>{route.params.startDate} ~ {route.params.endDate}</StyledText>
+      </HeaderInfo>
       
       {/* 제목 */}
       <StyledInput 
@@ -143,31 +168,6 @@ const Post = ({navigation,route})=> {
       }}
       editable={false}
       />
-
-      {/* 기간 추가하기 */}
-
-      <Footer>
-        {/* 긴급 체크 버튼 */} 
-        <View style={{ 
-          width: 60,
-          height: 35,
-          flexDirection: 'row', 
-          justifyContent: 'center',
-          alignContent: 'center',
-          paddingTop: 5,
-          }}>
-          <Checkbox
-            value={route.params.isEmer}
-            disabled={true}
-          />
-          <Text style={{
-            marginLeft: 12, 
-            fontSize: 18, 
-            color: theme.errText, 
-            textAlign:'center', 
-            fontWeight: 'bold'}}>긴급</Text>
-        </View>
-      </Footer>
 
       {/* 이미지 */}
       <StyledImg source={{ uri: route.params.image }} /> 

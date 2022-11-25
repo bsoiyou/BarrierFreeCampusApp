@@ -38,12 +38,28 @@ const ItemTitle =styled.Text`
   font-weight: 600;
 `;
 
+// 정보 컨테이너
+const ItemInfo = styled.View`
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-end;
+`
+
 // 시간
 const ItemTime = styled.Text`
   font-size: 14px;
   color: 'black';
   margin-right: 10px;
 `;
+
+// 기간
+const ItemDate = styled.Text`
+  font-size: 11px;
+  color: 'grey';
+  margin-right: 10px;
+  margin-top: 8px;
+`;
+
 // 아이콘
 const ItemIcon = styled(Ionicons).attrs(({theme}) => ({
   name: 'chevron-forward-sharp',
@@ -54,14 +70,18 @@ const ItemIcon = styled(Ionicons).attrs(({theme}) => ({
 
 //item 컴포넌트
 const Item= React.memo(
-  ({item: {title, content, createdAt, uid, isEmer, id, image}, onPress}) => {
+  ({item: {title, content, createdAt, uid, isEmer, id, image, startDate, endDate}, onPress}) => {
 
   return (
-    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id, image})}>
+    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id, image, startDate, endDate})}>
       <ItemTextContainer>
         <ItemTitle>{title}</ItemTitle>
       </ItemTextContainer>
+      <ItemInfo>
       <ItemTime>{TimeStamp(createdAt)}</ItemTime>
+      {/* 기간 미정인 경우 미정으로 표시 */}
+      <ItemDate>{startDate} ~ {endDate}</ItemDate>
+      </ItemInfo>
       <ItemIcon />
     </ItemContainer>
   )
