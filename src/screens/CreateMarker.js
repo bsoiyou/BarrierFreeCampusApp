@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import { ThemeContext } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import {ProgressContext} from '../contexts';
-import MapView, {Marker} from 'react-native-maps';
-import { addDoc, collection, query, onSnapshot, GeoPoint, getGeoPoint} from "firebase/firestore";
-import {DB} from '../firebase';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 
 
 const Container = styled.View`
@@ -31,8 +29,14 @@ const StyledText = styled.Text`
 export default function CreateMarker({navigation, route}) {
 
   const theme=useContext(ThemeContext);
-  // 사용자가 설정한 위치로 setLoc하는 코드 추가하기
-  const [loc, setLoc] = useState({lat: 37.561025, long: 126.946540});
+  
+  // 사용자 설정 위치
+  const [region, setRegion] = useState({
+    latitude: 37.561025, 
+    longitude: 126.946540,
+    latitudeDelta: 0.003,
+    longitudeDelta: 0.003
+  });
 
   //header
   useLayoutEffect(()=>{
@@ -54,7 +58,7 @@ export default function CreateMarker({navigation, route}) {
         return (
           <TouchableOpacity 
           onPress={()=> 
-            navigation.navigate('SetDay', {title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: route.params.image, lat: loc['lat'], long: loc['long']})
+            navigation.navigate('SetDay', {title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: route.params.image, lat: region.latitude, long: region.longitude})
           }
           style={{
             borderRadius: 20,
@@ -91,7 +95,32 @@ export default function CreateMarker({navigation, route}) {
           longitude: 126.946540,
           latitudeDelta: 0.003,
           longitudeDelta: 0.003
-      }}></MapView>
+      }}
+      onRegionChangeComplete={(region) => setRegion(region)}
+      showsUserLocation={true}
+      provider={PROVIDER_GOOGLE}
+      >
+        {/* 중앙 위치 나타내는 빨간색 박스 */}
+        <View style={{
+          width: 100,
+          height: 100,
+          position: 'absolute',
+          transform: [
+            {translateX: Dimensions.get('window').width/2-70}, 
+            {translateY: Dimensions.get('window').width/2-70}
+          ],
+          zIndex: 3,
+          backgroundColor: 'red',
+          opacity: 0.2
+        }}>
+        </View>
+        <Marker
+        coordinate={region}
+        title="Location"
+        style={{width: 26, height: 40}}
+        resizeMode='contain'
+      />
+      </MapView>
 
     </Container>
   );

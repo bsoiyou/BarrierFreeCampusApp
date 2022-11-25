@@ -96,16 +96,10 @@ const uploadPost = async ()=>{
           long: route.params.long,
         });
 
-        // 여기 체크하기!
-        console.log(board.boardId);
-
         uploadImage(route.params.image, postId, board.boardId)
         .then(() => {
-          console.log('1');
           createMarker(route.params.lat, route.params.long, postId);
-          console.log(postId);
           navigation.navigate('Map');
-          console.log('2');
         })  
         .catch((error) => {
           console.log(error.message);
