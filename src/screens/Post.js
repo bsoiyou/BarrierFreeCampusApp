@@ -5,7 +5,9 @@ import { TouchableOpacity, View, Alert, Dimensions, Text, ScrollView} from 'reac
 import { Ionicons } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { TimeStamp } from '../components';
-import {getCurUser} from '../firebase';
+import {getCurUser, DB} from '../firebase';
+import { doc, deleteDoc, collectionGroup, query, where, getDocs } from "firebase/firestore";
+
 
 
 
@@ -64,6 +66,42 @@ const HeaderInfo = styled.View`
 
 const Post = ({navigation,route})=> {
   const theme=useContext(ThemeContext);
+
+  //user 불러오기
+  const curUser=getCurUser();
+
+
+  //삭제 함수
+    const _handleDeleteBtnPress = async () => {
+      Alert.alert(
+          "글 삭제",
+          "정말로 삭제하시겠습니까?",
+          [
+            {
+              text: "취소",
+              onPress: () => {},
+              style: "cancel"
+            },
+            { text: "삭제", onPress: async () => {
+              // post 삭제
+              // 컬렉션 그룹 - title 확인해서 삭제하기
+              const q = query(collectionGroup(DB, 'posts'), where('title', '==', route.params.title));
+              const data=await getDocs(q);  
+              // 여러 개 있으면 모두 삭제
+              data.docs.map(async (item, index)=> {
+                await deleteDoc(data.docs[index].ref);
+              });
+
+              // marker 삭제
+              await deleteDoc(doc(DB, 'markers', `${route.params.markerId}`));
+              
+              // 화면 이동
+              navigation.goBack();
+            }}
+          ],
+        );  
+    }
+
   
   //header
   useLayoutEffect(()=>{
@@ -80,34 +118,31 @@ const Post = ({navigation,route})=> {
           color={theme.headerTitle}/> 
         );
       },
+      // 삭제 버튼
+      headerRight: ()=> { 
+        return (
+          ((route.params.uid) == (curUser.uid)) &&
+            <TouchableOpacity 
+            onPress={_handleDeleteBtnPress}
+            style={{
+              borderRadius: 20,
+              paddingHorizontal: 12,
+              paddingVertical: 8,
+              backgroundColor: theme.errText,
+              marginRight: 10,
+            }}
+            >
+            <Text
+            style={{
+              fontSize: 17,
+              color: 'white',
+            }}
+            >삭제</Text>
+            </TouchableOpacity>
+        )
+      }
     })
   })
-
-  //user 불러오기
-  const curUser=getCurUser();
-
-  // 삭제 버튼 함수
-  //   const _handleDeleteBtnPress = async () => {
-  //     Alert.alert(
-  //         "글 삭제",
-  //         "정말로 삭제하시겠습니까?",
-  //         [
-  //           {
-  //             text: "취소",
-  //             onPress: () => {},
-  //             style: "cancel"
-  //           },
-  //           { text: "삭제", onPress: async () => {
-  //             // 컬렉션 그룹 - id 지정해서 삭제하기
-  //             const q = query(collectionGroup(DB, 'posts'), where('id', '==', route.params.id));
-  //             const data=await getDocs(q);  
-  //             await deleteDoc(data.docs[0].ref);
-  //             // 화면 이동
-  //             navigation.goBack();
-  //           }}
-  //         ],
-  //       );  
-  //   }
 
   return (
 
@@ -171,31 +206,6 @@ const Post = ({navigation,route})=> {
 
       {/* 이미지 */}
       <StyledImg source={{ uri: route.params.image }} /> 
-      
-      {/* 
-      { 
-      ((route.params.uid) == (curUser.uid)) &&
-        <TouchableOpacity
-        // 삭제 버튼
-        onPress={_handleDeleteBtnPress}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: theme.bgColor,
-          width: 100,
-          padding: 10,
-          marginTop: 0,
-          position: 'absolute',
-          bottom: 40,
-          left: (Dimensions.get('window').width / 2)-(100/2),
-        }}
-        >
-        <Text style={{
-          fontSize: 18,
-          fontWeight: 'bold',
-          color: theme.mainRed,
-        }}>글 삭제</Text>
-        </TouchableOpacity> } */}
       
     </Container>
     </ScrollView>

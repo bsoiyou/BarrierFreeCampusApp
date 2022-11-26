@@ -70,10 +70,10 @@ const ItemIcon = styled(Ionicons).attrs(({theme}) => ({
 
 //item 컴포넌트
 const Item= React.memo(
-  ({item: {title, content, createdAt, uid, isEmer, id, image, startDate, endDate}, onPress}) => {
+  ({item: {title, content, createdAt, uid, isEmer, id, image, startDate, endDate, markerId}, onPress}) => {
 
   return (
-    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id, image, startDate, endDate})}>
+    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id, image, startDate, endDate, markerId})}>
       <ItemTextContainer>
         <ItemTitle>{title}</ItemTitle>
       </ItemTextContainer>

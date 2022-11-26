@@ -16,6 +16,7 @@ import {
   GeoPoint,
   getGeoPoint,
   getString,
+  collectionGroup
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
@@ -36,6 +37,7 @@ export default function Map({ navigation }) {
   const [marks, setMarks] = useState([]);
   //markers collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
+
     const q = query(collection(DB, "markers"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
@@ -155,6 +157,14 @@ export default function Map({ navigation }) {
     </View>
   );
 }
+
+
+// //postId 부분을 각 marker가 가진 postId 값으로 들어가게 수정
+// const q1 = query(collectionGroup(DB, 'posts'), where('postId', '==', route.params.postId));
+// const data=getDocs(q);  
+// postRef = data.docs[0].ref;
+// const docSnap = getDoc(postRef);
+// console.log(docSnap.data());
 
 const styles = StyleSheet.create({
   container: {

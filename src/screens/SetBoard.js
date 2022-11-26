@@ -79,9 +79,11 @@ const uploadPost = async ()=>{
       //user 받기
       const curUser=getCurUser();
 
+      //marker 생성 함수 호출 후 markerId 받기
+      const markerId = await createMarker(route.params.lat, route.params.long);
+
       // selected 배열 원소 각각 업로드 - 반복문
       selected.map(async (board)=>{
-
         //함수 호출하여 db에 올리고 post id 받기
         const postId = await createBarrierPost({
           boardId: board.boardId, 
@@ -94,11 +96,18 @@ const uploadPost = async ()=>{
           endDate: route.params.endDate,
           lat: route.params.lat,
           long: route.params.long,
+          markerId: markerId,
         });
 
         uploadImage(route.params.image, postId, board.boardId)
         .then(() => {
-          createMarker(route.params.lat, route.params.long, postId);
+          //marker에 postId update
+          const docRef = doc(DB, "markers", `${markerId}`);
+          updateDoc(docRef, {
+            postId: postId,
+          });
+
+          // 화면 이동
           navigation.navigate('Map');
         })  
         .catch((error) => {
