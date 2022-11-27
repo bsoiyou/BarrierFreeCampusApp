@@ -38,7 +38,7 @@ const Item= React.memo(
 
   return (
     <ItemContainer
-    onPress={()=> onPress({boardId, title})}
+    onPress={()=> onPress({boardId, title, starUsers})}
     >
       {/* 해당 board의 starUsers에 가서 확인하고 uid 있으면 진한 하트 렌더링 */}
       {
@@ -134,7 +134,7 @@ const BoardList = ({navigation})=> {
         item={item} 
         //클릭하면 params(id,title) 주면서 Board로 이동
         onPress={params=>{
-          navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title});
+          navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title, starUsers: params.starUsers});
         }}
         />
       }

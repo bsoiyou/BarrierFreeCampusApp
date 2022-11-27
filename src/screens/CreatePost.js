@@ -22,8 +22,8 @@ const Container = styled.View`
 const StyledText = styled.Text`
   font-size: 16px;
   color: black;
-  background-color: white;
-  padding: 20px;
+  background-color: 'white';
+  padding-horizontal: 15px;
   line-height: 30px;
 `;
 
@@ -35,7 +35,7 @@ const StyledInput = styled.TextInput`
   border: 1px solid ${({ theme }) => theme.inputBorder};
   border-radius: 5px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 
 const Footer = styled.View`
@@ -105,19 +105,6 @@ export default function CreatePost({navigation, route}) {
     //header
     useLayoutEffect(()=>{
       navigation.setOptions({
-        headerLeft: ({onPress}) => {
-          return (
-            <TouchableOpacity onPress={onPress}>
-            <Text
-            style={{
-              fontSize: 18,
-              color: theme.text,
-              marginLeft: 15,
-            }}
-            >취소</Text>
-            </TouchableOpacity>
-          );
-        },
         headerRight: ()=> {
           return (
             <TouchableOpacity 
@@ -159,11 +146,19 @@ return (
     <ErrorMsg msg={errMsg}/>
 
     {/* 안내 문구 */}
-    <StyledText>
+    {/* <StyledText>
       {
-`❕이용자님의 게시글은 누군가에게 매우 중요한 정보입니다. 모두에게 공개되는 만큼 게시글을 신중하게 작성하여 주시기 바랍니다. 
-❕상황에 맞는 사진을 올려 주시면 더 유용하고 자세한 정보를 제공할 수 있습니다.`}
-    </StyledText>
+`< 정보성 글 작성 가이드 >
+❕ 정보성 글은 벗들에게 현재 캠퍼스 상황을 
+       빠르게 공유합니다. 
+❕ 최대한 정확하고 가까운 위치와 날짜를
+       선정해 주시기 바랍니다.
+❕ 사진을 첨부하면 벗들에게 자세한 정보를 
+       제공하는데 도움이 됩니다. 
+❕ 글이 부적절한 정보로 신고 받았을 시 
+       지급된 포인트는 회수 될 수 있습니다.
+`}
+    </StyledText> */}
 
     {/* 제목 입력 */}
     <StyledInput 
@@ -171,7 +166,7 @@ return (
     value={title}
     onChangeText={_handleTitleChange}
     onSubmitEditing={()=>refContent.current.focus()}
-    placeholder='제목 입력'
+    placeholder='제목을 입력하세요.'
     returnKeyType='next'
     onBlur={()=> setTitle(title.trim())}
     maxLength={30}
@@ -183,13 +178,13 @@ return (
     value={content} 
     ref={refContent}
     onChangeText={_handleContentChange}
-    placeholder='내용 입력'
+    placeholder='내용을 입력하세요.&#10;&#20;&#10;&#20;&#10;&#20;< 정보성 글 작성 가이드 >&#10;&#20;&#10;❕ 정보성 글은 벗들에게 현재 캠퍼스 상황을 빠르게 공유합니다.&#10;&#20;&#10;❕ 최대한 정확하고 가까운 위치와 날짜를 선정해 주시기 바랍니다.&#10;&#20;&#10;❕ 사진을 첨부하면 벗들에게 자세한 정보를 제공하는데 도움이 됩니다.&#10;&#20;&#10;❕ 글이 부적절한 정보로 신고 받았을 시 지급된 포인트는 회수 될 수 있습니다.'
     returnKeyType='done'
     onBlur={()=> setContent(content.trim())}
     multiline={true}
     style={{
-      height: 200,
-      maxHeight: 200,
+      height: 500,
+      maxHeight: 500,
       textAlignVertical: 'top',
     }}/>
 

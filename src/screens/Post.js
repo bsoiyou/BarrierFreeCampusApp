@@ -107,17 +107,6 @@ const Post = ({navigation,route})=> {
   useLayoutEffect(()=>{
     navigation.setOptions({
       headerTitle : route.params.title,
-      // 뒤로 가기
-      headerLeft: ({onPress}) => {
-        return (
-          <Ionicons 
-          name="chevron-back-outline" 
-          size={30}
-          style={{marginLeft:5,}}
-          onPress={onPress}
-          color={theme.headerTitle}/> 
-        );
-      },
       // 삭제 버튼
       headerRight: ()=> { 
         return (

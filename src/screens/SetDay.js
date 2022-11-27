@@ -15,15 +15,16 @@ import {ProgressContext} from '../contexts';
 const Container = styled.View`
   flex: 1;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding: 10px 40px;
 `;
 
 const StyledText = styled.Text`
-  font-size: 16px;
-  color: black;
-  background-color: white;
-  padding: 20px;
-  line-height: 30px;
+  font-size: 18px;
+  color: ${ ({theme}) => theme.d_btnBgColor};
+  font-weight: bold;
+  background-color: transparent;
+  padding-vertical: 20px;
 `;
 
 
@@ -105,19 +106,6 @@ const uploadPost =  async ()=>{
 //header
 useLayoutEffect(()=>{
   navigation.setOptions({
-    headerLeft: ({onPress}) => {
-      return (
-        <TouchableOpacity onPress={onPress}>
-        <Text
-        style={{
-          fontSize: 18,
-          color: 'black',
-          marginLeft: 15,
-        }}
-        >취소</Text>
-        </TouchableOpacity>
-      );
-    },
     headerRight: ()=> {
       return (
         <TouchableOpacity 
@@ -161,8 +149,9 @@ useLayoutEffect(()=>{
       {/* date picker */}
       <DatePicker
           style={{
-            width: 200,
-            marginTop: 20,
+            width: '100%',
+            marginTop: 15,
+            marginBottom: 30,
           }}
           date={startDate} //초기값
           mode="date" 
@@ -192,8 +181,9 @@ useLayoutEffect(()=>{
         {/* date picker */}
         <DatePicker
           style={{
-            width: 200,
-            marginTop: 20,
+            width:'100%',
+            marginTop: 15,
+            marginBottom: 30,
           }}
           date={endDate} //초기값
           mode="date" 

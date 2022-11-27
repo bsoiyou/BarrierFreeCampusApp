@@ -70,19 +70,6 @@ export default function CreateMarker({navigation, route}) {
   //header
   useLayoutEffect(()=>{
     navigation.setOptions({
-      headerLeft: ({onPress}) => {
-        return (
-          <TouchableOpacity onPress={onPress}>
-          <Text
-          style={{
-            fontSize: 18,
-            color: theme.text,
-            marginLeft: 15,
-          }}
-          >취소</Text>
-          </TouchableOpacity>
-        );
-      },
       headerRight: ()=> {
         return (
           <TouchableOpacity 
