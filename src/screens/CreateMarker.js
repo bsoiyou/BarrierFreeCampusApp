@@ -28,7 +28,7 @@ const StyledText = styled.Text`
   font-size: 16px;
   color: black;
   background-color: white;
-  padding: 20px;
+  padding: 30px 10px;
   line-height: 30px;
 `;
 
@@ -102,8 +102,8 @@ export default function CreateMarker({navigation, route}) {
     <Container>
       <StyledText>
       {
-        `❕지도에 있는 핀을 움직여 가장 정확한 위치를 설정해 주시기 바랍니다. 
-❕정확한 위치를 모르시는 분은 제일 가깝다고 생각하는 건물에 핀을 설정해 주시기 바랍니다.`
+        `❕지도를 움직여 장애물이 위치하는 곳에 핀을 설정해 주시기 바랍니다. 
+❕정확한 위치를 모르신다면 제일 가깝다고 생각하는 건물에 핀을 설정해 주시기 바랍니다.`
       }
     </StyledText>
     <MapView
@@ -161,5 +161,6 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width-40,
     height: Dimensions.get('window').width-40,
+    marginVertical: 20,
   },
 });

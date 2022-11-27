@@ -8,14 +8,18 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
-  background-color: ${ ({theme}) => theme.l_btnBgColor};
+  border-radius: 20px;
+  marginTop: 0px;
+  marginBottom: 25px;
+  padding: 15px;
+  background-color: ${ ({theme}) => theme.d_btnBgColor};
 `;
 
 //버튼 타이틀 기본 값
 const Title = styled.Text`
-  font-size: 24px;
-  color: ${ ({theme}) => theme.l_btnTitle};
+  font-size: 20px;
+  color: white;
+  fontWeight: 600,
 `;
 
 

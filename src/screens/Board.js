@@ -80,7 +80,10 @@ const Item= React.memo(
       <ItemInfo>
       <ItemTime>{TimeStamp(createdAt)}</ItemTime>
       {/* 기간 미정인 경우 미정으로 표시 */}
-      <ItemDate>{startDate} ~ {endDate}</ItemDate>
+      {(startDate!=='')
+      ?<ItemDate>{startDate} ~ {endDate}</ItemDate>
+      :<ItemDate>기간 미정</ItemDate>
+      }
       </ItemInfo>
       <ItemIcon />
     </ItemContainer>
@@ -198,7 +201,7 @@ const Board = ({navigation, route})=> {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: 'white',
         width: 100,
         padding: 10,
         marginTop: 0,

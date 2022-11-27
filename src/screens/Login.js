@@ -160,16 +160,6 @@ const Login = ({navigation})=> {
       title="로그인" 
       onPress={_handleSigninBtnPress}
       disabled={disabled}
-      containerStyle={{
-        padding: 15,
-        marginTop: 0,
-        marginBottom: 25,
-        borderRadius: 30,
-      }}
-      textStyle={{
-        fontSize: 20,
-        fontWeight: '600',
-      }}
       />
 
       {/* 회원가입 버튼 */}
@@ -183,7 +173,7 @@ const Login = ({navigation})=> {
       }}
       textStyle={{
         // color 수정
-        color: 'grey',
+        color: theme.d_btnBgColor,
         fontSize: 18,
         fontWeight: '600',
       }}
@@ -198,7 +188,7 @@ const Login = ({navigation})=> {
       }}
       textStyle={{
         // color 수정
-        color: 'grey',
+        color: theme.l_btnTextLink,
         fontSize: 16,
         fontWeight: '500',
         textDecorationLine:'underline',

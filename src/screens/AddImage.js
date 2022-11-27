@@ -67,7 +67,7 @@ export default function AddImage({navigation, route}) {
           <TouchableOpacity 
           onPress={ ()=> {
             (route.params.boardId)?
-            navigation.navigate('SetDay', {boardId: route.params.boardId, boardTitle: route.params.boardTitle, title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: image}):
+            navigation.navigate('SetDay', {boardId: route.params.boardId, boardTitle: route.params.boardTitle, starUsers: route.params.starUsers, title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: image}):
             navigation.navigate('CreateMarker', {title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: image})
           }}
           disabled={disabled}

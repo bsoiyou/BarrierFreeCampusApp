@@ -105,16 +105,6 @@ const FindPw = ({navigation})=> {
       title="인증 메일 전송" 
       onPress={sendEmail}
       disabled={disabled}
-      containerStyle={{
-        padding: 15,
-        marginTop: 0,
-        marginBottom: 25,
-        borderRadius: 30,
-      }}
-      textStyle={{
-        fontSize: 18,
-        fontWeight: '600',
-      }}
       />
     </Container>
   );

@@ -15,7 +15,8 @@ import {
   CreateMarker,
   SetBoard,
   SetDay,
-  Post
+  Post,
+  MyPoint,
 } from "../screens";
 import MainDrawer from "./MainDrawer";
 
@@ -118,6 +119,10 @@ const MainStack = () => {
       }}/>
 
       {/* --- */}
+      <Stack.Screen name="MyPoint" 
+      component={MyPoint}
+      />
+
       <Stack.Screen name="Board" 
       component={Board} 
       />

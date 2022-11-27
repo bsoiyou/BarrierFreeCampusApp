@@ -4,6 +4,8 @@ import {Home, Notice, Map, BoardList, EmerBoard, Board, Profile, MyPoint, Settin
 import styled, { ThemeContext } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import { Image, Button } from '../components';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import {Text} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,23 +22,20 @@ export default function MainDrawer() {
       cardStyle: {
         backgroundColor: 'white'
       },
-      drawerStyle:{
-        //width
-      },
       
       //header 설정
-      headerShadowVisible: false,
       headerTitleStyle: {
         fontSize: 20,
-        color: 'black',
+        color: theme.headerTitle,
         fontWeight: 'bold',
       },
-      headerTintColor: 'black',
+      headerTintColor: theme.headerGrey,
       headerTitleAlign: 'left',
       headerBackTitleVisible: false,
+      headerShadowVisible: true,
 
       //메뉴 설정
-      drawerActiveTintColor: 'green',
+      drawerActiveTintColor: theme.headerTitle,
       drawerActiveBackgroundColor :'white',  
       drawerInactiveTintColor: 'black',
       drawerLabelStyle: {fontSize: 20, marginLeft: 5, fontWeight: 'bold'}
@@ -46,23 +45,38 @@ export default function MainDrawer() {
       <Drawer.Screen 
       name='Home' 
       component={Home} 
-      // 오른쪽 포인트 버튼 추가
-      options={{
+      options={({navigation})=>({
         drawerLabel: '홈',
-        title: 'BF Campus',
-        // headerTitle:()=> {
-        //   return (
-        //     <Image
-        //     url='https://i.imgur.com/qcXJOHK.png'
-        //     containerStyle={{
-        //       width: 200,
-        //       height: 30,
-        //       resizeMode: 'cover',
-        //       // borderRadius: 15,
-        //     }} />
-        //  )
-        //}
-      }}/>
+        title: 'BF campus',
+        headerTitleStyle: {
+          fontSize: 22,
+          color: theme.headerTitle,
+          fontWeight: 'bold',
+        },
+        // 포인트 버튼
+        headerRight: ()=> (
+          <TouchableOpacity
+          style={{
+            backgroundColor: '#EDEDED', 
+            width: 35, 
+            height: 35, 
+            justifyContent: 'center',
+            alignContent: 'center',
+            borderRadius: '50%',
+            marginRight: 20,
+          }}
+          onPress={()=> navigation.navigate('MyPoint')}
+          >
+            <Text style={{
+              fontSize: 20, 
+              fontWeight: 'bold',
+              textAlign: 'center',
+              color: theme.headerTitle
+            }}>P</Text>
+          </TouchableOpacity>
+        )
+      })}
+     />
       <Drawer.Screen 
       name='Notice' 
       component={Notice} 
@@ -70,43 +84,6 @@ export default function MainDrawer() {
         drawerLabel: '공지사항',
         title: '공지사항',
       }}/>
-      {/* <Drawer.Screen 
-      name='Map' 
-      component={Map} 
-      options={{
-        drawerLabel: '캠퍼스 지도',
-        title: '캠퍼스 지도',
-      }}/>
-      <Drawer.Screen 
-      name='BoardList' 
-      component={BoardList} 
-      options={{
-        drawerLabel: '게시판 목록',
-        title: '게시판 목록'
-      }}/> */}
-      {/* <Drawer.Screen 
-      name='MainBoard' 
-      component={MainBoard} 
-      options={{
-        drawerLabel: '전체 글',
-        title: '전체 글',
-        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
-      }}/> */}
-      {/* <Drawer.Screen 
-      name='EmerBoard' 
-      component={EmerBoard} 
-      options={{
-        drawerLabel: '긴급 게시판',
-        title: '긴급 게시판',
-      }}/>
-      <Drawer.Screen 
-      name='Board' 
-      component={Board} 
-      options={{
-        drawerLabel: '즐겨찾는 게시판',
-        title: '즐겨찾는 게시판',
-        
-      }}/> */}
       <Drawer.Screen 
       name='Profile' 
       component={Profile} 
@@ -114,14 +91,6 @@ export default function MainDrawer() {
         drawerLabel: '내 정보',
         title: '내 정보'
       }}/>
-      {/* <Drawer.Screen 
-      name='MyPosts' 
-      component={MyPosts} 
-      options={{
-        drawerLabel: '내가 쓴 글',
-        title: '내가 쓴 글',
-        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
-      }}/> */}
       <Drawer.Screen 
       name='MyPoint' 
       component={MyPoint} 

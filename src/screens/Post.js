@@ -170,7 +170,11 @@ const Post = ({navigation,route})=> {
             fontWeight: 'bold'}}>긴급</Text>
         </View>
         {/* 기간 */}
-        <StyledText style={{fontSize: 13}}>{route.params.startDate} ~ {route.params.endDate}</StyledText>
+        {/* 미정일 경우 미정으로 표시 */}
+        {((route.params.startDate)!=='')
+        ?<StyledText style={{fontSize: 13}}>{route.params.startDate} ~ {route.params.endDate}</StyledText>
+        :<StyledText style={{fontSize: 13}}>기간 미정</StyledText>
+        }
       </HeaderInfo>
       
       {/* 제목 */}
