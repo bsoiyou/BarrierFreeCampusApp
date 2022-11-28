@@ -22,11 +22,10 @@ import Preview from "./Preview";
 import Post from "./Post";
 import MyPoint from "./MyPoint";
 import Settings from "./Settings";
+import FindRoute from "./FindRoute";
 
 //import MyPosts from "./MyPosts";
 //import MyBoards from "./MyBoards";
-
-
 
 export {
   Walkthrough,
@@ -52,4 +51,5 @@ export {
   MyPoint,
   Profile,
   Settings,
+  FindRoute,
 };

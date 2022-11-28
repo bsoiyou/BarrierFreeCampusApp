@@ -15,10 +15,10 @@ import {
   CreateMarker,
   SetBoard,
   SetDay,
-  Post
+  Post,
+  FindRoute,
 } from "../screens";
 import MainDrawer from "./MainDrawer";
-
 
 const Stack = createStackNavigator();
 
@@ -29,27 +29,31 @@ const MainStack = () => {
     <Stack.Navigator
       initialRouteName="MainDrawer"
       screenOptions={{
-        cardStyle: { 
-            backgroundColor: 'white' 
+        cardStyle: {
+          backgroundColor: "white",
         },
       }}
     >
-        
-      <Stack.Screen name="MainDrawer" 
-      component={MainDrawer} 
-      options={{headerShown: false}}/>
-      <Stack.Screen name="Notice" component={Notice}/>
-      <Stack.Screen name="Map" component={Map} 
-      // Map은 무조건 뒤로가기하면 Home으로
-      options={({ navigation }) => ({
-        headerLeft: () => (
-          <Ionicons 
-            name="chevron-back-outline" 
-            size={30}
-            style={{marginLeft:5,}}
-            onPress={()=> navigation.navigate('Home')}/> 
-        ),
-      })}
+      <Stack.Screen
+        name="MainDrawer"
+        component={MainDrawer}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Notice" component={Notice} />
+      <Stack.Screen
+        name="Map"
+        component={Map}
+        // Map은 무조건 뒤로가기하면 Home으로
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <Ionicons
+              name="chevron-back-outline"
+              size={30}
+              style={{ marginLeft: 5 }}
+              onPress={() => navigation.navigate("Home")}
+            />
+          ),
+        })}
       />
       <Stack.Screen name="EmerBoard" component={EmerBoard} />
       <Stack.Screen name="BoardList" component={BoardList} />
@@ -60,7 +64,9 @@ const MainStack = () => {
       <Stack.Screen name="SetBoard" component={SetBoard} />
       <Stack.Screen name="SetDay" component={SetDay} />
       <Stack.Screen name="Post" component={Post} />
-      
+
+      <Stack.Screen name="FindRoute" component={FindRoute} />
+
       {/* <Stack.Screen
         name="Board"
         component={Board}
@@ -104,7 +110,6 @@ const MainStack = () => {
           headerBackTitleVisible: false,
         }}
     /> */}
-
     </Stack.Navigator>
   );
 };
