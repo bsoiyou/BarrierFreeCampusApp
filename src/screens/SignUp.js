@@ -49,10 +49,6 @@ const SignUp = ({navigation})=>{
   const refPwCheck=useRef(null);
   const refDidMount = useRef(null);
   
-
-  // user 정보 업데이트 위해 불러옴
-  //const {setUser} = useContext(UserContext);
-  
   //const {spinner} = useContext(ProgressContext);
 
 
@@ -75,7 +71,7 @@ const SignUp = ({navigation})=>{
     if(refDidMount.current){
       let error = '';
       if(!email) {error = '이메일을 입력해주세요';}
-      else if(!validateEmail(email)) {error='올바른 이메일을 입력해주세요';}
+      else if(!validateEmail(email)) {error='올바른 이화인 이메일을 입력해주세요';}
       else if(pw.length<6) {error = '비밀번호를 6자 이상 입력해주세요';}
       else if(pw!==pwCheck) {error = '비밀번호를 확인해주세요';}
       else {error='';}
@@ -99,10 +95,6 @@ const SignUp = ({navigation})=>{
       //Signup 함수
       const newUser = await createUserWithEmailAndPassword(auth, email, pw);
       
-      
-      //여기 수정하기 - User context
-      //user 업데이트
-      //setUser(newUser.user);
 
       // user 불러오기
       const curUser=getCurUser();
@@ -124,7 +116,7 @@ const SignUp = ({navigation})=>{
     catch(err){
       switch (err.code) {
         case 'auth/email-already-in-use':
-          Alert.alert('이미 가입한 계정입니다');
+          Alert.alert('이미 가입한 이메일입니다');
           break;
         default:
           console.log(err.message);

@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import {Home, Notice, Map, BoardList, EmerBoard, Board, Profile, MyPoint, Settings} from '../screens'; 
+import {Home, Notice, Map, BoardList, EmerBoard, Board, Profile, MyPoint, Settings, FindPw} from '../screens'; 
 import styled, { ThemeContext } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import { Image, Button } from '../components';
@@ -16,13 +16,9 @@ export default function MainDrawer() {
     <Drawer.Navigator 
     initialRouteName='Home'
     backBehavior='order'
+
     
     screenOptions={{
-      //배경색 지정
-      cardStyle: {
-        backgroundColor: 'white'
-      },
-      
       //header 설정
       headerTitleStyle: {
         fontSize: 20,
@@ -89,7 +85,7 @@ export default function MainDrawer() {
       component={Profile} 
       options={{
         drawerLabel: '내 정보',
-        title: '내 정보'
+        title: '내 정보',
       }}/>
       <Drawer.Screen 
       name='MyPoint' 
@@ -106,6 +102,14 @@ export default function MainDrawer() {
         drawerLabel: '환경 설정',
         title: '환경 설정',
         drawerLabelStyle: {fontSize: 17, marginLeft: 10},
+      }}/>
+      <Drawer.Screen 
+      name='FindPw' 
+      component={FindPw} 
+      options={{
+        title: '비밀번호 재설정',
+        drawerItemStyle: { height: 0 },
+        headerShown: true
       }}/>
     </Drawer.Navigator>
   );

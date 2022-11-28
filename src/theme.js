@@ -11,6 +11,7 @@ const Colors = {
   export const theme = {
     errText: Colors.red,
     greenText: Colors.ewha_green,
+    l_greenText: Colors.light_green,
     
     //Button
     l_btnBgColor: Colors.light_green,

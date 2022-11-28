@@ -30,9 +30,6 @@ const MainStack = () => {
     <Stack.Navigator
       initialRouteName="MainDrawer"
       screenOptions={{
-        cardStyle: { 
-            backgroundColor: 'white' 
-        },
         headerTintColor: theme.headerTitle,
         headerTitleStyle: {
           fontSize: 20,

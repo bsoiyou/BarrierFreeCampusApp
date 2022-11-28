@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import {Button, Input, ErrorMsg} from '../components';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import {validateEmail, removeWhitespace} from '../util';
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '../firebase';
 
 const Container = styled.View`
   flex : 1;
-  background-color: ${ ({theme}) => theme.bgColor};
+  background-color: white;
   align-items: center;
   justify-content: flex-start;
   padding: 0 30px;
@@ -17,8 +17,9 @@ const Container = styled.View`
 
 const StyledText = styled.Text`
   text-align: left;
-  font-size: 18px;
-  color: ${ ({theme}) => theme.text};
+  font-size: 17px;
+  font-weight: bold;
+  color: ${ ({theme}) => theme.greenText};
   margin: 10px 0;
 `;
 
@@ -42,7 +43,7 @@ const FindPw = ({navigation})=> {
     const changedEmail=removeWhitespace(email);
     setEmail(changedEmail);
     //유효성 검사 - 에러 메시지 변경
-    setErrorMsg(validateEmail(changedEmail) ? '' : '올바른 이메일을 입력해주세요');
+    setErrorMsg(validateEmail(changedEmail) ? '' : '올바른 이화인 이메일을 입력해주세요');
   }
 
 
@@ -100,6 +101,7 @@ const FindPw = ({navigation})=> {
 
       {/* 에러 메시지 */}
       <ErrorMsg msg={errorMsg}/>
+      <View style={{height: 10}}></View>
 
       <Button 
       title="인증 메일 전송" 

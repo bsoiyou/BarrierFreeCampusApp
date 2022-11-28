@@ -18,10 +18,6 @@ const AuthStack = ()=> {
   <Stack.Navigator 
   initialRouteName='Walkthrough'
   screenOptions={{
-    //배경색 지정
-    cardStyle: {
-      backgroundColor: 'white'
-    },
     //header 설정
     headerTintColor: theme.headerTitle,
     headerTitleStyle: {
