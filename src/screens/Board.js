@@ -8,7 +8,6 @@ import {getCurUser, DB} from '../firebase';
 
 const Container = styled.View`
   flex : 1;
-  background-color: white;
 `;
 
 const StyledText = styled.Text`

@@ -4,7 +4,7 @@ import { Button } from '../components';
 import { TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {DB, getCurUser} from '../firebase';
-import { collection, getDoc, onSnapshot, query, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { collection, getDoc, orderBy, onSnapshot, query, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 
 
 const {width} = Dimensions.get('window');
@@ -12,25 +12,41 @@ const {width} = Dimensions.get('window');
 //--item--
 // item container
 const ItemContainer = styled.TouchableOpacity`
-  width: ${width-30}px;
-  height: 55px;
+  width: ${width-20}px;
+  height: 45px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  background-color: green;
-  border-radius: 10px;
-  margin: 0 10px;
-  margin-top:20px;
+  justify-content: flex-start;
+  background-color: white;
 `;
 // item text
-const ItemTitle =styled.Text`
-  font-size: 18px;
-  color: white;
-  padding: 0 20px;
+
+const ItemBoardText =styled.Text`
+  font-size: 19px;
+  color: ${({theme})=>theme.greenText};
+  font-weight: bold;
+  padding-left: 20px;
+  padding-right: 10px;
+  flex: 4;
+`;
+
+const ItemPostText =styled.Text`
+  font-size: 17px;
+  color: ${({theme})=>theme.lstContent};
+  flex: 5;
+  padding-right: 15px;
+`;
+
+const ItemIconText =styled.Text`
+  font-size: 19px;
+  color: ${({theme})=>theme.errText};
+  font-weight: bold;
+  flex: 1;
 `;
 
 
 //item 컴포넌트
+// posts를 인자로 받아서 boardId마다 content를 출력 (undefined는 빈 칸)
 const Item= React.memo( 
   ({item: {boardId, title, starUsers}, onPress}) => {
   const theme=useContext(ThemeContext);
@@ -40,50 +56,9 @@ const Item= React.memo(
     <ItemContainer
     onPress={()=> onPress({boardId, title, starUsers})}
     >
-      {/* 해당 board의 starUsers에 가서 확인하고 uid 있으면 진한 하트 렌더링 */}
-      {
-        ((starUsers.indexOf(curUser.uid))!=(-1))?
-        <Ionicons 
-        name="heart" 
-        size={25}
-        style={{
-          marginLeft: 20,
-          marginRight: 10,
-        }}
-        color='white'
-        onPress={ () => {
-          // 해당 board의 starUsers 배열에 가서 uid 삭제
-          const arrRef = doc(DB, 'boards', `${boardId}`);
-          updateDoc(arrRef, {
-            starUsers: arrayRemove(`${curUser.uid}`)
-          });
-        }}/>
-        :
-        <Ionicons 
-        name="heart-dislike-outline" 
-        size={25}
-        style={{
-          marginLeft: 20,
-          marginRight: 10,
-        }}
-        color='white'
-        onPress={ () => {
-          // 해당 board의 starUsers 배열에 가서 uid 추가
-          const arrRef = doc(DB, 'boards', `${boardId}`);
-          updateDoc(arrRef, {
-            starUsers: arrayUnion(`${curUser.uid}`)
-          });
-        }}/> 
-      }
-      <ItemTitle>{title}</ItemTitle>
-      <Ionicons 
-        name='chevron-forward-outline'
-        size={23}
-        style={{
-          marginHorizontal: 15
-        }}
-        color='white'
-      />
+      <ItemBoardText>{title}</ItemBoardText>
+      <ItemPostText>s</ItemPostText>
+      <ItemIconText>N</ItemIconText>
     </ItemContainer>
   )
 });
@@ -93,11 +68,7 @@ const Item= React.memo(
 const Container = styled.View`
   flex : 1;
   background-color: white;
-`;
-
-const StyledText = styled.Text`
-  font-size: 24px;
-  color: black;
+  padding-vertical: 30px;
 `;
 
 
@@ -107,23 +78,46 @@ const BoardList = ({navigation})=> {
 
   //게시판 목록 배열 상태변수
   const [boards, setBoards] =useState([]);
+  const [posts, setPosts] = useState({});
 
 
   // 마운트 될 때 동작
   // board collection 모든 문서 불러오기 
   useEffect(()=>{
+    
+    let post_list={};
+
     const q = query(collection(DB, "boards"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const list = [];
+      const board_list = [];
+
       querySnapshot.forEach((doc) => {
-          list.push(doc.data());
+          board_list.push(doc.data());
       });
       //boards 변수 업데이트
-      setBoards(list);
+      setBoards(board_list);
+      
+      boards.map((item)=> {
+        const q2 = query(collection(DB, "boards", `${item.boardId}/posts`), orderBy('createdAt', 'desc'));
+        onSnapshot(q2, (querySnapshot) => {
+          const lst=[];
+          querySnapshot.forEach((doc) => {
+            lst.push(doc.data().title);
+          });
+          post_list[item.boardId]=lst[0];
+        });
+      });
+
+      setPosts(post_list);
+      //console.log(posts);
+      // 목록 잘 출력됨
     });
     
     return ()=> unsubscribe();
   }, []);
+
+  console.log(posts);
+  //출력 안됨 - 해결하기!!
 
   return (
     <Container>

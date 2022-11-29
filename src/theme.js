@@ -58,6 +58,7 @@ const Colors = {
 
     //List
     lstContainer: Colors.ewha_green,
-    lstBorder: Colors.dark_grey,
+    lstBorder: Colors.light_grey,
+    lstContent: Colors.mid_grey,
   
   }

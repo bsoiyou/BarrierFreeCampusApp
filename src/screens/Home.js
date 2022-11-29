@@ -31,8 +31,8 @@ export default function Home({navigation}) {
       title='긴급 게시판' 
       onPress={()=> navigation.navigate('EmerBoard')}/>
       <Button 
-      title='게시판' 
-      onPress={()=> navigation.navigate('Board','Art')}/>
+      title='전체 게시판' 
+      onPress={()=> navigation.navigate('AllBoard')}/>
       
     </Container>
   );

@@ -1,11 +1,19 @@
 import React, {useContext} from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import {Home, Notice, Map, BoardList, EmerBoard, Board, Profile, MyPoint, Settings, FindPw} from '../screens'; 
+import { createDrawerNavigator } from '@react-navigation/drawer'; 
 import styled, { ThemeContext } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import { Image, Button } from '../components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {Text} from 'react-native';
+import {
+  Home, 
+  Notice,  
+  Profile, 
+  MyPoint, 
+  Settings, 
+  FindPw,
+  MyPost
+} from '../screens';
 
 const Drawer = createDrawerNavigator();
 
@@ -86,6 +94,14 @@ export default function MainDrawer() {
       options={{
         drawerLabel: '내 정보',
         title: '내 정보',
+      }}/>
+      <Drawer.Screen 
+      name='MyPost' 
+      component={MyPost} 
+      options={{
+        drawerLabel: '내가 쓴 글',
+        title: '내가 쓴 글',
+        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/>
       <Drawer.Screen 
       name='MyPoint' 

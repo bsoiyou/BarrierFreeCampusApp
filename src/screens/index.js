@@ -12,7 +12,7 @@ import BoardList from "./BoardList";
 import EmerBoard from "./EmerBoard";
 import Profile from "./Profile";
 import Board from "./Board";
-import AllPost from "./AllPost";
+import AllBoard from "./AllBoard";
 import CreatePost from "./CreatePost";
 import AddImage from "./AddImage";
 import CreateMarker from "./CreateMarker";
@@ -22,8 +22,7 @@ import Preview from "./Preview";
 import Post from "./Post";
 import MyPoint from "./MyPoint";
 import Settings from "./Settings";
-
-//import MyPosts from "./MyPosts";
+import MyPost from "./MyPost";
 //import MyBoards from "./MyBoards";
 
 
@@ -41,7 +40,7 @@ export {
   BoardList,
   EmerBoard,
   Board,
-  AllPost,
+  AllBoard,
   CreatePost,
   AddImage,
   CreateMarker,
@@ -52,4 +51,5 @@ export {
   MyPoint,
   Profile,
   Settings,
+  MyPost,
 };

@@ -17,6 +17,7 @@ import {
   SetDay,
   Post,
   MyPoint,
+  AllBoard
 } from "../screens";
 import MainDrawer from "./MainDrawer";
 
@@ -111,6 +112,12 @@ const MainStack = () => {
       {/* 화면 5 */}
       <Stack.Screen name="BoardList" 
       component={BoardList} 
+      options={{
+        headerTitle: '전체 게시판',
+      }}/>
+      {/* 화면 6 */}
+      <Stack.Screen name="AllBoard" 
+      component={AllBoard} 
       options={{
         headerTitle: '전체 게시판',
       }}/>
