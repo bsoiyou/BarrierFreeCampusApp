@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
- import styled from 'styled-components';
- import AppIntroSlider from 'react-native-app-intro-slider';
-
+import styled from 'styled-components';
+import AppIntroSlider from 'react-native-app-intro-slider';
+import Icon from "react-native-vector-icons/Ionicons";
+import { StyleSheet, View, Text } from "react-native";
+import { theme } from '../theme';
 
  const W_Container = styled.View`
    flex: 1;
    align-items: center;
    justify-content: flex-start;
    padding: 50px 0;
-   background-color: green;
+   background-color: white;
  `;
 
  const W_Text = styled.Text`
-   font-size: 25px;
+   font-size: 27px;
    text-align: center;
-   margin-bottom: 10px;
+   margin-vertical: 20px;
    font-weight: bold;
-   color: white;
+   color: ${({ theme })=> theme.greenText};
  `;
 
  const W_Image = styled.Image`
-   width: 90%;
-   height: 80%;
+   width: 85%;
+   height: 70%;
    margin-top: 20px;
    margin-bottom: 40px;
-   background-color: 'white';
+   background-color: ${({ theme })=> theme.imgBg};
  `;
 
 
@@ -51,6 +53,21 @@ import React, { useState } from 'react';
      );
    };
 
+   // 다음, 건너뛰기 버튼
+   const _renderButton = (text) => {
+    return (
+      <Text
+      style={{
+        color: theme.greenText,
+        fontSize: 19,
+        fontWeight: 'bold',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+      }}
+      >{text}</Text>
+    );
+  };
+
    return (
      <>
        {/* {showRealApp ? (
@@ -67,6 +84,9 @@ import React, { useState } from 'react';
          onDone={onDone}
          showSkipButton={true}
          onSkip={onSkip}
+         renderNextButton={()=>_renderButton('다음')}
+         renderSkipButton={()=>_renderButton('건너뛰기')}
+         renderDoneButton={()=>_renderButton('완료')}
        />
      </>
    );
@@ -79,27 +99,25 @@ import React, { useState } from 'react';
  const slides = [
    {
      key: 's1',
-     title: 'Slide 1',
+     title: '가이드라인',
      /* text: '', */
      image: {
        // 이미지 경로 바꾸기
        uri:
          'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
      },
-     // backgroundColor: '#00462a',
    },
    {
      key: 's2',
-     title: 'Slide 2',
+     title: '가이드라인',
      image: {
        uri:
          'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_flight_ticket_booking.png',
      },
-
    },
    {
      key: 's3',
-     title: 'Slide 3',
+     title: '가이드라인',
      image: {
        uri:
          'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_discount.png',
@@ -108,7 +126,7 @@ import React, { useState } from 'react';
    },
    {
      key: 's4',
-     title: 'Slide 4',
+     title: '가이드라인',
      image: {
        uri:
          'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_best_deals.png',
@@ -117,7 +135,7 @@ import React, { useState } from 'react';
    },
    {
      key: 's5',
-     title: 'Slide 5',
+     title: '가이드라인',
      text: 'Enjoy Travelling on Bus with flat 100% off',
      image: {
        uri:

@@ -10,12 +10,15 @@ const Colors = {
   
   export const theme = {
     errText: Colors.red,
+    greenText: Colors.ewha_green,
+    l_greenText: Colors.light_green,
     
     //Button
     l_btnBgColor: Colors.light_green,
     l_btnTitle: Colors.dark_grey,
     d_btnBgColor: Colors.ewha_green,
     btnTextLink: Colors.dark_grey,
+    l_btnTextLink: Colors.light_grey,
     btnDisabled: Colors.mid_grey,
   
     //Input
@@ -47,6 +50,7 @@ const Colors = {
 
     //Header
     headerTitle: Colors.ewha_green,
+    headerGrey: Colors.light_grey,
   
     // //Spinner
     // spinnerBg: Colors.black,
@@ -54,6 +58,7 @@ const Colors = {
 
     //List
     lstContainer: Colors.ewha_green,
-    lstBorder: Colors.dark_grey,
+    lstBorder: Colors.light_grey,
+    lstContent: Colors.mid_grey,
   
   }

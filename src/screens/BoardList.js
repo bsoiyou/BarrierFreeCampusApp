@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useContext, useLayoutEffect} from 'react';
-import styled, { ThemeContext }  from 'styled-components';
+import styled, { ThemeContext, withTheme }  from 'styled-components';
 import { Button } from '../components';
 import { TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {DB, getCurUser} from '../firebase';
-import { collection, getDoc, onSnapshot, query, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { collection, getDoc, orderBy, onSnapshot, query, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 
 
 const {width} = Dimensions.get('window');
@@ -12,21 +12,36 @@ const {width} = Dimensions.get('window');
 //--item--
 // item container
 const ItemContainer = styled.TouchableOpacity`
-  width: ${width-30}px;
-  height: 55px;
+  width: ${width-20}px;
+  height: 45px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  background-color: green;
-  border-radius: 10px;
-  margin: 0 10px;
-  margin-top:20px;
+  justify-content: flex-start;
+  background-color: white;
 `;
 // item text
-const ItemTitle =styled.Text`
-  font-size: 18px;
-  color: white;
-  padding: 0 20px;
+
+const ItemBoardText =styled.Text`
+  font-size: 19px;
+  color: ${({theme})=>theme.greenText};
+  font-weight: bold;
+  padding-left: 20px;
+  padding-right: 10px;
+  flex: 4;
+`;
+
+const ItemPostText =styled.Text`
+  font-size: 17px;
+  color: ${({theme})=>theme.lstContent};
+  flex: 5;
+  padding-right: 15px;
+`;
+
+const ItemIconText =styled.Text`
+  font-size: 19px;
+  color: ${({theme})=>theme.errText};
+  font-weight: bold;
+  flex: 1;
 `;
 
 
@@ -38,52 +53,17 @@ const Item= React.memo(
 
   return (
     <ItemContainer
-    onPress={()=> onPress({boardId, title})}
+    onPress={()=> onPress({boardId, title, starUsers})}
     >
-      {/* 해당 board의 starUsers에 가서 확인하고 uid 있으면 진한 하트 렌더링 */}
-      {
-        ((starUsers.indexOf(curUser.uid))!=(-1))?
+      <ItemBoardText>{title}</ItemBoardText>
+      <ItemPostText></ItemPostText>
+      <ItemIconText>
         <Ionicons 
-        name="heart" 
-        size={25}
-        style={{
-          marginLeft: 20,
-          marginRight: 10,
-        }}
-        color='white'
-        onPress={ () => {
-          // 해당 board의 starUsers 배열에 가서 uid 삭제
-          const arrRef = doc(DB, 'boards', `${boardId}`);
-          updateDoc(arrRef, {
-            starUsers: arrayRemove(`${curUser.uid}`)
-          });
-        }}/>
-        :
-        <Ionicons 
-        name="heart-dislike-outline" 
-        size={25}
-        style={{
-          marginLeft: 20,
-          marginRight: 10,
-        }}
-        color='white'
-        onPress={ () => {
-          // 해당 board의 starUsers 배열에 가서 uid 추가
-          const arrRef = doc(DB, 'boards', `${boardId}`);
-          updateDoc(arrRef, {
-            starUsers: arrayUnion(`${curUser.uid}`)
-          });
-        }}/> 
-      }
-      <ItemTitle>{title}</ItemTitle>
-      <Ionicons 
-        name='chevron-forward-outline'
-        size={23}
-        style={{
-          marginHorizontal: 15
-        }}
-        color='white'
-      />
+            name="chevron-forward-outline" 
+            size={23}
+            onPress={onPress}
+            color={theme.l_btnBgColor}/> 
+      </ItemIconText>
     </ItemContainer>
   )
 });
@@ -93,17 +73,12 @@ const Item= React.memo(
 const Container = styled.View`
   flex : 1;
   background-color: white;
-`;
-
-const StyledText = styled.Text`
-  font-size: 24px;
-  color: black;
+  padding-vertical: 30px;
 `;
 
 
 const BoardList = ({navigation})=> {
   const theme=useContext(ThemeContext);
-
 
   //게시판 목록 배열 상태변수
   const [boards, setBoards] =useState([]);
@@ -124,20 +99,19 @@ const BoardList = ({navigation})=> {
     
     return ()=> unsubscribe();
   }, []);
-
   return (
     <Container>
       <FlatList 
       data={boards}
       renderItem={({item})=> 
         <Item 
-        item={item} 
-        //클릭하면 params(id,title) 주면서 Board로 이동
-        onPress={params=>{
-          navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title});
-        }}
-        />
-      }
+         item={item} 
+         //클릭하면 params(id,title) 주면서 Board로 이동
+         onPress={params=>{
+           navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title, starUsers: params.starUsers});
+         }}
+         />
+       }
       keyExtractor={item=>item['boardId']}
       windowSize={5}
       contentContainerStyle={{
@@ -147,5 +121,4 @@ const BoardList = ({navigation})=> {
     </Container>
   );
 } 
-
 export default BoardList;

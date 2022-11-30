@@ -1,5 +1,5 @@
 
-import {Text, Alert} from 'react-native';
+import {Text, Alert, View} from 'react-native';
 import React, {useContext, useState, useRef, useEffect} from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import {Button, ErrorMsg, Input, Image} from '../components';
@@ -69,7 +69,7 @@ const Login = ({navigation})=> {
     const changedEmail=removeWhitespace(email);
     setEmail(changedEmail);
     //유효성 검사 후 에러 메시지 변경
-    setErrorMsg(validateEmail(changedEmail) ? '' : '올바른 이메일을 입력해주세요');
+    setErrorMsg(validateEmail(changedEmail) ? '' : '올바른 이화인 이메일을 입력해주세요');
   }
 
   //패스워드 입력
@@ -102,9 +102,6 @@ const Login = ({navigation})=> {
       if (!auth.currentUser.emailVerified) {
         navigation.navigate('NotVerified');
       }
-      // else {
-      //   navigation.navigate('NotVerified');
-      // }
     }
     // 로그인 실패
     catch(err){
@@ -154,22 +151,13 @@ const Login = ({navigation})=> {
 
       {/* 에러 메시지 */}
       <ErrorMsg msg={errorMsg}/>
+      <View style={{height: 10}}></View>
 
       {/* 로그인 버튼 */}
       <Button 
       title="로그인" 
       onPress={_handleSigninBtnPress}
       disabled={disabled}
-      containerStyle={{
-        padding: 15,
-        marginTop: 0,
-        marginBottom: 25,
-        borderRadius: 30,
-      }}
-      textStyle={{
-        fontSize: 20,
-        fontWeight: '600',
-      }}
       />
 
       {/* 회원가입 버튼 */}
@@ -182,8 +170,7 @@ const Login = ({navigation})=> {
         backgroundColor: 'transparent', 
       }}
       textStyle={{
-        // color 수정
-        color: 'grey',
+        color: theme.d_btnBgColor,
         fontSize: 18,
         fontWeight: '600',
       }}
@@ -197,8 +184,7 @@ const Login = ({navigation})=> {
         backgroundColor: 'transparent', 
       }}
       textStyle={{
-        // color 수정
-        color: 'grey',
+        color: theme.l_btnTextLink,
         fontSize: 16,
         fontWeight: '500',
         textDecorationLine:'underline',

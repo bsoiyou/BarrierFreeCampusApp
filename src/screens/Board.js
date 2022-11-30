@@ -3,12 +3,11 @@ import styled, { ThemeContext }  from 'styled-components';
 import { TimeStamp } from '../components';
 import { TouchableOpacity, Text, FlatList, Dimensions, Alert} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {DB} from '../firebase';
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import {getCurUser, DB} from '../firebase';
 
 const Container = styled.View`
   flex : 1;
-  background-color: white;
 `;
 
 const StyledText = styled.Text`
@@ -38,12 +37,28 @@ const ItemTitle =styled.Text`
   font-weight: 600;
 `;
 
+// 정보 컨테이너
+const ItemInfo = styled.View`
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-end;
+`
+
 // 시간
 const ItemTime = styled.Text`
   font-size: 14px;
   color: 'black';
   margin-right: 10px;
 `;
+
+// 기간
+const ItemDate = styled.Text`
+  font-size: 11px;
+  color: 'grey';
+  margin-right: 10px;
+  margin-top: 8px;
+`;
+
 // 아이콘
 const ItemIcon = styled(Ionicons).attrs(({theme}) => ({
   name: 'chevron-forward-sharp',
@@ -54,14 +69,21 @@ const ItemIcon = styled(Ionicons).attrs(({theme}) => ({
 
 //item 컴포넌트
 const Item= React.memo(
-  ({item: {title, content, createdAt, uid, isEmer, id, image}, onPress}) => {
+  ({item: {title, content, createdAt, uid, isEmer, id, image, startDate, endDate, markerId}, onPress}) => {
 
   return (
-    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id, image})}>
+    <ItemContainer onPress={()=> onPress({title, content, createdAt, uid, isEmer, id, image, startDate, endDate, markerId})}>
       <ItemTextContainer>
         <ItemTitle>{title}</ItemTitle>
       </ItemTextContainer>
+      <ItemInfo>
       <ItemTime>{TimeStamp(createdAt)}</ItemTime>
+      {/* 기간 미정인 경우 미정으로 표시 */}
+      {(startDate!=='')
+      ?<ItemDate>{startDate} ~ {endDate}</ItemDate>
+      :<ItemDate>기간 미정</ItemDate>
+      }
+      </ItemInfo>
       <ItemIcon />
     </ItemContainer>
   )
@@ -73,24 +95,57 @@ const Item= React.memo(
 const Board = ({navigation, route})=> {
   const theme=useContext(ThemeContext);
 
+
+  //user 불러오기
+  const curUser=getCurUser();
+
+
   //항목 목록 배열 상태 변수
   const [posts, setPosts] = useState([]);
+
+  const [star, setStar] = useState((route.params.starUsers.indexOf(curUser.uid))!=(-1));
 
   //header
   useLayoutEffect(()=>{
     navigation.setOptions({
       // board의 title을 전달받아 header title로 지정
       headerTitle : route.params.boardTitle,
-      headerLeft: ({onPress}) => {
-        return (
-          <Ionicons 
-          name="chevron-back-outline" 
-          size={30}
-          style={{marginLeft:5,}}
-          onPress={onPress}
-          color={theme.headerTitle}/> 
-        );
-      },
+      headerRight: ()=> {
+        return( 
+          star?
+            <Ionicons 
+            name="star" 
+            size={24}
+            style={{
+              marginRight: 20,
+            }}
+            color='#f9a825'
+            onPress={ () => {
+              // 해당 board의 starUsers 배열에 가서 uid 삭제
+              const arrRef = doc(DB, 'boards', `${route.params.boardId}`);
+              updateDoc(arrRef, {
+                starUsers: arrayRemove(`${curUser.uid}`)
+              });
+              setStar(false);
+            }}/>
+          :
+            <Ionicons 
+            name="star-outline" 
+            size={22}
+            style={{
+              marginRight: 20,
+            }}
+            color='#00462a'
+            onPress={ () => {
+              // 해당 board의 starUsers 배열에 가서 uid 추가
+              const arrRef = doc(DB, 'boards', `${route.params.boardId}`);
+              updateDoc(arrRef, {
+                starUsers: arrayUnion(`${curUser.uid}`)
+              });
+              setStar(true);
+            }}/> 
+        )
+      }
     })
   });
 
@@ -129,11 +184,11 @@ const Board = ({navigation, route})=> {
       onPress={()=> {
         // 글 쓰기 버튼 누르면 뜨는 선택 창 - 게시물이면 board id 전달 / 장애물이면 전달 x
         Alert.alert(
-          "종류 선택",
-          "게시물 / 장애물",
+          "게시판 유형을 선택해 주세요",
+          "정보 공유 글 / 장애물 제보 글",
           [
             {
-              text: "게시물",
+              text: "정보",
               onPress: () => {
                 navigation.navigate('CreatePost', route.params)},
             },
@@ -142,21 +197,31 @@ const Board = ({navigation, route})=> {
         );
         }}
       style={{
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.d_btnBgColor,
-        width: 130,
-        padding: 15,
+        backgroundColor: 'white',
+        width: 100,
+        padding: 10,
         marginTop: 0,
         borderRadius: 30,
         position: 'absolute',
-        bottom: 30,
-        left: (Dimensions.get('window').width / 2)-(130/2),
+        bottom: 50,
+        left: (Dimensions.get('window').width / 2)-(100/2),
       }}
       >
+      <Ionicons 
+        name="pencil-outline"
+        size={16}
+        style={{
+          marginRight:10, 
+          color: theme.d_btnBgColor,
+        }}
+      /> 
       <Text style={{
-        fontSize: 20,
-        color: 'white',
+        fontSize: 18,
+        color: theme.d_btnBgColor,
+        fontWeight: 'bold'
       }}>글 쓰기</Text>
 
       </TouchableOpacity>

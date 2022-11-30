@@ -17,18 +17,10 @@ const Container = styled.View`
   padding: 10px 20px;
 `;
 
-const StyledText = styled.Text`
-  font-size: 16px;
-  color: black;
-  background-color: white;
-  padding: 20px;
-  line-height: 30px;
-`;
-
 const StyledImg= styled.Image`
   background-color: ${({ theme }) => theme.imgBg};
-  width: ${Dimensions.get('window').width-100}px;
-  height: ${Dimensions.get('window').width-100}px;
+  width: ${Dimensions.get('window').width-80}px;
+  height: ${Dimensions.get('window').width-80}px;
   border-radius: 10px;
 `;
 
@@ -70,25 +62,12 @@ export default function AddImage({navigation, route}) {
   //header
   useLayoutEffect(()=>{
     navigation.setOptions({
-      headerLeft: ({onPress}) => {
-        return (
-          <TouchableOpacity onPress={onPress}>
-          <Text
-          style={{
-            fontSize: 18,
-            color: theme.text,
-            marginLeft: 15,
-          }}
-          >취소</Text>
-          </TouchableOpacity>
-        );
-      },
       headerRight: ()=> {
         return (
           <TouchableOpacity 
           onPress={ ()=> {
             (route.params.boardId)?
-            navigation.navigate('SetDay', {boardId: route.params.boardId, boardTitle: route.params.boardTitle, title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: image}):
+            navigation.navigate('SetDay', {boardId: route.params.boardId, boardTitle: route.params.boardTitle, starUsers: route.params.starUsers, title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: image}):
             navigation.navigate('CreateMarker', {title: route.params.title, content: route.params.content, isEmer: route.params.isEmer, image: image})
           }}
           disabled={disabled}
@@ -116,12 +95,7 @@ export default function AddImage({navigation, route}) {
 return (
   <Container>
     {/* 에러 메시지 */}
-    <ErrorMsg msg={errMsg}/>
-
-    {/* 안내 문구 */}
-    <StyledText>
-      사진을 추가해 주세요.
-    </StyledText>
+    {/* <ErrorMsg msg={errMsg}/> */}
 
     {/* 이미지 */}
     <StyledImg source={{ uri: image }} />
@@ -140,13 +114,13 @@ return (
         marginTop: 0,
         borderRadius: 30,
         position: 'absolute',
-        bottom: 40,
+        bottom: 50,
         left: (Dimensions.get('window').width / 2)-(100/2),
       }}>
     <Text style={{
       fontSize: 18,
       fontWeight: 'bold',
-      color: 'black',
+      color: theme.imgBtn,
     }}>사진 수정</Text>
     </TouchableOpacity>
 

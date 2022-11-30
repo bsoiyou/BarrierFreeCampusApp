@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import { ThemeContext } from 'styled-components';
+import { TouchableOpacity, Text } from "react-native";
 import {createStackNavigator} from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -11,35 +12,44 @@ const Stack = createStackNavigator();
 
 //로그인 No 화면
 const AuthStack = ()=> {
-  //const theme=useContext(ThemeContext);
+  const theme=useContext(ThemeContext);
+
   return (
   <Stack.Navigator 
   initialRouteName='Walkthrough'
   screenOptions={{
-    //배경색 지정
-    cardStyle: {
-      //backgroundColor: theme.bgColor
-      backgroundColor: 'white'
-    },
     //header 설정
-    headerStyle: {
-    },
+    headerTintColor: theme.headerTitle,
     headerTitleStyle: {
-      fontSize: 18,
+      fontSize: 20,
+      fontWeight: 'bold'
     },
-    headerTintColor: 'black',
+    headerShadowVisible: true,
     headerTitleAlign: 'center',
-      headerBackTitleVisible: false,
-      headerLeft: ({onPress, tintColor}) => {
-        return (
-          <Ionicons 
-          name="chevron-back-outline" 
-          size={30}
-          style={{marginLeft:5,}}
-          color={tintColor}
-          onPress={onPress}/> 
-        );
-      }
+    headerBackTitleVisible: false,
+    headerLeft: ({onPress}) => (
+      <TouchableOpacity 
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+      onPress={onPress}>
+      <Ionicons 
+        name="chevron-back-outline" 
+        size={28}
+        style={{
+          marginHorizontal:5, 
+          color: theme.headerTitle,
+        }}
+        /> 
+      <Text style={{
+        fontSize: 16, 
+        alignSelf: 'center',
+        color: theme.headerTitle,
+      }}>뒤로 가기</Text>
+      </TouchableOpacity>
+    ),
   }}>
     {/* 화면 1 */}
     <Stack.Screen 

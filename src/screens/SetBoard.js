@@ -17,13 +17,14 @@ const Container = styled.View`
   flex: 1;
   justify-content: flex-start;
   align-items: center;
+  padding: 10px 20px;
 `;
 
 const StyledText = styled.Text`
   font-size: 16px;
   color: black;
   background-color: white;
-  padding: 20px;
+  padding: 30px 10px;
   line-height: 30px;
 `;
 
@@ -79,9 +80,11 @@ const uploadPost = async ()=>{
       //user 받기
       const curUser=getCurUser();
 
+      //marker 생성 함수 호출 후 markerId 받기
+      const markerId = await createMarker(route.params.lat, route.params.long);
+
       // selected 배열 원소 각각 업로드 - 반복문
       selected.map(async (board)=>{
-
         //함수 호출하여 db에 올리고 post id 받기
         const postId = await createBarrierPost({
           boardId: board.boardId, 
@@ -94,18 +97,19 @@ const uploadPost = async ()=>{
           endDate: route.params.endDate,
           lat: route.params.lat,
           long: route.params.long,
+          markerId: markerId,
         });
-
-        // 여기 체크하기!
-        console.log(board.boardId);
 
         uploadImage(route.params.image, postId, board.boardId)
         .then(() => {
-          console.log('1');
-          createMarker(route.params.lat, route.params.long, postId);
-          console.log(postId);
+          //marker에 postId update
+          const docRef = doc(DB, "markers", `${markerId}`);
+          updateDoc(docRef, {
+            postId: postId,
+          });
+
+          // 화면 이동
           navigation.navigate('Map');
-          console.log('2');
         })  
         .catch((error) => {
           console.log(error.message);
@@ -149,19 +153,6 @@ const uploadPost = async ()=>{
   //header
   useLayoutEffect(()=>{
     navigation.setOptions({
-      headerLeft: ({onPress}) => {
-        return (
-          <TouchableOpacity onPress={onPress}>
-          <Text
-          style={{
-            fontSize: 18,
-            color: 'black',
-            marginLeft: 15,
-          }}
-          >취소</Text>
-          </TouchableOpacity>
-        );
-      },
       headerRight: ()=> {
         return (
           <TouchableOpacity 
@@ -255,8 +246,8 @@ const uploadPost = async ()=>{
 
     <StyledText>
       {
-        `❕지도에 있는 핀을 움직여 가장 정확한 위치를 설정해 주시기 바랍니다. 
-❕정확한 위치를 모르시는 분은 제일 가깝다고 생각하는 건물에 핀을 설정해 주시기 바랍니다.`
+        `❕해당 글과 가장 관련 있는 건물을 선택해 주세요. 
+❕건물은 최대 2개까지 선택할 수 있습니다.`
       }
     </StyledText>
       <View style={{ height: '60%' ,flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20}}>

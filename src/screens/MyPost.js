@@ -91,7 +91,7 @@ const Item= React.memo(
 
 
 // 긴급 글만 보여주는 화면
-export default function EmerBoard({navigation}) {
+export default function MyPost({navigation}) {
 
   const theme=useContext(ThemeContext);
 
@@ -102,18 +102,20 @@ export default function EmerBoard({navigation}) {
   const [posts, setPosts] = useState([]);
 
   // 마운트될 때 동작
-  // 모든 post collection에서 isEmer=true인 문서 읽어오기 - 날짜 내림차순
+  // 모든 post collection에서 uid=curUser.uid인 문서 읽어오기 - 날짜 내림차순
   useEffect(()=> {
-    const q = query(collectionGroup(DB, 'posts'), where('isEmer', '==', true), orderBy('createdAt', 'desc'));
+    const q = query(collectionGroup(DB, 'posts'), where('uid', '==', curUser.uid), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
       querySnapshot.forEach((doc) => {
         list.push(doc.data());
       });
       setPosts(list);
+      console.log(posts[0]);
     });
     return ()=> unsubscribe();
   }, []);
+
 
 
   return (

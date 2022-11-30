@@ -1,10 +1,19 @@
 import React, {useContext} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import AuthStack from './AuthStack';
 import MainStack from './MainStack';
 import {UserContext} from '../contexts';
 //import {UserContext, ProgressContext} from '../contexts';
 //import {Spinner} from '../components';
+
+// 기본 배경 색 지정
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'white'
+  },
+};
 
 
 
@@ -16,11 +25,10 @@ const Navigation = () => {
 
   return (
     //Navigation Container
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
 
       {/* 로그인 +인증 여부에 따라 다른 화면 렌더링 */}
-      {/* {(user.uid && user.emailVerified) ? <MainStack/> : <AuthStack />}
-       */}
+      {/* {(user.uid && user.emailVerified) ? <MainStack/> : <AuthStack />} */}
       {/* <AuthStack/> */}
       <MainStack/>
       
