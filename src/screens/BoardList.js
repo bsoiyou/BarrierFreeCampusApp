@@ -57,7 +57,13 @@ const Item= React.memo(
     >
       <ItemBoardText>{title}</ItemBoardText>
       <ItemPostText></ItemPostText>
-      <ItemIconText>N</ItemIconText>
+      <ItemIconText>
+        <Ionicons 
+            name="chevron-forward-outline" 
+            size={23}
+            onPress={onPress}
+            color={theme.l_btnBgColor}/> 
+      </ItemIconText>
     </ItemContainer>
   )
 });

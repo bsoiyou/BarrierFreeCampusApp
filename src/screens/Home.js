@@ -139,7 +139,7 @@ const Home = ({ navigation }) => {
 
       {/*즐겨찾기 게시판*/}
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => {navigation.navigate('BoardList')}}
         activeOpacity={0.8}>
         <StyledCompo_w style={{height: 160}}>
           <CompoHeader style={{ backgroundColor: theme.d_btnBgColor }}>
