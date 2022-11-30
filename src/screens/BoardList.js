@@ -1,10 +1,11 @@
 import React, {useState, useEffect, useContext, useLayoutEffect} from 'react';
-import styled, { ThemeContext }  from 'styled-components';
+import styled, { ThemeContext, withTheme }  from 'styled-components';
 import { Button } from '../components';
 import { TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {DB, getCurUser} from '../firebase';
 import { collection, getDoc, orderBy, onSnapshot, query, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { parseZone } from 'moment';
 
 
 const {width} = Dimensions.get('window');
@@ -48,7 +49,7 @@ const ItemIconText =styled.Text`
 //item 컴포넌트
 // posts를 인자로 받아서 boardId마다 content를 출력 (undefined는 빈 칸)
 const Item= React.memo( 
-  ({item: {boardId, title, starUsers}, onPress}) => {
+  ({item: {boardId, title, starUsers}, onPress, newpost, index}) => {
   const theme=useContext(ThemeContext);
   const curUser=getCurUser();
 
@@ -57,7 +58,13 @@ const Item= React.memo(
     onPress={()=> onPress({boardId, title, starUsers})}
     >
       <ItemBoardText>{title}</ItemBoardText>
-      <ItemPostText>s</ItemPostText>
+      {
+          (newpost[index]==undefined)?
+            <ItemPostText key={index}>새 글을 등록해주세요!</ItemPostText>
+          :
+            <ItemPostText key={index}>{newpost[index][boardId]}</ItemPostText>
+      }
+      
       <ItemIconText>N</ItemIconText>
     </ItemContainer>
   )
@@ -78,58 +85,69 @@ const BoardList = ({navigation})=> {
 
   //게시판 목록 배열 상태변수
   const [boards, setBoards] =useState([]);
-  const [posts, setPosts] = useState({});
+  const [newpost, setNewpost] =useState([]);
 
 
   // 마운트 될 때 동작
   // board collection 모든 문서 불러오기 
   useEffect(()=>{
-    
-    let post_list={};
 
     const q = query(collection(DB, "boards"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const board_list = [];
+      let post_list;
+      let plz=[];
 
+      // board마다 
       querySnapshot.forEach((doc) => {
-          board_list.push(doc.data());
+        const q2 = query(collection(DB, "boards", `${doc.data().boardId}/posts`), orderBy('createdAt', 'desc'));
+        
+        onSnapshot(q2, (querySnapshot) => {
+          post_list=[];
+
+          // board의 post마다
+          querySnapshot.forEach((doc2) => {
+            post_list.push(doc2.data());
+          });
+          
+          // 글이 있으면
+          if((post_list[0])!==undefined){
+            // plz에 {boardId: title} 객체 형태로 push
+            const bid = doc.data().boardId;
+            plz.push({[bid]: post_list[0].title});
+          }
+          // 여기까지 plz는 맞게 들어감
+          //console.log(plz);
+
+          //newpost를 plz로 업데이트
+          setNewpost(plz);
+        });
+
+        // board push
+        board_list.push(doc.data());
       });
+
       //boards 변수 업데이트
       setBoards(board_list);
-      
-      boards.map((item)=> {
-        const q2 = query(collection(DB, "boards", `${item.boardId}/posts`), orderBy('createdAt', 'desc'));
-        onSnapshot(q2, (querySnapshot) => {
-          const lst=[];
-          querySnapshot.forEach((doc) => {
-            lst.push(doc.data().title);
-          });
-          post_list[item.boardId]=lst[0];
-        });
-      });
-
-      setPosts(post_list);
-      //console.log(posts);
-      // 목록 잘 출력됨
     });
     
     return ()=> unsubscribe();
   }, []);
-
-  console.log(posts);
-  //출력 안됨 - 해결하기!!
+  
 
   return (
     <Container>
       <FlatList 
       data={boards}
-      renderItem={({item})=> 
+      renderItem={({item, index})=> 
         <Item 
         item={item} 
         //클릭하면 params(id,title) 주면서 Board로 이동
         onPress={params=>{
           navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title, starUsers: params.starUsers});
         }}
+        newpost={newpost}
+        index={index}
         />
       }
       keyExtractor={item=>item['boardId']}
