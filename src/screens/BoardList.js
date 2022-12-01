@@ -106,7 +106,7 @@ const BoardList = ({navigation})=> {
       renderItem={({item})=> 
         <Item 
          item={item} 
-         //클릭하면 params(id,title) 주면서 Board로 이동
+         //클릭하면 params 주면서 Board로 이동
          onPress={params=>{
            navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title, starUsers: params.starUsers});
          }}

@@ -169,7 +169,7 @@ return (
     placeholder='제목을 입력하세요.'
     returnKeyType='next'
     onBlur={()=> setTitle(title.trim())}
-    maxLength={30}
+    maxLength={15}
     />
 
     {/* 내용 입력 */}

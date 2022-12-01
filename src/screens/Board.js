@@ -103,7 +103,7 @@ const Board = ({navigation, route})=> {
   //항목 목록 배열 상태 변수
   const [posts, setPosts] = useState([]);
 
-  const [star, setStar] = useState((route.params.starUsers.indexOf(curUser.uid))!=(-1));
+  const [star, setStar] = useState((route.params.starUsers.indexOf(curUser.uid))!==(-1));
 
   //header
   useLayoutEffect(()=>{

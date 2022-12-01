@@ -106,7 +106,7 @@ const Post = ({navigation,route})=> {
   //header
   useLayoutEffect(()=>{
     navigation.setOptions({
-      headerTitle : route.params.title,
+      headerTitle : '글',
       // 삭제 버튼
       headerRight: ()=> { 
         return (
