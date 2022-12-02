@@ -32,6 +32,7 @@ const MainStack = () => {
       initialRouteName="MainDrawer"
       screenOptions={{
         headerTintColor: theme.headerTitle,
+        headerTitleAlign: 'center',
         headerTitleStyle: {
           fontSize: 20,
           fontWeight: 'bold'
@@ -71,9 +72,12 @@ const MainStack = () => {
       <Stack.Screen name="Notice" component={Notice}/>
 
       {/* 화면 3 */}
-      <Stack.Screen name="Map" component={Map} 
+      <Stack.Screen 
+      name="Map" 
+      component={Map} 
       // Map은 무조건 뒤로가기하면 Home으로
       options={({ navigation }) => ({
+        headerTitle: '캠퍼스 지도',
         headerLeft: () => (
           <TouchableOpacity 
           style={{

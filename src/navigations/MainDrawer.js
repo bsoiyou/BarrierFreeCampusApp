@@ -66,7 +66,7 @@ export default function MainDrawer() {
             height: 35, 
             justifyContent: 'center',
             alignContent: 'center',
-            borderRadius: '50%',
+            borderRadius: 50,
             marginRight: 20,
           }}
           onPress={()=> navigation.navigate('MyPoint')}
