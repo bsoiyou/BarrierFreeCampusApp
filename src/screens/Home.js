@@ -41,7 +41,7 @@ const CompoHeader = styled.View`
   background-color: ${({ theme }) => theme.errText};
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding-left: 10px;
   margin-bottom: 10px;
 `;
@@ -202,6 +202,29 @@ const Home = ({ navigation }) => {
         <StyledCompo_w style={{height: 170}}>
           <CompoHeader style={{ backgroundColor: theme.d_btnBgColor }}>
             <StyledText style={{ color: 'white', flex: 6, fontSize: 17, fontWeight: 'bold' }}>즐겨찾는 게시판</StyledText>
+            {/* 전체 게시판 보기 버튼 */}
+            <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              width: 'auto',
+              alignItems: 'center'
+            }}
+            onPress={() => {navigation.navigate('BoardList')}}
+            >
+              <Text
+              style={{
+                color: 'white',
+                fontSize: 15,
+              }}
+              >전체</Text>
+              <Ionicons 
+              name="chevron-forward-outline" 
+              size={18}
+              style={{
+                marginHorizontal:5, 
+                color: 'white',
+              }}/> 
+            </TouchableOpacity>
           </CompoHeader>
           {/* 내용 */}
           <View style={{ 
@@ -217,7 +240,14 @@ const Home = ({ navigation }) => {
                 }}
                 //클릭하면 params 주면서 Board로 이동
                 onPress={()=>{
-                  navigation.navigate('Board', {boardId: item.boardId, boardTitle: item.title, starUsers: item.starUsers});
+                  // 전체 게시판
+                  if(item.boardId=='All'){
+                    navigation.navigate('AllBoard', {boardId: item.boardId, boardTitle: item.title, starUsers: item.starUsers});
+                  }
+                  // 건물 게시판
+                  else{
+                    navigation.navigate('Board', {boardId: item.boardId, boardTitle: item.title, starUsers: item.starUsers});
+                  }
                 }}
                 >
                   <StyledText>{item.title}</StyledText>

@@ -108,7 +108,14 @@ const BoardList = ({navigation})=> {
          item={item} 
          //클릭하면 params 주면서 Board로 이동
          onPress={params=>{
-           navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title, starUsers: params.starUsers});
+          // 전체 게시판
+          if(params.boardId=='All'){
+            navigation.navigate('AllBoard', {boardId: params.boardId, boardTitle: params.title, starUsers: params.starUsers});
+          }
+          // 건물 게시판
+          else{
+            navigation.navigate('Board', {boardId: params.boardId, boardTitle: params.title, starUsers: params.starUsers});
+          }
          }}
          />
        }

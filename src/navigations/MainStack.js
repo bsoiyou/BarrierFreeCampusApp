@@ -119,7 +119,7 @@ const MainStack = () => {
       <Stack.Screen name="AllBoard" 
       component={AllBoard} 
       options={{
-        headerTitle: '전체 게시판',
+        headerTitle: '전체',
       }}/>
 
       {/* --- */}
@@ -159,50 +159,6 @@ const MainStack = () => {
       }}
       />
       <Stack.Screen name="Post" component={Post} />
-      
-      {/* <Stack.Screen
-        name="Board"
-        component={Board}
-        options={{
-          headerShown: true,
-          headerTitleStyle: {
-            fontSize: 18,
-            fontWeight: "bold",
-          },
-          headerTintColor: theme.ewha_green,
-          headerTitleAlign: "center",
-          headerBackTitleVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="PostCreation"
-        component={PostCreation}
-        options={{
-          headerTitle: "글 쓰기",
-          headerShown: true,
-          headerTitleStyle: {
-            fontSize: 18,
-            fontWeight: "bold",
-          },
-          headerTintColor: theme.ewha_green,
-          headerTitleAlign: "center",
-          headerBackTitleVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="Post"
-        component={Post}
-        options={{
-          headerShown: true,
-          headerTitleStyle: {
-            fontSize: 18,
-            fontWeight: "bold",
-          },
-          headerTintColor: theme.ewha_green,
-          headerTitleAlign: "center",
-          headerBackTitleVisible: false,
-        }}
-    /> */}
 
     </Stack.Navigator>
   );

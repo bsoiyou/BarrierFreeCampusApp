@@ -111,7 +111,6 @@ export default function MyPost({navigation}) {
         list.push(doc.data());
       });
       setPosts(list);
-      console.log(posts[0]);
     });
     return ()=> unsubscribe();
   }, []);

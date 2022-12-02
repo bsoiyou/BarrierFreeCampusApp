@@ -137,7 +137,10 @@ const uploadPost = async ()=>{
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
       querySnapshot.forEach((doc) => {
+        // 전체 게시판 제외
+        if(doc.data().boardId!=='All'){
           list.push(doc.data());
+        }
       });
 
       //boards 배열 업데이트

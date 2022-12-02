@@ -88,8 +88,16 @@ const uploadPost =  async (start, end)=>{
 
     await uploadImage(route.params.image, postId);
 
+    // 전체 게시판
+    if(route.params.boardId=='All'){
+      navigation.navigate('AllBoard',{boardId: route.params.boardId, boardTitle: route.params.boardTitle, starUsers: route.params.starUsers});
+    }
+    // 건물 게시판
+    else{
     // 해당 board로 다시 이동
     navigation.navigate('Board',{boardId: route.params.boardId, boardTitle: route.params.boardTitle, starUsers: route.params.starUsers});
+    }
+    
   }
     // 업로드 실패
     catch(err){
