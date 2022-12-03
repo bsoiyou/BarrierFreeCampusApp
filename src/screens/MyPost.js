@@ -107,8 +107,18 @@ export default function MyPost({navigation}) {
     const q = query(collectionGroup(DB, 'posts'), where('uid', '==', curUser.uid), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
+      let ind=0;
       querySnapshot.forEach((doc) => {
         list.push(doc.data());
+        // 중복글인지 체크
+        list.map((item)=>{
+          // post 하나씩 가져와서 제목이 같으면 list에서 pop
+          if((item.title==doc.data().title)&& (list.indexOf(item)!==ind)){
+            list.pop();
+            ind--;
+          }
+        })
+        ind++;
       });
       setPosts(list);
     });

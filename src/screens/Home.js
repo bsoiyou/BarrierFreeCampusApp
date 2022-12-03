@@ -50,9 +50,6 @@ const PostContainer = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding-left: 20px;
-  padding-right: 10px;
-  margin-vertical: 6px;
 `;
 
 
@@ -90,8 +87,18 @@ const Home = ({ navigation }) => {
     const q = query(collectionGroup(DB, 'posts'), where('isEmer', '==', true), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const lst = [];
+      let ind=0;
       querySnapshot.forEach((doc) => {
         lst.push(doc.data());
+        // 중복글인지 체크
+        lst.map((item)=>{
+          // post 하나씩 가져와서 제목이 같으면 list에서 pop
+          if((item.title==doc.data().title)&& (lst.indexOf(item)!==ind)){
+            lst.pop();
+            ind--;
+          }
+        })
+        ind++;
       });
       //lst에서 2개만 가져와서 emerposts 변수 업데이트
       setEmerposts(lst.slice(0,2));
@@ -177,6 +184,13 @@ const Home = ({ navigation }) => {
           </CompoHeader>
            {/* 내용 */}
            <View style={{ 
+            flex: 1,
+            flexDirection: 'column',
+            paddingBottom: 10,
+            alignItems: 'flex-start',
+            justifyContent: 'space-around',
+            paddingLeft: 20,
+            paddingRight: 10,
            }}>
             {/* emerposts 이용하여 긴급 글 렌더링 */}
             {emerposts.map((item,index)=>{
@@ -228,16 +242,18 @@ const Home = ({ navigation }) => {
           </CompoHeader>
           {/* 내용 */}
           <View style={{ 
+            flex: 1,
+            flexDirection: 'column',
+            paddingBottom: 10,
+            alignItems: 'flex-start',
+            justifyContent: 'space-around',
+            paddingLeft: 20,
            }}>
             {/* starboards 이용하여 즐겨찾는 게시판 렌더링 */}
             {starboards.map((item,index)=>{
               return(
                 <TouchableOpacity 
                 key={index}
-                style={{
-                  paddingLeft: 20,
-                  marginVertical: 6,
-                }}
                 //클릭하면 params 주면서 Board로 이동
                 onPress={()=>{
                   // 전체 게시판

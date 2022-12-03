@@ -7,7 +7,7 @@ import styled, { ThemeContext } from 'styled-components';
 import {validateEmail, removeWhitespace} from '../util';
 import {auth, createUser, getCurUser, DB} from '../firebase';
 import {signOut, deleteUser} from 'firebase/auth';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc,  } from "firebase/firestore";
 
 
 
@@ -65,7 +65,10 @@ export default function Profile({navigation}) {
 
   // 회원탈퇴 함수
   const deleteuser= async ()=> {
+    // auth user 삭제
     await deleteUser(auth.currentUser);
+    // db에서 user 삭제
+    await deleteDoc(doc(DB, 'users', `${curUser.uid}`));
   }
 
   // 사용자 point 가져오기
