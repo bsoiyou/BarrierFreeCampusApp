@@ -85,48 +85,6 @@ const MainStack = () => {
         component={Map}
         // Map은 무조건 뒤로가기하면 Home으로
         options={({ navigation }) => ({
-          headerTitle: "캠퍼스 지도",
-          headerLeft: () => (
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              // Map은 무조건 뒤로가기하면 Home으로
-              onPress={() => navigation.navigate("Home")}
-            >
-              <Ionicons
-                name="chevron-back-outline"
-                size={28}
-                style={{
-                  marginHorizontal: 5,
-                  color: theme.headerTitle,
-                }}
-              />
-              <Text
-                style={{
-                  fontSize: 16,
-                  alignSelf: "center",
-                  color: theme.headerTitle,
-                }}
-              >
-                뒤로 가기
-              </Text>
-            </TouchableOpacity>
-          ),
-        })}
-      />
-
-      {/* 화면 2 */}
-      <Stack.Screen name="Notice" component={Notice} />
-
-      {/* 화면 3 */}
-      <Stack.Screen
-        name="Map"
-        component={Map}
-        // Map은 무조건 뒤로가기하면 Home으로
-        options={({ navigation }) => ({
           headerLeft: () => (
             <TouchableOpacity
               style={{

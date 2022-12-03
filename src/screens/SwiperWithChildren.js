@@ -50,30 +50,8 @@ export default () => {
       ref={scrollRef}
       onChangeIndex={onChangeIndex}
     >
-      <TouchableOpacity
-        style={[styles.child, { backgroundColor: "salmon" }]}
-        onPress={goToLastIndex}
-      >
-        <Text style={styles.text}>0 - Go to last index</Text>
+      <TouchableOpacity onPress={goToLastIndex}>
         <ImageViewer imageUrls={images} renderIndicator={() => null} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.child, { backgroundColor: "skyblue" }]}
-        onPress={getPrevIndex}
-      >
-        <Text style={styles.text}>1 - Press to get the previous index</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.child, { backgroundColor: "tomato" }]}
-        onPress={getCurrentIndex}
-      >
-        <Text style={styles.text}>2 - Press to get the current index</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.child, { backgroundColor: "skyblue" }]}
-        onPress={goToSecondIndex}
-      >
-        <Text style={styles.text}>3 - Go to the second index</Text>
       </TouchableOpacity>
     </SwiperFlatList>
   );

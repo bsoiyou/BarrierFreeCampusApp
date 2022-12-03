@@ -20,12 +20,13 @@ import {
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
 // BottomSheet
-const [visible, setVisible] = useState(false);
+
 const toggleBottomNavigationView = () => {
   //Toggling the visibility state of the bottom sheet
   setVisible(!visible);
 };
 function BotSheet({}) {
+  const [visible, setVisible] = useState(false);
   return (
     <BottomSheet
       //BottomSheet이 보이도록 설정
@@ -157,7 +158,7 @@ export default function Map({ navigation }) {
         />
       </View>
 
-      {/* 장애물 제보 버튼 */}
+      {/* 길찾기 버튼 */}
       <View
         style={{
           position: "absolute",
