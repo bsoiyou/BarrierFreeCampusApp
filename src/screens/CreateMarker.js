@@ -132,7 +132,7 @@ export default function CreateMarker({navigation, route}) {
           );
         })}
         {/* 중앙 위치 나타내는 빨간색 박스 */}
-        <View style={{
+        {/* <View style={{
           width: 100,
           height: 100,
           position: 'absolute',
@@ -144,7 +144,7 @@ export default function CreateMarker({navigation, route}) {
           backgroundColor: 'red',
           opacity: 0.2
         }}>
-        </View>
+        </View> */}
         <Marker
         coordinate={region}
         title="Location"

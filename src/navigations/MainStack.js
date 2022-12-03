@@ -85,6 +85,7 @@ const MainStack = () => {
         component={Map}
         // Map은 무조건 뒤로가기하면 Home으로
         options={({ navigation }) => ({
+          headerTitle: "캠퍼스 지도",
           headerLeft: () => (
             <TouchableOpacity
               style={{
