@@ -55,6 +55,7 @@ export default () => {
         onPress={goToLastIndex}
       >
         <Text style={styles.text}>0 - Go to last index</Text>
+        <ImageViewer imageUrls={images} renderIndicator={() => null} />
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.child, { backgroundColor: "skyblue" }]}
