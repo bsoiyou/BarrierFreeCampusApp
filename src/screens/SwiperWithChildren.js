@@ -25,22 +25,6 @@ export default () => {
   const goToLastIndex = () => {
     scrollRef.current.goToLastIndex();
   };
-  const goToFirstIndex = () => {
-    scrollRef.current.goToFirstIndex();
-  };
-  const goToSecondIndex = () => {
-    scrollRef.current.scrollToIndex({ index: 1 });
-  };
-  const getCurrentIndex = () => {
-    const currentIndex = scrollRef.current.getCurrentIndex();
-    console.log(`the current index is ${currentIndex}`);
-    Alert.alert(`the current index is ${currentIndex}`);
-  };
-  const getPrevIndex = () => {
-    const prevIndex = scrollRef.current.getPrevIndex();
-    console.log(`the previous index is ${prevIndex}`);
-    Alert.alert(`the previous index is ${prevIndex}`);
-  };
   const onChangeIndex = ({ index, prevIndex }) => {
     console.log({ index, prevIndex });
   };
@@ -50,7 +34,7 @@ export default () => {
       ref={scrollRef}
       onChangeIndex={onChangeIndex}
     >
-      <TouchableOpacity onPress={goToLastIndex}>
+      <TouchableOpacity>
         <ImageViewer imageUrls={images} renderIndicator={() => null} />
       </TouchableOpacity>
     </SwiperFlatList>

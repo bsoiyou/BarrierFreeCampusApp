@@ -19,44 +19,17 @@ import {
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
+//import BottomSheet from "./BottomSheet";
 // BottomSheet
-
-const toggleBottomNavigationView = () => {
-  //Toggling the visibility state of the bottom sheet
-  setVisible(!visible);
-};
-function BotSheet({}) {
-  const [visible, setVisible] = useState(false);
-  return (
-    <BottomSheet
-      //BottomSheet이 보이도록 설정
-      visible={visible}
-      onBackButtonPress={toggleBottomNavigationView}
-      onBackdropPress={toggleBottomNavigationView}
-    >
-      {/*Bottom Sheet inner View*/}
-      <View style={styles.bottomNavigationView}>
-        <ScrollView style={styles.scrollView}>
-          <Text
-            style={{
-              textAlign: "center",
-              padding: 20,
-              fontSize: 20,
-            }}
-          >
-            INFORMATION
-          </Text>
-          {/* boardId 사용하여 해당 게시판으로 이동 */}
-          <Button title="게시판으로 이동" onPress={alert}></Button>
-        </ScrollView>
-      </View>
-    </BottomSheet>
-  );
-}
-
 export default function Map({ navigation }) {
   // BottomSheet
   const [visible, setVisible] = useState(false);
+  const toggleBottomNavigationView = () => {
+    //Toggling the visibility state of the bottom sheet
+    setVisible(!visible);
+  };
+  const [building, setBuilding] = useState([]);
+
   // // SearchBox
   // const [searchQuery, setSearchQuery] = React.useState("");
   // const onChangeSearch = (query) => setSearchQuery(query);
@@ -90,6 +63,7 @@ export default function Map({ navigation }) {
           title: doc.data().title,
           loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
           boardId: doc.data().boardId,
+          description: doc.data().des,
         });
       });
       setBulMarks(list);
@@ -104,8 +78,8 @@ export default function Map({ navigation }) {
         initialRegion={{
           latitude: 37.561025,
           longitude: 126.94654,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.004,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
         }}
         provider={PROVIDER_GOOGLE}
         maxZoomLevel={30}
@@ -136,7 +110,13 @@ export default function Map({ navigation }) {
                 longitude: item.loc.longitude,
               }}
               title={item.title}
-              onPress={toggleBottomNavigationView}
+              onPress={() => {
+                toggleBottomNavigationView;
+                setBuilding(item);
+                // {
+                //   console.log(building);
+                // }
+              }}
             />
           );
         })}
@@ -177,6 +157,41 @@ export default function Map({ navigation }) {
           color="#fff"
         />
       </View>
+
+      {/* Bottom Sheet */}
+      {/* {bulMarks.map((item, index) => {
+        return ( */}
+      <BottomSheet
+        //BottomSheet이 보이도록 설정
+        visible={visible}
+        onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+      >
+        {/*         Bottom Sheet inner View*/}
+        <View style={styles.bottomNavigationView}>
+          <ScrollView style={styles.scrollView}>
+            <Text
+              style={{
+                textAlign: "center",
+                padding: 20,
+                fontSize: 20,
+              }}
+            >
+              {building.title}
+              {"\n"} {building.description}
+            </Text>
+            {/* {console.log(building.title)}
+            {console.log(building.description)} */}
+            {/* boardId 사용하여 해당 게시판으로 이동 */}
+            <Button
+              title="게시판으로 이동"
+              onPress={() => navigation.navigate(building.boardId)}
+            ></Button>
+          </ScrollView>
+        </View>
+      </BottomSheet>
+      {/* );
+      })} */}
     </View>
   );
 }
