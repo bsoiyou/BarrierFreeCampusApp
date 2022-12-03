@@ -24,8 +24,9 @@ import MyPoint from "./MyPoint";
 import Settings from "./Settings";
 import MyPost from "./MyPost";
 //import MyBoards from "./MyBoards";
-
-
+import FindRoute from "./FindRoute";
+import FastRoute from "./FastRoute";
+import SwiperWithChildren from "./SwiperWithChildren";
 
 export {
   Walkthrough,
@@ -52,4 +53,7 @@ export {
   Profile,
   Settings,
   MyPost,
+  FindRoute,
+  FastRoute,
+  SwiperWithChildren,
 };

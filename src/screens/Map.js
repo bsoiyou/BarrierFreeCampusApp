@@ -15,29 +15,53 @@ import {
   onSnapshot,
   GeoPoint,
   getGeoPoint,
-  getString,
-  collectionGroup
+  collectionGroup,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
+// BottomSheet
+const [visible, setVisible] = useState(false);
+const toggleBottomNavigationView = () => {
+  //Toggling the visibility state of the bottom sheet
+  setVisible(!visible);
+};
+function BotSheet({}) {
+  return (
+    <BottomSheet
+      //BottomSheet이 보이도록 설정
+      visible={visible}
+      onBackButtonPress={toggleBottomNavigationView}
+      onBackdropPress={toggleBottomNavigationView}
+    >
+      {/*Bottom Sheet inner View*/}
+      <View style={styles.bottomNavigationView}>
+        <ScrollView style={styles.scrollView}>
+          <Text
+            style={{
+              textAlign: "center",
+              padding: 20,
+              fontSize: 20,
+            }}
+          >
+            INFORMATION
+          </Text>
+          {/* boardId 사용하여 해당 게시판으로 이동 */}
+          <Button title="게시판으로 이동" onPress={alert}></Button>
+        </ScrollView>
+      </View>
+    </BottomSheet>
+  );
+}
 
 export default function Map({ navigation }) {
-  // BottomSheet
-  const [visible, setVisible] = useState(false);
-  const toggleBottomNavigationView = () => {
-    //Toggling the visibility state of the bottom sheet
-    setVisible(!visible);
-  };
-
-  // SearchBox
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const onChangeSearch = (query) => setSearchQuery(query);
+  // // SearchBox
+  // const [searchQuery, setSearchQuery] = React.useState("");
+  // const onChangeSearch = (query) => setSearchQuery(query);
 
   // Markers
   const [marks, setMarks] = useState([]);
   //markers collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
-
     const q = query(collection(DB, "markers"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
@@ -62,8 +86,8 @@ export default function Map({ navigation }) {
         list.push({
           title: doc.data().title,
           loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
-          boardId: doc.data().boardId
-      });
+          boardId: doc.data().boardId,
+        });
       });
       setBulMarks(list);
     });
@@ -77,8 +101,8 @@ export default function Map({ navigation }) {
         initialRegion={{
           latitude: 37.561025,
           longitude: 126.94654,
-          latitudeDelta: 0.04,
-          longitudeDelta: 0.03,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.004,
         }}
         provider={PROVIDER_GOOGLE}
         maxZoomLevel={30}
@@ -121,7 +145,7 @@ export default function Map({ navigation }) {
           position: "absolute",
           bottom: "10%",
           alignSelf: "center",
-          backgroundColor: "#fff",
+          backgroundColor: "#D30000",
           borderRadius: 25,
         }}
       >
@@ -129,39 +153,35 @@ export default function Map({ navigation }) {
           style={{}}
           title="장애물 제보"
           onPress={() => navigation.navigate("CreatePost")}
+          color="#fff"
         />
       </View>
-      <BottomSheet
-        //BottomSheet이 보이도록 설정
-        visible={visible}
-        onBackButtonPress={toggleBottomNavigationView}
-        onBackdropPress={toggleBottomNavigationView}
+
+      {/* 장애물 제보 버튼 */}
+      <View
+        style={{
+          position: "absolute",
+          top: "5%",
+          right: "5%",
+          //alignSelf: "center",
+          backgroundColor: "#00462A",
+          borderRadius: 25,
+        }}
       >
-        {/*Bottom Sheet inner View*/}
-        <View style={styles.bottomNavigationView}>
-          <ScrollView style={styles.scrollView}>
-            <Text
-              style={{
-                textAlign: "center",
-                padding: 20,
-                fontSize: 20,
-              }}
-            >
-              INFORMATION
-            </Text>
-            {/* boardId 사용하여 해당 게시판으로 이동 */}
-            <Button title="게시판으로 이동" onPress={alert}></Button>
-          </ScrollView>
-        </View>
-      </BottomSheet>
+        <Button
+          style={{}}
+          title="길찾기"
+          onPress={() => navigation.navigate("FindRoute")}
+          color="#fff"
+        />
+      </View>
     </View>
   );
 }
 
-
 // //postId 부분을 각 marker가 가진 postId 값으로 들어가게 수정
 // const q1 = query(collectionGroup(DB, 'posts'), where('postId', '==', route.params.postId));
-// const data=getDocs(q);  
+// const data=getDocs(q);
 // postRef = data.docs[0].ref;
 // const docSnap = getDoc(postRef);
 // console.log(docSnap.data());

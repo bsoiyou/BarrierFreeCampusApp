@@ -1,13 +1,51 @@
-import React, { useState } from "react";
-import { SafeAreaView, Text, StyleSheet, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { SafeAreaView, Text, StyleSheet, View, Button } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import {
+  addDoc,
+  collection,
+  query,
+  onSnapshot,
+  collectionGroup,
+} from "firebase/firestore";
+import { DB } from "../firebase";
 
 export default function FindRoute({ navigation }) {
-  state = {
-    hand: "right",
-  };
   const [choosenLabel, setChoosenLabel] = useState("Native");
   const [choosenIndex, setChoosenIndex] = useState("2");
+
+  // 건물들 불러오기
+  const [srcBuilding, setSrcBuilding] = useState([]);
+  //building collection에서 모든 문서 읽어와서 marks 배열에 저장
+  useEffect(() => {
+    const q = query(collection(DB, "route"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        list.push({
+          title: doc.data().title,
+        });
+      });
+      setSrcBuilding(list);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const [destBuilding, setDestBuilding] = useState([]);
+  //building collection에서 모든 문서 읽어와서 marks 배열에 저장
+  useEffect(() => {
+    const q = query(collection(DB, "route"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        list.push({
+          title: doc.data().title,
+        });
+      });
+      setDestBuilding(list);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -18,20 +56,54 @@ export default function FindRoute({ navigation }) {
         <Picker
           selectedValue={choosenLabel}
           onValueChange={(itemValue, itemIndex) => {
-            setChoosenLabel(itemValue);
-            setChoosenIndex(itemIndex);
+            setChoosenLabel1(itemValue);
+            setChoosenIndex1(itemIndex);
           }}
         >
-          <Picker.Item label="1" value="1" />
-          <Picker.Item label="2" value="2" />
-          <Picker.Item label="3" value="3" />
-          <Picker.Item label="4" value="4" />
-          <Picker.Item label="5" value="5" />
-          <Picker.Item label="6" value="6" />
+          {/* boards 배열에서 하나씩 꺼내서 marker 찍기 */}
+          {srcBuilding.map((item, index) => {
+            return (
+              <Picker.Item key={index} label={item.title} value={item.title} />
+            );
+          })}
+        </Picker>
+
+        <Picker
+          selectedValue={choosenLabel}
+          onValueChange={(itemValue, itemIndex) => {
+            setChoosenLabel2(itemValue);
+            setChoosenIndex2(itemIndex);
+          }}
+        >
+          {/* boards 배열에서 하나씩 꺼내서 marker 찍기 */}
+          {destBuilding.map((item, index) => {
+            return (
+              <Picker.Item key={index} label={item.title} value={item.title} />
+            );
+          })}
         </Picker>
         {/*Text to show selected picker*/}
-        <Text style={styles.text}>Selected Value: {choosenLabel}</Text>
-        <Text style={styles.text}>Selected Index: {choosenIndex}</Text>
+        <Text style={styles.text}>출발지: {choosenLabel1}</Text>
+        <Text style={styles.text}>Selected Index: {choosenIndex1}</Text>
+        <Text style={styles.text}>목적지: {choosenLabel2}</Text>
+        <Text style={styles.text}>Selected Index: {choosenIndex2}</Text>
+      </View>
+
+      <View
+        style={{
+          position: "absolute",
+          bottom: "10%",
+          alignSelf: "center",
+          backgroundColor: "#00462A",
+          borderRadius: 25,
+        }}
+      >
+        <Button
+          style={{}}
+          title="경로 설정 완료"
+          onPress={() => navigation.navigate("Route")}
+          color="#fff"
+        />
       </View>
     </SafeAreaView>
   );

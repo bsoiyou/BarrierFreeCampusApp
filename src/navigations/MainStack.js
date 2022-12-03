@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, View, Alert, Dimensions, Text } from "react-native";
-import { ThemeContext } from 'styled-components';
+import { ThemeContext } from "styled-components";
 
 import {
   Map,
@@ -17,10 +17,11 @@ import {
   SetDay,
   Post,
   MyPoint,
-  AllBoard
+  AllBoard,
+  FindRoute,
+  FastRoute,
 } from "../screens";
 import MainDrawer from "./MainDrawer";
-
 
 const Stack = createStackNavigator();
 
@@ -34,132 +35,157 @@ const MainStack = () => {
         headerTintColor: theme.headerTitle,
         headerTitleStyle: {
           fontSize: 20,
-          fontWeight: 'bold'
+          fontWeight: "bold",
         },
         headerShadowVisible: true,
-        headerLeft: ({onPress}) => (
-          <TouchableOpacity 
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={onPress}>
-          <Ionicons 
-            name="chevron-back-outline" 
-            size={28}
+        headerLeft: ({ onPress }) => (
+          <TouchableOpacity
             style={{
-              marginHorizontal:5, 
-              color: theme.headerTitle,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-            /> 
-          <Text style={{
-            fontSize: 16, 
-            alignSelf: 'center',
-            color: theme.headerTitle,
-          }}>뒤로 가기</Text>
+            onPress={onPress}
+          >
+            <Ionicons
+              name="chevron-back-outline"
+              size={28}
+              style={{
+                marginHorizontal: 5,
+                color: theme.headerTitle,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 16,
+                alignSelf: "center",
+                color: theme.headerTitle,
+              }}
+            >
+              뒤로 가기
+            </Text>
           </TouchableOpacity>
         ),
       }}
     >
       {/* 화면 1 */}
-      <Stack.Screen name="MainDrawer" 
-      component={MainDrawer} 
-      options={{headerShown: false}}/>
-
-      {/* 화면 2 */}
-      <Stack.Screen name="Notice" component={Notice}/>
-
-      {/* 화면 3 */}
-      <Stack.Screen name="Map" component={Map} 
-      // Map은 무조건 뒤로가기하면 Home으로
-      options={({ navigation }) => ({
-        headerLeft: () => (
-          <TouchableOpacity 
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          // Map은 무조건 뒤로가기하면 Home으로 
-          onPress={()=> navigation.navigate('Home')}>
-            <Ionicons 
-              name="chevron-back-outline" 
-              size={28}
-              style={{
-                marginHorizontal:5, 
-                color: theme.headerTitle,
-              }}
-              /> 
-            <Text style={{
-              fontSize: 16, 
-              alignSelf: 'center',
-              color: theme.headerTitle,
-            }}>뒤로 가기</Text>
-          </TouchableOpacity>
-        ),
-      })}
+      <Stack.Screen
+        name="MainDrawer"
+        component={MainDrawer}
+        options={{ headerShown: false }}
       />
 
+      {/* 화면 2 */}
+      <Stack.Screen name="Notice" component={Notice} />
+
+      {/* 화면 3 */}
+      <Stack.Screen
+        name="Map"
+        component={Map}
+        // Map은 무조건 뒤로가기하면 Home으로
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // Map은 무조건 뒤로가기하면 Home으로
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Ionicons
+                name="chevron-back-outline"
+                size={28}
+                style={{
+                  marginHorizontal: 5,
+                  color: theme.headerTitle,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  alignSelf: "center",
+                  color: theme.headerTitle,
+                }}
+              >
+                뒤로 가기
+              </Text>
+            </TouchableOpacity>
+          ),
+        })}
+      />
+
+      {/* 화면 3-길찾기 화면 */}
+      <Stack.Screen name="FindRoute" component={FindRoute} />
+      <Stack.Screen name="Route" component={FastRoute} />
+
       {/* 화면 4 */}
-      <Stack.Screen name="EmerBoard" 
-      component={EmerBoard} 
-      options={{
-        headerTitle: '긴급 게시판',
-      }}
+      <Stack.Screen
+        name="EmerBoard"
+        component={EmerBoard}
+        options={{
+          headerTitle: "긴급 게시판",
+        }}
       />
 
       {/* 화면 5 */}
-      <Stack.Screen name="BoardList" 
-      component={BoardList} 
-      options={{
-        headerTitle: '전체 게시판',
-      }}/>
+      <Stack.Screen
+        name="BoardList"
+        component={BoardList}
+        options={{
+          headerTitle: "전체 게시판",
+        }}
+      />
       {/* 화면 6 */}
-      <Stack.Screen name="AllBoard" 
-      component={AllBoard} 
-      options={{
-        headerTitle: '전체',
-      }}/>
+      <Stack.Screen
+        name="AllBoard"
+        component={AllBoard}
+        options={{
+          headerTitle: "전체",
+        }}
+      />
 
       {/* --- */}
-      <Stack.Screen name="MyPoint" 
-      component={MyPoint}
-      />
+      <Stack.Screen name="MyPoint" component={MyPoint} />
 
-      <Stack.Screen name="Board" 
-      component={Board} 
+      <Stack.Screen name="Board" component={Board} />
+      <Stack.Screen
+        name="CreatePost"
+        component={CreatePost}
+        options={{
+          headerTitle: "글 쓰기",
+        }}
       />
-      <Stack.Screen name="CreatePost" 
-      component={CreatePost} 
-      options={{
-        headerTitle: '글 쓰기',
-      }}
+      <Stack.Screen
+        name="AddImage"
+        component={AddImage}
+        options={{
+          headerTitle: "사진 추가",
+        }}
       />
-      <Stack.Screen name="AddImage" 
-      component={AddImage} 
-      options={{
-        headerTitle: '사진 추가',
-      }}/>
-      <Stack.Screen name="CreateMarker" 
-      component={CreateMarker} 
-      options={{
-        headerTitle: '위치 설정',
-      }}/>
-      <Stack.Screen name="SetBoard" 
-      component={SetBoard} 
-      options={{
-        headerTitle: '게시판 설정',
-      }}
+      <Stack.Screen
+        name="CreateMarker"
+        component={CreateMarker}
+        options={{
+          headerTitle: "위치 설정",
+        }}
       />
-      <Stack.Screen name="SetDay" 
-      component={SetDay} 
-      options={{
-        headerTitle: '기간 설정',
-      }}
+      <Stack.Screen
+        name="SetBoard"
+        component={SetBoard}
+        options={{
+          headerTitle: "게시판 설정",
+        }}
+      />
+      <Stack.Screen
+        name="SetDay"
+        component={SetDay}
+        options={{
+          headerTitle: "기간 설정",
+        }}
       />
       <Stack.Screen name="Post" component={Post} />
-
     </Stack.Navigator>
   );
 };
