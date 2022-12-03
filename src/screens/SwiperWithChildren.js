@@ -22,16 +22,16 @@ const { width, height } = Dimensions.get("window");
 
 export default () => {
   const scrollRef = React.useRef(null);
-  const goToLastIndex = () => {
-    scrollRef.current.goToLastIndex();
-  };
+  // const goToLastIndex = () => {
+  //   scrollRef.current.goToLastIndex();
+  // };
   const onChangeIndex = ({ index, prevIndex }) => {
     console.log({ index, prevIndex });
   };
   return (
     <SwiperFlatList
       showPagination
-      ref={scrollRef}
+      // ref={scrollRef}
       onChangeIndex={onChangeIndex}
     >
       <TouchableOpacity>
@@ -43,7 +43,7 @@ export default () => {
 
 const styles = StyleSheet.create({
   child: {
-    height: height * 0.5,
+    height: height * 0.7,
     width,
     justifyContent: "center",
   },

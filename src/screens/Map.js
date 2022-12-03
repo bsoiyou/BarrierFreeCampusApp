@@ -7,6 +7,8 @@ import {
   Dimensions,
   Button,
   ScrollView,
+  Modal,
+  SafeAreaView,
 } from "react-native";
 import {
   addDoc,
@@ -24,15 +26,15 @@ import { BottomSheet } from "react-native-btr";
 export default function Map({ navigation }) {
   // BottomSheet
   const [visible, setVisible] = useState(false);
-  const toggleBottomNavigationView = () => {
-    //Toggling the visibility state of the bottom sheet
-    setVisible(!visible);
-  };
-  const [building, setBuilding] = useState([]);
+  const [building, setBuilding] = useState(["건물 정보"]);
 
   // // SearchBox
   // const [searchQuery, setSearchQuery] = React.useState("");
   // const onChangeSearch = (query) => setSearchQuery(query);
+
+  // Modal
+  const [showModal, setShowModal] = useState(false);
+  const [marker, setMarker] = useState(["장애물 정보"]);
 
   // Markers
   const [marks, setMarks] = useState([]);
@@ -42,9 +44,10 @@ export default function Map({ navigation }) {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
       querySnapshot.forEach((doc) => {
-        list.push(
-          new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude)
-        );
+        list.push({
+          loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
+          description: doc.data().des,
+        });
       });
       setMarks(list);
     });
@@ -94,8 +97,8 @@ export default function Map({ navigation }) {
                 longitude: item.longitude,
               }}
               title={`${index}`}
-              description="this is a marker example"
-              onPress={toggleBottomNavigationView}
+              //description={item.description}
+              onPress={() => setShowModal(!showModal)}
             />
           );
         })}
@@ -111,12 +114,12 @@ export default function Map({ navigation }) {
               }}
               title={item.title}
               onPress={() => {
-                toggleBottomNavigationView;
+                setVisible(!visible);
                 setBuilding(item);
-                // {
-                //   console.log(building);
-                // }
               }}
+              // {
+              //   console.log(building);
+              // }
             />
           );
         })}
@@ -158,14 +161,36 @@ export default function Map({ navigation }) {
         />
       </View>
 
+      <Modal
+        animationType={"slide"}
+        transparent={false}
+        visible={showModal}
+        onRequestClose={() => {
+          console.log("Modal has been closed.");
+        }}
+      >
+        {/*All views of Modal*/}
+        {/*Animation can be slide, slide, none*/}
+        <View style={styles.modal}>
+          <Text style={styles.text}>모달 열리고 적혀있을것들</Text>
+          <Button
+            color="#00462A"
+            title="지도로 돌아가기"
+            onPress={() => {
+              setShowModal(!showModal);
+            }}
+          />
+        </View>
+      </Modal>
+
       {/* Bottom Sheet */}
       {/* {bulMarks.map((item, index) => {
         return ( */}
       <BottomSheet
         //BottomSheet이 보이도록 설정
         visible={visible}
-        onBackButtonPress={toggleBottomNavigationView}
-        onBackdropPress={toggleBottomNavigationView}
+        onBackButtonPress={() => setVisible(!visible)}
+        onBackdropPress={() => setVisible(!visible)}
       >
         {/*         Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
@@ -185,7 +210,7 @@ export default function Map({ navigation }) {
             {/* boardId 사용하여 해당 게시판으로 이동 */}
             <Button
               title="게시판으로 이동"
-              onPress={() => navigation.navigate(building.boardId)}
+              onPress={() => navigation.navigate("Board")}
             ></Button>
           </ScrollView>
         </View>
