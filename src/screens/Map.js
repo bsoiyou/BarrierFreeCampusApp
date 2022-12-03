@@ -19,8 +19,6 @@ import {
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
-// BottomSheet
-const [visible, setVisible] = useState(false);
 const toggleBottomNavigationView = () => {
   //Toggling the visibility state of the bottom sheet
   setVisible(!visible);
@@ -54,6 +52,9 @@ function BotSheet({}) {
 }
 
 export default function Map({ navigation }) {
+
+  // BottomSheet
+  const [visible, setVisible] = useState(false);
   // // SearchBox
   // const [searchQuery, setSearchQuery] = React.useState("");
   // const onChangeSearch = (query) => setSearchQuery(query);
@@ -150,10 +151,9 @@ export default function Map({ navigation }) {
         }}
       >
         <Button
-          style={{}}
           title="장애물 제보"
           onPress={() => navigation.navigate("CreatePost")}
-          color="#fff"
+          color={'white'}
         />
       </View>
 

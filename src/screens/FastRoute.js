@@ -28,12 +28,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   child: {
-    height: height * 0.5,
-    width,
+    height: '50%',
     justifyContent: "center",
   },
   text: {
-    fontSize: width * 0.1,
+    fontSize: '50%',
     textAlign: "center",
   },
 });
