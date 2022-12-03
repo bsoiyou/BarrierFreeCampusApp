@@ -157,7 +157,7 @@ export default function Map({ navigation }) {
         />
       </View>
 
-      {/* 장애물 제보 버튼 */}
+      {/* 길찾기 버튼 */}
       <View
         style={{
           position: "absolute",
