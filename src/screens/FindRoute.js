@@ -11,8 +11,12 @@ import {
 import { DB } from "../firebase";
 
 export default function FindRoute({ navigation }) {
-  const [choosenLabel, setChoosenLabel] = useState("Native");
-  const [choosenIndex, setChoosenIndex] = useState("2");
+  const [choosenSrcLabel, setChoosenSrcLabel] =
+    useState("출발지를 선택해주세요.");
+  const [choosenSrcIndex, setChoosenSrcIndex] = useState("0");
+  const [choosenDestLabel, setChoosenDestLabel] =
+    useState("도착지를 선택해주세요.");
+  const [choosenDestIndex, setChoosenDestIndex] = useState("0");
 
   // 건물들 불러오기
   const [srcBuilding, setSrcBuilding] = useState([]);
@@ -31,42 +35,60 @@ export default function FindRoute({ navigation }) {
     return () => unsubscribe();
   }, []);
 
-  // const [destBuilding, setDestBuilding] = useState([]);
-  // //building collection에서 모든 문서 읽어와서 building 배열에 저장
-  // useEffect(() => {
-  //   const q = query(collection(DB, "route"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     const list = [];
-  //     querySnapshot.forEach((doc) => {
-  //       list.push({
-  //         title: doc.data().title,
-  //       });
-  //     });
-  //     setDestBuilding(list);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
+  const [destBuilding, setDestBuilding] = useState([]);
+  //building collection에서 모든 문서 읽어와서 building 배열에 저장
+  useEffect(() => {
+    const q = query(collection(DB, "route"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        list.push({
+          title: doc.data().title,
+        });
+      });
+      setDestBuilding(list);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+        {/* 출발지 선택 */}
         <Picker
-          selectedValue={choosenLabel}
+          selectedValue={choosenSrcLabel}
           onValueChange={(itemValue, itemIndex) => {
-            setChoosenLabel(itemValue);
-            setChoosenIndex(itemIndex);
+            setChoosenSrcLabel(itemValue);
+            setChoosenSrcIndex(itemIndex);
           }}
         >
-          {/* boards 배열에서 하나씩 꺼내서 marker 찍기 */}
+          {/* route 배열에서 하나씩 꺼내서 picker 찍기 */}
           {srcBuilding.map((item, index) => {
             return (
               <Picker.Item key={index} label={item.title} value={item.title} />
             );
           })}
         </Picker>
+        {/* 도착지 선택 */}
+        <Picker
+          selectedValue={choosenDestLabel}
+          onValueChange={(itemValue, itemIndex) => {
+            setChoosenDestLabel(itemValue);
+            setChoosenDestIndex(itemIndex);
+          }}
+        >
+          {/* route 배열에서 하나씩 꺼내서 picker 찍기 */}
+          {destBuilding.map((item, index) => {
+            return (
+              <Picker.Item key={index} label={item.title} value={item.title} />
+            );
+          })}
+        </Picker>
         {/*Text to show selected picker*/}
-        <Text style={styles.text}> 출발지 : {choosenLabel}</Text>
-        <Text style={styles.text}>Selected Index: {choosenIndex}</Text>
+        <Text style={styles.text}> 출발지 : {choosenSrcLabel}</Text>
+        <Text style={styles.text}>Selected Index: {choosenSrcIndex}</Text>
+        <Text style={styles.text}> 도착지 : {choosenDestLabel}</Text>
+        <Text style={styles.text}>Selected Index: {choosenDestIndex}</Text>
       </View>
 
       <View
@@ -80,8 +102,14 @@ export default function FindRoute({ navigation }) {
       >
         <Button
           style={{}}
-          title="출발지 설정 완료"
-          onPress={() => navigation.navigate("Route")}
+          title="경로 설정 완료"
+          onPress={(params) => {
+            if (choosenSrcIndex == 0) {
+              navigation.navigate("FastRoute", { pathIndex: 0 });
+            } else {
+              navigation.navigate("FastRoute", { pathIndex: 1 });
+            }
+          }}
           color="#fff"
         />
       </View>

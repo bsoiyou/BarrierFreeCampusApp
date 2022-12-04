@@ -1,15 +1,75 @@
-import React from "react";
-import { StyleSheet, View, Button, Text } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Button,
+  Alert,
+  Text,
+  Dimensions,
+  SafeAreaView,
+} from "react-native";
 import { roundToNearestPixel } from "react-native/Libraries/Utilities/PixelRatio";
-import SwiperWithChildren from "./SwiperWithChildren";
+//import SwiperWithChildren from "./SwiperWithChildren";
+import { SwiperFlatList } from "react-native-swiper-flatlist";
+import ImageViewer from "react-native-image-zoom-viewer";
 
 //빠른 길찾기 기본 화면
 
-export default function FastRoute({ navigation }) {
+const { width, height } = Dimensions.get("window");
+
+// const images = [
+//   {
+//     name: "A-1",
+//     url: "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4A-1.png?alt=media&token=b2461a8f-0e89-4c11-8dca-77e3e8e7cf8f",
+//   },
+//   {
+//     name: "A-2",
+//     url: "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4A-2.png?alt=media&token=600f41c5-11df-4251-9038-8eb29b962fdc",
+//   },
+//   {
+//     name: "B-1",
+//     url: "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4B-1.png?alt=media&token=47ad46b2-4f33-4093-9605-eefa445087ae",
+//   },
+//   {
+//     name: "B-2",
+//     url: "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4B-2.png?alt=media&token=4e0f6cfb-2a55-4365-b527-9319e027c26f",
+//   },
+// ];
+
+export default function FastRoute({ navigation, route }) {
+  const { params } = route;
+  const pathIndex = params ? params.pathIndex : null;
+  const [images, setImages] = useState();
+
+  if (pathIndex == 0) {
+    setImages([
+      "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4A-1.png?alt=media&token=b2461a8f-0e89-4c11-8dca-77e3e8e7cf8f",
+      "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4A-2.png?alt=media&token=600f41c5-11df-4251-9038-8eb29b962fdc",
+    ]);
+  } else {
+    setImages([
+      "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4B-1.png?alt=media&token=47ad46b2-4f33-4093-9605-eefa445087ae",
+      "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4B-2.png?alt=media&token=4e0f6cfb-2a55-4365-b527-9319e027c26f",
+    ]);
+  }
+
+  const scrollRef = React.useRef(null);
+  const onChangeIndex = ({ index, prevIndex }) => {
+    console.log({ index, prevIndex });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.container}>
-        <SwiperWithChildren />
+        <SwiperFlatList
+          showPagination
+          ref={scrollRef}
+          onChangeIndex={onChangeIndex}
+        >
+          <SafeAreaView style={[styles.child]}>
+            <ImageViewer imageUrls={images} renderIndicator={() => null} />
+          </SafeAreaView>
+        </SwiperFlatList>
       </View>
 
       {/* <View>
@@ -50,8 +110,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   child: {
-    height: "50%",
-    //width: "100%",
+    height: height * 0.65,
+    width,
     justifyContent: "center",
+  },
+  text: {
+    fontSize: width * 0.1,
+    textAlign: "center",
   },
 });

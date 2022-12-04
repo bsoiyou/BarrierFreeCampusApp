@@ -21,8 +21,8 @@ import {
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
-//import BottomSheet from "./BottomSheet";
-// BottomSheet
+import { FontAwesome5 } from "@expo/vector-icons";
+
 export default function Map({ navigation }) {
   // BottomSheet
   const [visible, setVisible] = useState(false);
@@ -66,7 +66,9 @@ export default function Map({ navigation }) {
           title: doc.data().title,
           loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
           boardId: doc.data().boardId,
-          description: doc.data().des,
+          description1: doc.data().des1,
+          description2: doc.data().des2,
+          description3: doc.data().des3,
         });
       });
       setBulMarks(list);
@@ -120,7 +122,9 @@ export default function Map({ navigation }) {
               // {
               //   console.log(building);
               // }
-            />
+            >
+              <FontAwesome5 name="building" size={24} color="#AAAAAA" />
+            </Marker>
           );
         })}
       </MapView>
@@ -192,25 +196,52 @@ export default function Map({ navigation }) {
         onBackButtonPress={() => setVisible(!visible)}
         onBackdropPress={() => setVisible(!visible)}
       >
-        {/*         Bottom Sheet inner View*/}
+        {/*Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
           <ScrollView style={styles.scrollView}>
             <Text
               style={{
                 textAlign: "center",
                 padding: 20,
-                fontSize: 20,
+                fontSize: 25,
               }}
             >
               {building.title}
-              {"\n"} {building.description}
+            </Text>
+            <Text
+              style={{
+                textAlign: "center",
+                padding: 25,
+                fontSize: 20,
+              }}
+            >
+              {building.description1}
+              {"\n"} {building.description2}
+              {"\n"} {building.description3}
             </Text>
             {/* {console.log(building.title)}
             {console.log(building.description)} */}
             {/* boardId 사용하여 해당 게시판으로 이동 */}
             <Button
               title="게시판으로 이동"
-              onPress={() => navigation.navigate("Board")}
+              onPress={(params) => {
+                // 전체 게시판
+                if (params.boardId == "All") {
+                  navigation.navigate("AllBoard", {
+                    boardId: params.boardId,
+                    boardTitle: params.title,
+                    starUsers: params.starUsers,
+                  });
+                }
+                // 건물 게시판
+                else {
+                  navigation.navigate("Board", {
+                    boardId: params.boardId,
+                    boardTitle: params.title,
+                    starUsers: params.starUsers,
+                  });
+                }
+              }}
             ></Button>
           </ScrollView>
         </View>

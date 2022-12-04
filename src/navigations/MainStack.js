@@ -119,8 +119,20 @@ const MainStack = () => {
       />
 
       {/* 화면 3-길찾기 화면 */}
-      <Stack.Screen name="FindRoute" component={FindRoute} />
-      <Stack.Screen name="Route" component={FastRoute} />
+      <Stack.Screen
+        name="FindRoute"
+        component={FindRoute}
+        options={{
+          headerTitle: "경로 설정",
+        }}
+      />
+      <Stack.Screen
+        name="FastRoute"
+        component={FastRoute}
+        options={{
+          headerTitle: "경로 설명",
+        }}
+      />
 
       {/* 화면 4 */}
       <Stack.Screen
