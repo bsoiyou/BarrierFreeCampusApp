@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, useContext  } from 'react';
 import styled from 'styled-components';
-import {Text, Button, View,} from 'react-native';
+import {Text, Button, View} from 'react-native';
 import {createPost, getCurUser} from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {storage, DB} from "../firebase";
@@ -32,39 +32,23 @@ const StyledText = styled.Text`
 
 //기간 설정 화면
 export default function SetDay({navigation, route}) {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] =  useState(new Date());
-  // 모달 노출 여부 상태 변수
-  const [visible, setVisible] = useState(false); 
-  const mode='date';
-  const [selectedDate, setSelectedDate] = useState();
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  
+  // -- DateTimePickerModal --
+  const DateFormat = "YYYY/MM/DD";
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  // 0-hide , 1-startdate, 2-end date
+  const [dateVisible, setDateVisibleState] = useState(0);
+  const dateVisibleRef = useRef(0);
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  const setDateVisible = (val) => {
+    dateVisibleRef.current = val;
+    setDateVisibleState(val);
+  }
 
-  const handleConfirm = (date) => {
-    setSelectedDate(date);
-    hideDatePicker();
-  };
-
-  const onPressDate = () => { // 날짜 클릭 시
-    setVisible(true); // 모달 open
-  };
-
-  const onConfirm = (selectedDate) => { // 날짜 또는 시간 선택 시
-    setVisible(false); // 모달 close
-    setStartDate(selectedDate); // 선택한 날짜 변경
-  };
-
-  const onCancel = () => { // 취소 시
-    setVisible(false); // 모달 close
-  };
+  const [calendarDate, setCalendarDate] = useState(new Date());
+  //----
 
 
   const theme=useContext(ThemeContext);
@@ -181,115 +165,99 @@ useLayoutEffect(()=>{
     }
   })
 });
+
   return (
-    // <Container>
+    <Container>
       
-    //   <StyledText>시작일</StyledText>
-      <View
-        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-      >
-      <Text>{`Date:  ${selectedDate? moment(selectedDate).format("MM/DD/YYYY"):"Please select date"}`}</Text>
-      <Button title="Show Date Picker" onPress={showDatePicker} />
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-      </View>);
-      {/* <TouchableOpacity
-      onPress={onPressDate}
-      >
-        <Text>{new Date(startDate).toString()} </Text>
+      {/* 시작일 선택 버튼 */}
+      <StyledText>시작일</StyledText>
+      <TouchableOpacity
+      style={{
+        backgroundColor: '#CFDECE',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 8,
+      }}
+      onPress={()=> {setDateVisible(1)}}>
+        <Text
+        style={{ 
+          fontSize: 17,
+          color: theme.l_btnTitle,
+        }}
+        >{`${startDate? moment(new Date(startDate)).format(DateFormat):"시작 날짜를 선택해 주세요"}`}</Text>
       </TouchableOpacity>
-      
-        {/* {visible && Platform.OS === 'ios' ?  
-                    <DateTimePicker
-                    style={{width: 320, backgroundColor: "white"}}
-                    value={startDate}
-                    mode="date"
-                    display="default"
-                    onChange={setStartDate}
-                    testID="dateTimePicker"
-                    // onConfirm={onConfirm}
-                    // onCancel={onCancel}
-                    date={startDate}
-                    visible={visible}
-                    /> */}
-        {/* //             :
-        //             // <DateTimePickerModal  */}
-        {/* //             //   isVisible={visible}
-        //             //   mode={mode}
-        //             //   onConfirm={onConfirm}
-        //             //   onCancel={onCancel}
-        //             //   is24Hour={true}
-        //             //   display="default"
-        //             //   date={startDate} />
-        // } */}
+
+      {/* 종료일 선택 버튼 */}
+      <StyledText>종료일</StyledText>
+      <TouchableOpacity
+      style={{
+        backgroundColor: '#CFDECE',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 8,
+      }}
+      onPress={()=> {setDateVisible(2)}}>
+        <Text
+        style={{ 
+          fontSize: 17,
+          color: theme.l_btnTitle,
+        }}
+        >{`${endDate? moment(new Date(endDate)).format(DateFormat):"종료 날짜를 선택해 주세요"}`}</Text>
+      </TouchableOpacity>
+
+      <DateTimePickerModal
+        isVisible={dateVisibleRef.current > 0}
+        date={calendarDate}
+        onDateChange={setCalendarDate}
+        onConfirm={(date) => {
+          let state = dateVisibleRef.current;
+          setDateVisible(0);
+          if (state == 1){
+              setStartDate(moment(new Date(date)).format(DateFormat));
+          }
+          else if (state == 2) {
+              setEndDate(moment(new Date(date)).format(DateFormat));
+          }
+        }}
+        onCancel={() => {
+          setDateVisible(0);
+        }}
+        cancelTextIOS="취소"
+        confirmTextIOS="확인"
+      />
+
+
+      {/* 건너뛰기 버튼 */}
+      <View style={{width: '100%'}}>
+        <TouchableOpacity
+          style={{alignItems: 'flex-end'}}
+          onPress={()=>{
+            // 기간을 빈 문자열로 설정
+            setStartDate('');
+            setEndDate('');
+            
+            // 빈 문자열 설정하여 페이지 이동 
+            (route.params.boardId)? 
+            uploadPost('', ''):
+            navigation.navigate('SetBoard', {
+              title: route.params.title, 
+              content: route.params.content, 
+              isEmer: route.params.isEmer, 
+              image: route.params.image, 
+              lat: route.params.lat, 
+              long: route.params.long, 
+              startDate: '', 
+              endDate: ''
+            });
+          }}
+        >
+          <StyledText
+            style={{fontSize: 16, fontWeight: 'normal', textDecorationLine: 'underline',}}
+          >&gt;&gt;  기간 설정 건너뛰기</StyledText>
+        </TouchableOpacity>
+      </View>
         
-       
-        <StyledText>종료일</StyledText>
-        {/* date picker */}
-        {/* <DateTimePicker
-          style={{
-            width:'100%',
-            marginTop: 15,
-            marginBottom: 30,
-          }}
-          value={endDate} //초기값
-          mode="date" 
-          dateFormat='day month'
-          // minimumDate={new Date(2022, 12, 1)}
-          // maximumDate={new Date(2025, 12, 31)}
-          // placeholder="시작 날짜 선택"
-          // format="DD-MM-YYYY"
-          // confirmBtnText="확인"
-          // cancelBtnText="취소"
-          // customStyles={{
-          //   dateIcon: {
-          //     //display: 'none',
-          //     position: 'absolute',
-          //     left: 0,
-          //     top: 4,
-          //     marginLeft: 0,
-          //   },
-          //   dateInput: {
-          //     marginLeft: 36,
-          //   },
-          // }}
-          onChange={(endDate) => {
-            setEndDate(endDate);
-          }}
-        /> */}
-    //     <View style={{width: '100%'}}>
-    //       <TouchableOpacity
-    //         style={{alignItems: 'flex-end'}}
-    //         onPress={()=>{
-    //           // 기간을 빈 문자열로 설정
-    //           setStartDate('');
-    //           setEndDate('');
-              
-    //           // 빈 문자열 설정하여 페이지 이동 
-    //           (route.params.boardId)? 
-    //           uploadPost('', ''):
-    //           navigation.navigate('SetBoard', {
-    //             title: route.params.title, 
-    //             content: route.params.content, 
-    //             isEmer: route.params.isEmer, 
-    //             image: route.params.image, 
-    //             lat: route.params.lat, 
-    //             long: route.params.long, 
-    //             startDate: '', 
-    //             endDate: ''
-    //           });
-    //         }}
-    //       >
-    //         <StyledText
-    //           style={{fontSize: 16, fontWeight: 'normal', textDecorationLine: 'underline',}}
-    //         >&gt;&gt;  기간 설정 건너뛰기</StyledText>
-    //       </TouchableOpacity>
-    //     </View>
-      
-    // </Container>
+    </Container>
+  );
 };
 

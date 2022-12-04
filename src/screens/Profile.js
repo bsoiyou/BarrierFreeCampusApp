@@ -101,9 +101,8 @@ export default function Profile({navigation}) {
           <TextInput
           disabled={true}
           style={{
-            flex:1,
             backgroundColor: 'white',
-            padding: 22,
+            padding: 12,
             fontSize: 19,
             borderColor: theme.l_greenText,
             borderRadius: 10,
