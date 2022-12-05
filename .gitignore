@@ -16,5 +16,5 @@ web-build/
 #firebase
 firebase.js
 
-app.json
+#app.json
 google-services.json

@@ -187,7 +187,7 @@ const uploadPost = async ()=>{
             fontSize: 17,
             color: 'white',
           }}
-          >다음</Text>
+          >완료</Text>
           </TouchableOpacity>
         );
       }

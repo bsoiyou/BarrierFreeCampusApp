@@ -111,8 +111,8 @@ export default function CreateMarker({navigation, route}) {
       initialRegion={{
           latitude: 37.561025,
           longitude: 126.946540,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003
+          latitudeDelta: 0.005,
+          longitudeDelta: (0.005)*(Dimensions.get('window').width/Dimensions.get('window').height)
       }}
       onRegionChangeComplete={(region) => setRegion(region)}
       showsUserLocation={true}

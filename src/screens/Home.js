@@ -5,6 +5,7 @@ import { TouchableOpacity, View, Dimensions, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { DB, getCurUser } from '../firebase';
 import { collection, orderBy, onSnapshot, query, collectionGroup, where, } from "firebase/firestore";
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const Container = styled.SafeAreaView`
   flex : 1;
@@ -107,6 +108,9 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
+    <KeyboardAwareScrollView 
+    extraScrollHeight={20}
+    contentContainerStyle={{flex: 1}}> 
     <Container>
 
       {/* 공지사항 */}
@@ -274,6 +278,7 @@ const Home = ({ navigation }) => {
         </StyledCompo_w>
       </TouchableOpacity>
     </Container>
+    </KeyboardAwareScrollView>
   );
 }
 

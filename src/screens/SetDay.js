@@ -32,6 +32,8 @@ const StyledText = styled.Text`
 
 //기간 설정 화면
 export default function SetDay({navigation, route}) {
+
+  const [disabled, setDisabled] = useState(true);
   
   // -- DateTimePickerModal --
   const DateFormat = "YYYY/MM/DD";
@@ -125,6 +127,11 @@ const uploadPost =  async (start, end)=>{
     }
 }
 
+//버튼 활성화 여부 업데이트
+useEffect(()=> {
+  setDisabled(!(startDate&&endDate));
+}, [startDate, endDate]);
+
 
 //header
 useLayoutEffect(()=>{
@@ -132,6 +139,7 @@ useLayoutEffect(()=>{
     headerRight: ()=> {
       return (
         <TouchableOpacity 
+        disabled={disabled}
         onPress={ ()=> {
         // boardId 있으면 게시물 - 업로드 함수 호출, 장애물은 params 전달하며 이어서
         (route.params.boardId)? 
@@ -159,7 +167,8 @@ useLayoutEffect(()=>{
           fontSize: 17,
           color: 'white',
         }}
-        >다음</Text>
+        >{(route.params.boardId)? '완료': '다음'}
+        </Text>
         </TouchableOpacity>
       );
     }
@@ -224,6 +233,7 @@ useLayoutEffect(()=>{
         }}
         cancelTextIOS="취소"
         confirmTextIOS="확인"
+        textColor={'black'}
       />
 
 

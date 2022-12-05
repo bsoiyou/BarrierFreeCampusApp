@@ -33,6 +33,7 @@ const RowContainer = styled.View`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  marginVertical: 15px;
 `;
 
 const StyledText = styled.Text`

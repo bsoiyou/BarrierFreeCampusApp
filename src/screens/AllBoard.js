@@ -194,7 +194,7 @@ const AllBoard = ({navigation, route})=> {
       onPress={()=> {
         // 글 쓰기 버튼 누르면 뜨는 선택 창 - 게시물이면 board id 전달 / 장애물이면 전달 x
         Alert.alert(
-          "게시판 유형을 선택해 주세요",
+          "게시글 유형을 선택해 주세요",
           "정보 공유 글 / 장애물 제보 글",
           [
             {

@@ -13,9 +13,6 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const App = () => {
 
-  //firebase test
-  //console.log(auth.currentUser);
-
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>

@@ -15,7 +15,7 @@ const Container = styled.View`
 `;
 
 const StyledText = styled.Text`
-  font-size: 30px;
+  font-size: 27px;
   margin-bottom: 30px;
   padding: 10px;
   font-weight: bold;

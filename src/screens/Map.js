@@ -83,8 +83,8 @@ export default function Map({ navigation }) {
         initialRegion={{
           latitude: 37.561025,
           longitude: 126.94654,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.01,
+          longitudeDelta: (0.01)*(Dimensions.get('window').width/Dimensions.get('window').height),
         }}
         provider={PROVIDER_GOOGLE}
         maxZoomLevel={30}

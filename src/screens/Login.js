@@ -124,9 +124,9 @@ const Login = ({navigation})=> {
       <Image 
       url={LOGO}
       containerStyle={{
-        width: 180,
-        height: 180,
-        marginBottom: 30,
+        width: 150,
+        height: 150,
+        marginVertical: 30,
       }}/>
 
       {/* 이메일 Input */}
@@ -165,8 +165,7 @@ const Login = ({navigation})=> {
       title="이메일로 회원가입하기" 
       onPress={()=> navigation.navigate('SignUp')}
       containerStyle={{
-        marginTop: 3,
-        marginBottom: 50,
+        marginBottom: 30,
         backgroundColor: 'transparent', 
       }}
       textStyle={{
@@ -180,7 +179,7 @@ const Login = ({navigation})=> {
       title="비밀번호를 잊으셨나요?" 
       onPress={()=> navigation.navigate('FindPw')}
       containerStyle={{
-        marginTop: 20,
+        marginTop: 15,
         backgroundColor: 'transparent', 
       }}
       textStyle={{
