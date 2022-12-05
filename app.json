@@ -18,16 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "config":{
-        "googleMapsApiKey": "AIzaSyCNZZ5YWnbFihSFimVDwbO3nSMMAP7BYTE"
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.ahwe.FirstExpo",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
