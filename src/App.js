@@ -3,11 +3,8 @@ import {StatusBar} from 'react-native';
 import {ThemeProvider} from 'styled-components';
 import {theme} from './theme';
 import Navigation from './navigations';
-//import { UserProvider, ProgressProvider } from './contexts';
-import { UserProvider } from './contexts';
-//import {Login} from './screens';
+import { UserProvider, ProgressProvider } from './contexts';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-//import { auth } from './firebase';
 
 
 
@@ -17,7 +14,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>
       {/* ProgressProvider */}
-      {/* <ProgressProvider> */}
+      <ProgressProvider>
 
       {/* UserProvider */}
       <UserProvider>
@@ -31,7 +28,7 @@ const App = () => {
        
       </UserProvider>
 
-     {/*</ProgressProvider>  */}
+     </ProgressProvider> 
       </SafeAreaProvider>
     </ThemeProvider>
   );

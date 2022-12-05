@@ -10,6 +10,7 @@ import Checkbox from 'expo-checkbox';
 import {createPost, getCurUser, createBarrierPost, createMarker} from '../firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {storage, DB} from "../firebase";
+import {ProgressContext} from '../contexts';
 
 
 
@@ -38,7 +39,7 @@ const BoardTitle = styled.Text`
 //장애물 게시판(건물) 설정 화면
 export default function SetBoard({navigation, route}) {
   const theme=useContext(ThemeContext);
-
+  const {spinner} = useContext(ProgressContext);
 
 
   //게시판 목록 배열 상태변수
@@ -75,7 +76,7 @@ const uploadPost = async ()=>{
   try{
     
       //spinner 실행
-      // spinner.start();
+      spinner.start();
 
       //user 받기
       const curUser=getCurUser();
@@ -124,7 +125,7 @@ const uploadPost = async ()=>{
     }
     finally{
       // spinner 중지
-      //spinner.stop();
+      spinner.stop();
     }
 }
 

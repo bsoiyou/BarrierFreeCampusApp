@@ -6,8 +6,7 @@ import {Button, ErrorMsg, Input, Image} from '../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../util';
-import {UserContext} from '../contexts';
-//import {UserContext, ProgressContext} from '../contexts';
+import {UserContext, ProgressContext} from '../contexts';
 
 import { auth } from '../firebase';
 
@@ -49,7 +48,7 @@ const Login = ({navigation})=> {
   const {setUser} = useContext(UserContext);
   
   
-  //const {spinner} = useContext(ProgressContext);
+  const {spinner} = useContext(ProgressContext);
 
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
@@ -85,7 +84,7 @@ const Login = ({navigation})=> {
     // 로그인 성공
     try{
       //spinner 실행
-      //spinner.start();
+      spinner.start();
 
       //Signin 함수
       const userInfo = await signInWithEmailAndPassword(auth, email, pw);
@@ -110,7 +109,7 @@ const Login = ({navigation})=> {
     }
     finally{
       // spinner 중지
-      //spinner.stop();
+      spinner.stop();
     }
   }
 

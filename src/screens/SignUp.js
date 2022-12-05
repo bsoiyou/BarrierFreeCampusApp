@@ -4,7 +4,7 @@ import {Button, Input, ErrorMsg} from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Alert} from 'react-native';
 import {validateEmail, removeWhitespace} from '../util';
-//import {UserContext, ProgressContext} from '../contexts';
+import {ProgressContext} from '../contexts';
 import {auth, createUser, getCurUser} from '../firebase';
 
 import {
@@ -49,7 +49,7 @@ const SignUp = ({navigation})=>{
   const refPwCheck=useRef(null);
   const refDidMount = useRef(null);
   
-  //const {spinner} = useContext(ProgressContext);
+  const {spinner} = useContext(ProgressContext);
 
 
   //상태 변수
@@ -90,7 +90,7 @@ const SignUp = ({navigation})=>{
     //회원가입 성공
     try{
       //spinner 실행
-      //spinner.start();
+      spinner.start();
   
       //Signup 함수
       const newUser = await createUserWithEmailAndPassword(auth, email, pw);
@@ -125,7 +125,7 @@ const SignUp = ({navigation})=>{
     }
     finally{
       //spinner 중지
-      //spinner.stop();
+      spinner.stop();
     }
   }
 

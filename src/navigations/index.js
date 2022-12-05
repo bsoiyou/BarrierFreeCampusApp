@@ -2,9 +2,8 @@ import React, { useContext } from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
 import MainStack from "./MainStack";
-import { UserContext } from "../contexts";
-//import {UserContext, ProgressContext} from '../contexts';
-//import {Spinner} from '../components';
+import {UserContext, ProgressContext} from '../contexts';
+import {Spinner} from '../components';
 
 // 기본 배경 색 지정
 const MyTheme = {
@@ -19,7 +18,8 @@ const Navigation = () => {
   //user 설정
   const { user } = useContext(UserContext);
 
-  //const {inProgress} = useContext(ProgressContext);
+  //progress 설정
+  const {inProgress} = useContext(ProgressContext);
 
   return (
     //Navigation Container
@@ -30,7 +30,7 @@ const Navigation = () => {
       {/* <MainStack /> */}
 
       {/* 진행중이면 spinner 렌더링 */}
-      {/* {inProgress && <Spinner/>} */}
+      {inProgress && <Spinner/>}
     </NavigationContainer>
   );
 };

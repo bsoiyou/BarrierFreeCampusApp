@@ -54,6 +54,7 @@ export default function SetDay({navigation, route}) {
 
 
   const theme=useContext(ThemeContext);
+  const {spinner} = useContext(ProgressContext);
 
 
   // storage에 이미지 올리기
@@ -86,7 +87,7 @@ const uploadPost =  async (start, end)=>{
   try{
 
     //spinner 실행
-    // spinner.start();
+    spinner.start();
 
     //user 받기
     const curUser=getCurUser();
@@ -123,7 +124,7 @@ const uploadPost =  async (start, end)=>{
     }
     finally{
       // spinner 중지
-      //spinner.stop();
+      spinner.stop();
     }
 }
 

@@ -6,7 +6,6 @@ import FindPw from "./FindPw";
 import Verify from "./Verify";
 import NotVerified from "./NotVerified";
 import Notice from "./Notice";
-//import MainBoard from "./MainBoard";
 import Map from "./Map";
 import BoardList from "./BoardList";
 import EmerBoard from "./EmerBoard";
@@ -18,12 +17,10 @@ import AddImage from "./AddImage";
 import CreateMarker from "./CreateMarker";
 import SetBoard from "./SetBoard";
 import SetDay from "./SetDay";
-import Preview from "./Preview";
 import Post from "./Post";
 import MyPoint from "./MyPoint";
 import Settings from "./Settings";
 import MyPost from "./MyPost";
-//import MyBoards from "./MyBoards";
 import FindRoute from "./FindRoute";
 import FastRoute from "./FastRoute";
 
@@ -46,7 +43,6 @@ export {
   CreateMarker,
   SetBoard,
   SetDay,
-  Preview,
   Post,
   MyPoint,
   Profile,

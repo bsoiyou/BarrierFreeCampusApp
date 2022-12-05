@@ -5,6 +5,7 @@ import { Alert, View } from 'react-native';
 import {validateEmail, removeWhitespace} from '../util';
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '../firebase';
+import {ProgressContext} from '../contexts';
 
 const Container = styled.View`
   flex : 1;
@@ -27,6 +28,8 @@ const FindPw = ({navigation})=> {
   const [email, setEmail] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+
+  const {spinner} = useContext(ProgressContext);
 
   //버튼 활성화
   useEffect(() => {
@@ -52,6 +55,9 @@ const FindPw = ({navigation})=> {
     
     // 전송 성공
     try{
+      //spinner 실행
+      spinner.start();
+
       await sendPasswordResetEmail(auth, email);
 
       Alert.alert(
@@ -84,6 +90,8 @@ const FindPw = ({navigation})=> {
       }
     }
     finally{
+      // spinner 중지
+      spinner.stop();
     }
   }
 

@@ -1,5 +1,4 @@
 import {UserContext, UserProvider} from './User';
-//import {ProgressContext, ProgressProvider} from './Progress';
+import {ProgressContext, ProgressProvider} from './Progress';
 
-//export {UserContext, UserProvider, ProgressContext, ProgressProvider};
-export {UserContext, UserProvider};
+export {UserContext, UserProvider, ProgressContext, ProgressProvider};
