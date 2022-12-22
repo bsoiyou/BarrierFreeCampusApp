@@ -79,7 +79,7 @@ const MainStack = () => {
       {/* 화면 2 */}
       <Stack.Screen name="Notice" component={Notice} />
 
-      {/* 화면 3 */}
+      {/* 화면 3  Map-건물정보*/}
       <Stack.Screen
         name="Map"
         component={Map}

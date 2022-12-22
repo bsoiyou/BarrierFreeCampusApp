@@ -21,7 +21,7 @@ import {
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 
 export default function Map({ navigation }) {
   // BottomSheet
@@ -38,15 +38,15 @@ export default function Map({ navigation }) {
 
   // Markers
   const [marks, setMarks] = useState([]);
-  //markers collection에서 모든 문서 읽어와서 marks 배열에 저장
+  // markers collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
     const q = query(collection(DB, "markers"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const list = [];
       querySnapshot.forEach((doc) => {
         list.push({
+          markerId: doc.data().markerId,
           loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
-          description: doc.data().des,
         });
       });
       setMarks(list);
@@ -56,7 +56,7 @@ export default function Map({ navigation }) {
 
   // Markers
   const [bulMarks, setBulMarks] = useState([]);
-  //building collection에서 모든 문서 읽어와서 marks 배열에 저장
+  //boards collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
     const q = query(collection(DB, "boards"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -69,6 +69,8 @@ export default function Map({ navigation }) {
           description1: doc.data().des1,
           description2: doc.data().des2,
           description3: doc.data().des3,
+          boardId: doc.data().boardId,
+          starUsers: doc.data().starUsers,
         });
       });
       setBulMarks(list);
@@ -84,7 +86,9 @@ export default function Map({ navigation }) {
           latitude: 37.561025,
           longitude: 126.94654,
           latitudeDelta: 0.01,
-          longitudeDelta: (0.01)*(Dimensions.get('window').width/Dimensions.get('window').height),
+          longitudeDelta:
+            0.01 *
+            (Dimensions.get("window").width / Dimensions.get("window").height),
         }}
         provider={PROVIDER_GOOGLE}
         maxZoomLevel={30}
@@ -95,13 +99,18 @@ export default function Map({ navigation }) {
             <Marker
               key={index}
               coordinate={{
-                latitude: item.latitude,
-                longitude: item.longitude,
+                latitude: item.loc.latitude,
+                longitude: item.loc.longitude,
               }}
-              title={`${index}`}
-              //description={item.description}
-              onPress={() => setShowModal(!showModal)}
-            />
+              title={`${index}` + "번 장애물"}
+              // description="Marker sample"
+              onPress={() => {
+                setShowModal(!showModal);
+                setMarker(item);
+              }}
+            >
+              <AntDesign name="warning" size={24} color="#82A480" />
+            </Marker>
           );
         })}
 
@@ -165,6 +174,26 @@ export default function Map({ navigation }) {
         />
       </View>
 
+      {/* //Map 화면 전환 버튼
+      <View
+        style={{
+          position: "absolute",
+          bottom: "5%",
+          left: "5%",
+          //alignSelf: "center",
+          backgroundColor: "#00462A",
+          borderRadius: 25,
+        }}
+      >
+        <Button
+          style={{}}
+          title="←"
+          onPress={() => navigation.navigate("Map2")}
+          color="#fff"
+        />
+      </View> */}
+
+      {/* bottom sheet으로 건물 보이는 거랑 장애물 보이는 거 동시에 연동하는게 힘들어서 장애물은 modal을 사용해보려고 함. */}
       <Modal
         animationType={"slide"}
         transparent={false}
@@ -173,10 +202,17 @@ export default function Map({ navigation }) {
           console.log("Modal has been closed.");
         }}
       >
-        {/*All views of Modal*/}
+        {/*Modal 창 내에서 보일것들*/}
         {/*Animation can be slide, slide, none*/}
         <View style={styles.modal}>
-          <Text style={styles.text}>모달 열리고 적혀있을것들</Text>
+          <Text style={styles.text}>{marker.markerId}</Text>
+          <Button
+            color="#00462A"
+            title="장애물 게시판으로 가기"
+            onPress={() => {
+              navigation.navigate(marker.postId);
+            }}
+          />
           <Button
             color="#00462A"
             title="지도로 돌아가기"
@@ -232,6 +268,7 @@ export default function Map({ navigation }) {
                     boardTitle: params.title,
                     starUsers: params.starUsers,
                   });
+                  // console.log(building.boardId);
                 }
                 // 건물 게시판
                 else {
@@ -240,6 +277,9 @@ export default function Map({ navigation }) {
                     boardTitle: params.title,
                     starUsers: params.starUsers,
                   });
+                  console.log(building.boardId);
+                  console.log(building.title);
+                  //console.log(building.starUsers);
                 }
               }}
             ></Button>
@@ -285,5 +325,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 42,
+  },
+  modal: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: 100,
+    // height: "50%",
+    // width: "80%",
   },
 });
