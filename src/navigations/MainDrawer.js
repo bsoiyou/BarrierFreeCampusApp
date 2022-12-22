@@ -1,10 +1,10 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer'; 
-import styled, { ThemeContext } from 'styled-components';
+import styled, { ThemeContext, withTheme } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
 import { Image, Button } from '../components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import {Text} from 'react-native';
+import {Text, Alert, Modal, StyleSheet, View, Dimensions, Pressable} from 'react-native';
 import {
   Home, 
   Notice,  
@@ -20,6 +20,10 @@ const Drawer = createDrawerNavigator();
 
 export default function MainDrawer() {
   const theme=useContext(ThemeContext);
+  const [modalVisible, setModalVisible] = useState(false);
+  // modal에 렌더링할 text
+  const [modalText, setModalText] = useState('새로 등록된 글이 없습니다.');
+
   return (
     <Drawer.Navigator 
     initialRouteName='Home'
@@ -57,8 +61,53 @@ export default function MainDrawer() {
           color: theme.headerTitle,
           fontWeight: 'bold',
         },
-        // 포인트 버튼
+        // right buttons
         headerRight: ()=> (
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignContent: 'center', width: 'auto', backgroundColor: 'white'}}>
+          {/* modal */}
+          <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+          >
+            <View style={styles.centeredView}>
+              {/* modal container */}
+              <View style={styles.modalView}>
+                {/* modal에 표시되는 text */}
+                <Text style={styles.modalTextStyle}>{modalText}</Text>
+                {/* 확인 버튼 */}
+                <Pressable
+                  style={styles.buttonClose}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  {/* 확인 text */}
+                  <Text style={styles.closeText}>확인</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          {/* modal icon button */}
+          <TouchableOpacity
+          style={{
+            backgroundColor: 'white', 
+            width: 35, 
+            height: 35, 
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}
+          onPress={() => setModalVisible(true)}
+          >
+            <Ionicons
+              name="notifications"
+              size={22}
+              color={theme.d_btnBgColor}
+            />
+          </TouchableOpacity>
+          {/* point icon button*/}
           <TouchableOpacity
           style={{
             backgroundColor: '#EDEDED', 
@@ -68,6 +117,7 @@ export default function MainDrawer() {
             alignContent: 'center',
             borderRadius: 50,
             marginRight: 20,
+            marginLeft: 5,
           }}
           onPress={()=> navigation.navigate('MyPoint')}
           >
@@ -78,6 +128,7 @@ export default function MainDrawer() {
               color: theme.headerTitle
             }}>P</Text>
           </TouchableOpacity>
+          </View>
         )
       })}
      />
@@ -130,3 +181,48 @@ export default function MainDrawer() {
     </Drawer.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  // modal container
+  modalView: {
+    backgroundColor: "white",
+    width: (Dimensions.get('window').width) - 100,
+    borderRadius: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    alignItems: "center",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  // 확인 버튼
+  buttonClose: {
+    backgroundColor: '#00462A',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  // modal 화면 텍스트
+  modalTextStyle: {
+    marginBottom: 20,
+    fontSize: 17,
+    fontWeight: '600',
+    textAlign: "center"
+  },
+  closeText: {
+    fontSize: 15,
+    color: 'white',
+    fontWeight: '600',
+  }
+}); 
