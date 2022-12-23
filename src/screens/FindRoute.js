@@ -104,10 +104,12 @@ export default function FindRoute({ navigation }) {
           style={{}}
           title="경로 설정 완료"
           onPress={(params) => {
-            if (choosenSrcIndex == 0) {
-              navigation.navigate("FastRoute", { pathIndex: 0 });
+            if (choosenSrcIndex == choosenDestIndex) {
+              alert("출발지와 도착지를 다르게 설정해주세요.");
             } else {
-              navigation.navigate("FastRoute", { pathIndex: 1 });
+              navigation.navigate("FastRoute", {
+                pathIndex: choosenSrcIndex,
+              });
             }
           }}
           color="#fff"
