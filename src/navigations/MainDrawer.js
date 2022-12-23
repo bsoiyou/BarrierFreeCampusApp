@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer'; 
 import styled, { ThemeContext, withTheme } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,15 +14,59 @@ import {
   FindPw,
   MyPost
 } from '../screens';
+import { DB, getCurUser } from '../firebase';
+import { collectionGroup, query, where, getDocs, onSnapshot, orderBy, limit, getDoc, doc, updateDoc } from "firebase/firestore";
 
 const Drawer = createDrawerNavigator();
 
 
 export default function MainDrawer() {
   const theme=useContext(ThemeContext);
+  const curUser = getCurUser();
   const [modalVisible, setModalVisible] = useState(false);
   // modal에 렌더링할 text
-  const [modalText, setModalText] = useState('새로 등록된 글이 없습니다.');
+  const [modalText, setModalText] = useState('');
+  // 긴급 게시판에 올라온 가장 최신 글
+  let last;
+
+
+  // 마운트될 때 동작
+  useEffect(() => {
+
+    //user의 lastPost와 현재 가장 최신 글 비교하는 함수
+    const lastPhotoFunc = async () => {
+      const userRef = doc(DB, 'users', `${curUser.uid}`);
+      const userSnap = await getDoc(userRef);
+      const userLastPost=userSnap.data().lastPost; 
+
+      // user의 lastPost 값이 가장 최신 글(last)과 같은지 체크하여 modalText 변경
+      if (last.id == userLastPost) {
+        setModalText('긴급 게시판에 등록된 새 글이 없습니다.');
+      }
+      else {
+        setModalText('긴급 게시판에 새 글이 등록되었습니다. 지금 확인해 보세요!');
+        // user의 lastPost 필드 업데이트
+        const lastPostRef = doc(DB, 'users', `${curUser.uid}`);
+        updateDoc(lastPostRef, {
+          lastPost: last.id
+        });
+      }
+    }
+
+    // 현재 긴급 게시판에서 가장 최신 글 가져와 last에 저장
+    const q = query(collectionGroup(DB, 'posts'), where('isEmer', '==', true), orderBy('createdAt', 'desc'), limit(1));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        last=doc.data();
+      });
+    });
+
+    // 함수 호출
+    lastPhotoFunc();
+
+    return () => unsubscribe();
+  }, []);
+
 
   return (
     <Drawer.Navigator 
@@ -194,7 +238,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: (Dimensions.get('window').width) - 100,
     borderRadius: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     paddingVertical: 30,
     alignItems: "center",
     shadowColor: "black",
