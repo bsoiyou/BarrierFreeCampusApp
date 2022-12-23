@@ -86,9 +86,9 @@ export default function FindRoute({ navigation }) {
         </Picker>
         {/*Text to show selected picker*/}
         <Text style={styles.text}> 출발지 : {choosenSrcLabel}</Text>
-        <Text style={styles.text}>Selected Index: {choosenSrcIndex}</Text>
+        {/* <Text style={styles.text}>Selected Index: {choosenSrcIndex}</Text> */}
         <Text style={styles.text}> 도착지 : {choosenDestLabel}</Text>
-        <Text style={styles.text}>Selected Index: {choosenDestIndex}</Text>
+        {/* <Text style={styles.text}>Selected Index: {choosenDestIndex}</Text> */}
       </View>
 
       <View
