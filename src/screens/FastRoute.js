@@ -43,7 +43,7 @@ export default function FastRoute({ navigation, route }) {
   const { params } = route;
   const pathIndex = params ? params.pathIndex : null;
   const [selectedImages, setSelectedImages] = useState();
-
+useEffect(()=>{
   if (pathIndex == 0) {
     setSelectedImages(
       A1
@@ -56,7 +56,7 @@ export default function FastRoute({ navigation, route }) {
       //     "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4B-1.png?alt=media&token=47ad46b2-4f33-4093-9605-eefa445087ae",
       //     "https://firebasestorage.googleapis.com/v0/b/firstexpo-eb101.appspot.com/o/route%2F%EA%B8%B8%EC%B0%BE%EA%B8%B0%20%ED%99%94%EB%A9%B4B-2.png?alt=media&token=4e0f6cfb-2a55-4365-b527-9319e027c26f",
     );
-  }
+  }}, []);
 
   const scrollRef = React.useRef(null);
   const onChangeIndex = ({ index, prevIndex }) => {
