@@ -69,7 +69,6 @@ export default function Map({ navigation }) {
           description1: doc.data().des1,
           description2: doc.data().des2,
           description3: doc.data().des3,
-          boardId: doc.data().boardId,
           starUsers: doc.data().starUsers,
         });
       });
@@ -128,9 +127,6 @@ export default function Map({ navigation }) {
                 setVisible(!visible);
                 setBuilding(item);
               }}
-              // {
-              //   console.log(building);
-              // }
             >
               <FontAwesome5 name="building" size={24} color="#AAAAAA" />
             </Marker>
@@ -255,31 +251,25 @@ export default function Map({ navigation }) {
               {"\n"} {building.description2}
               {"\n"} {building.description3}
             </Text>
-            {/* {console.log(building.title)}
-            {console.log(building.description)} */}
-            {/* boardId 사용하여 해당 게시판으로 이동 */}
             <Button
               title="게시판으로 이동"
-              onPress={(params) => {
+              onPress={() => {
+                setVisible(!visible);
                 // 전체 게시판
-                if (params.boardId == "All") {
+                if (building.boardId == "All") {
                   navigation.navigate("AllBoard", {
-                    boardId: params.boardId,
-                    boardTitle: params.title,
-                    starUsers: params.starUsers,
+                    boardid: 'All',
+                    boardTitle: building.title,
+                    starUsers: building.starUsers,
                   });
-                  // console.log(building.boardId);
                 }
                 // 건물 게시판
                 else {
                   navigation.navigate("Board", {
-                    boardId: params.boardId,
-                    boardTitle: params.title,
-                    starUsers: params.starUsers,
+                    boardId: building.boardId,
+                    boardTitle: building.title,
+                    starUsers: building.starUsers,
                   });
-                  console.log(building.boardId);
-                  console.log(building.title);
-                  //console.log(building.starUsers);
                 }
               }}
             ></Button>
