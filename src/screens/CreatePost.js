@@ -152,6 +152,7 @@ return (
     onChangeText={_handleTitleChange}
     onSubmitEditing={()=>refContent.current.focus()}
     placeholder='제목을 입력하세요.'
+    placeholderTextColor='#AAAAAA'
     returnKeyType='next'
     onBlur={()=> setTitle(title.trim())}
     maxLength={15}
@@ -166,9 +167,9 @@ return (
     placeholder={
       `내용을 입력하세요.
 
-< 정보성 글 작성 가이드 >
+< 글 작성 가이드 >
 
-❕정보성 글은 벗들에게 현재 캠퍼스 상황을 빠르게 공유합니다. 
+❕벗들에게 현재 캠퍼스 상황을 빠르게 공유할 수 있습니다. 
 
 ❕최대한 정확하고 가까운 위치와 날짜를 선정해 주시기 바랍니다.
 
@@ -176,6 +177,7 @@ return (
 
 ❕ 글이 부적절한 정보로 신고 받았을 시 지급된 포인트는 회수될 수 있습니다.
     `}
+    placeholderTextColor='#AAAAAA'
     returnKeyType='done'
     onBlur={()=> setContent(content.trim())}
     multiline={true}

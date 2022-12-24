@@ -234,7 +234,7 @@ useLayoutEffect(()=>{
         }}
         cancelTextIOS="취소"
         confirmTextIOS="확인"
-        textColor={'black'}
+        textColor={'#82A480'}
       />
 
 
