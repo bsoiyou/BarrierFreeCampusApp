@@ -18,6 +18,7 @@ import {
   GeoPoint,
   getGeoPoint,
   collectionGroup,
+  document,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
@@ -36,7 +37,7 @@ export default function Map({ navigation }) {
   const [showModal, setShowModal] = useState(false);
   const [marker, setMarker] = useState(["장애물 정보"]);
 
-  // Markers
+  // 장애물 Markers
   const [marks, setMarks] = useState([]);
   // markers collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
@@ -45,7 +46,9 @@ export default function Map({ navigation }) {
       const list = [];
       querySnapshot.forEach((doc) => {
         list.push({
+          title: doc.data().title,
           markerId: doc.data().markerId,
+          postId: doc.data().postId,
           loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
         });
       });
@@ -54,7 +57,23 @@ export default function Map({ navigation }) {
     return () => unsubscribe();
   }, []);
 
-  // Markers
+  // const [posts, setPosts] = useState([]);
+  // useEffect(() => {
+  //   const q = query(
+  //     collection(DB, "markers", `${marker.markerId}`),
+  //     orderBy("createdAt", "desc")
+  //   );
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     const list = [];
+  //     querySnapshot.forEach((doc) => {
+  //       list.push(doc.data());
+  //     });
+  //     setPosts(list);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
+  // 건물 Markers
   const [bulMarks, setBulMarks] = useState([]);
   //boards collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
@@ -101,7 +120,7 @@ export default function Map({ navigation }) {
                 latitude: item.loc.latitude,
                 longitude: item.loc.longitude,
               }}
-              title={`${index}` + "번 장애물"}
+              title={`${index + 1}` + "번 장애물"}
               // description="Marker sample"
               onPress={() => {
                 setShowModal(!showModal);
@@ -204,9 +223,16 @@ export default function Map({ navigation }) {
           <Text style={styles.text}>{marker.markerId}</Text>
           <Button
             color="#00462A"
-            title="장애물 게시판으로 가기"
-            onPress={() => {
-              navigation.navigate(marker.postId);
+            title="장애물 게시물로 가기"
+            onPress={(marker) => {
+              setShowModal(!showModal);
+              navigation.navigate("MarkerRead", {
+                marker,
+                // markerId: marker.markerId,
+                // postId: marker.postId,
+                //boardTitle: "장애물",
+                //starUsers: marker.starUsers,
+              });
             }}
           />
           <Button
@@ -258,12 +284,12 @@ export default function Map({ navigation }) {
                 // 전체 게시판
                 if (building.boardId == "All") {
                   navigation.navigate("AllBoard", {
-                    boardid: 'All',
+                    boardid: "All",
                     boardTitle: building.title,
                     starUsers: building.starUsers,
                   });
                 }
-                // 건물 게시판
+                // 건물 게시판starUser
                 else {
                   navigation.navigate("Board", {
                     boardId: building.boardId,

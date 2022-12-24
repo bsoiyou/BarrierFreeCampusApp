@@ -23,6 +23,7 @@ import Settings from "./Settings";
 import MyPost from "./MyPost";
 import FindRoute from "./FindRoute";
 import FastRoute from "./FastRoute";
+import MarkerRead from "./MarkerRead";
 
 export {
   Walkthrough,
@@ -50,4 +51,5 @@ export {
   MyPost,
   FindRoute,
   FastRoute,
+  MarkerRead,
 };

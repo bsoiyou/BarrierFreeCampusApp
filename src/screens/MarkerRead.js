@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useContext } from "react";
+import React, { useLayoutEffect, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "styled-components";
 import {
@@ -20,6 +20,7 @@ import {
   query,
   where,
   getDocs,
+  //collection,
 } from "firebase/firestore";
 
 const Container = styled.View`
@@ -74,7 +75,10 @@ const HeaderInfo = styled.View`
   //padding-horizontal: 10px; // 찾을 수 없다고 해서 주석 처리함.
 `;
 
-const Post = ({ navigation, route }) => {
+// postId가 Image정보를 담은 post.
+// markerId가 개별 게시물 구분.
+
+const MarkerRead = ({ navigation, route }) => {
   const theme = useContext(ThemeContext);
 
   //user 불러오기
@@ -93,15 +97,15 @@ const Post = ({ navigation, route }) => {
         onPress: async () => {
           // post 삭제
           // 컬렉션 그룹 - title 확인해서 삭제하기
-          const q = query(
-            collectionGroup(DB, "posts"),
-            where("title", "==", route.params.title)
-          );
-          const data = await getDocs(q);
-          // 여러 개 있으면 모두 삭제
-          data.docs.map(async (item, index) => {
-            await deleteDoc(data.docs[index].ref);
-          });
+          //   const q = query(
+          //     collectionGroup(DB, "posts"),
+          //     where("title", "==", route.params.title)
+          //   );
+          //   const data = await getDocs(q);
+          //   // 여러 개 있으면 모두 삭제
+          //   data.docs.map(async (item, index) => {
+          //     await deleteDoc(data.docs[index].ref);
+          //   });
 
           // marker 삭제
           await deleteDoc(doc(DB, "markers", `${route.params.markerId}`));
@@ -116,7 +120,7 @@ const Post = ({ navigation, route }) => {
   //header
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: "글",
+      headerTitle: "장애물",
       // 삭제 버튼
       headerRight: () => {
         return (
@@ -145,6 +149,20 @@ const Post = ({ navigation, route }) => {
       },
     });
   });
+
+  //   useEffect(() => {
+  //     const q = query(collection(DB, "markers"));
+  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //       const list = [];
+  //       querySnapshot.forEach((doc) => {
+  //         list.push(doc.data());
+  //       });
+  //       //boards 변수 업데이트
+  //       //setBoards(list);
+  //     });
+
+  //     return () => unsubscribe();
+  //   }, []);
 
   return (
     <ScrollView>
@@ -225,4 +243,4 @@ const Post = ({ navigation, route }) => {
   );
 };
 
-export default Post;
+export default MarkerRead;

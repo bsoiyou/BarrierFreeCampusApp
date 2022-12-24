@@ -20,6 +20,7 @@ import {
   AllBoard,
   FindRoute,
   FastRoute,
+  MarkerRead,
 } from "../screens";
 import MainDrawer from "./MainDrawer";
 
@@ -164,6 +165,7 @@ const MainStack = () => {
       <Stack.Screen name="MyPoint" component={MyPoint} />
 
       <Stack.Screen name="Board" component={Board} />
+      <Stack.Screen name="MarkerRead" component={MarkerRead} />
       <Stack.Screen
         name="CreatePost"
         component={CreatePost}
