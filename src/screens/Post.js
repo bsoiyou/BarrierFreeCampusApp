@@ -21,6 +21,8 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import { getStorage, ref, deleteObject } from "firebase/storage";
+
 
 const Container = styled.View`
   flex: 1;
@@ -80,6 +82,8 @@ const Post = ({ navigation, route }) => {
   //user 불러오기
   const curUser = getCurUser();
 
+  const storage = getStorage();
+
   //삭제 함수
   const _handleDeleteBtnPress = async () => {
     Alert.alert("글 삭제", "정말로 삭제하시겠습니까?", [
@@ -106,8 +110,14 @@ const Post = ({ navigation, route }) => {
           // marker 삭제
           await deleteDoc(doc(DB, "markers", `${route.params.markerId}`));
 
-          // 화면 이동
-          navigation.goBack();
+          // image 삭제
+          const desertRef = ref(storage, `post/${route.params.id}/photo.jpg`);
+          await deleteObject(desertRef).then(() => {
+            // 화면 이동
+            navigation.goBack();
+          }).catch((error) => {
+            Alert.alert("다시 시도해 주세요.");
+          });
         },
       },
     ]);

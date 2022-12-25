@@ -44,7 +44,7 @@ const CompoHeader = styled.View`
   align-items: center;
   justify-content: space-between;
   padding-left: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 `;
 
 const PostContainer = styled.View`
@@ -254,7 +254,7 @@ const Home = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {navigation.navigate('BoardList')}}
         activeOpacity={0.8}>
-        <StyledCompo_w style={{height: 160}}>
+        <StyledCompo_w style={{height: 180}}>
           <CompoHeader style={{ backgroundColor: theme.d_btnBgColor }}>
             <StyledText style={{ color: 'white', flex: 6, fontSize: 17, fontWeight: 'bold' }}>즐겨찾는 게시판</StyledText>
             {/* 전체 게시판 보기 버튼 */}
