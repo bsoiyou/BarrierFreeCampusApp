@@ -44,13 +44,14 @@ const CompoHeader = styled.View`
   align-items: center;
   justify-content: space-between;
   padding-left: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 `;
 
 const PostContainer = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-vertical: 5px;
 `;
 
 
@@ -58,12 +59,28 @@ const Home = ({ navigation }) => {
   const theme = useContext(ThemeContext);
   const curUser = getCurUser();
 
+  //공지사항 목록 배열 상태변수
+  const [noticePosts, setNoticePosts] = useState([]);
   //즐겨찾는 게시판 목록 배열 상태변수
   const [starboards, setStarboards] =useState([]);
   //긴급 글 목록 배열 상태변수
-  const [emerposts, setEmerposts] = useState([]);
+  const [emerPosts, setEmerPosts] = useState([]);
   
   // 마운트 될 때 동작
+  // notice collection 모든 문서 불러오기
+  useEffect(()=>{
+    const q = query(collection(DB, "notice"), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list2 = [];
+      querySnapshot.forEach((doc) => {
+          list2.push(doc.data());
+      });
+      //list에서 2개만 가져와서 noticePosts 변수 업데이트
+      setNoticePosts(list2.slice(0,2));
+    });
+    return ()=> unsubscribe();
+  }, []);
+
   // board collection 모든 문서 불러오기 
   useEffect(()=>{
     const q = query(collection(DB, "boards"));
@@ -102,7 +119,7 @@ const Home = ({ navigation }) => {
         ind++;
       });
       //lst에서 2개만 가져와서 emerposts 변수 업데이트
-      setEmerposts(lst.slice(0,2));
+      setEmerPosts(lst.slice(0,2));
     });
     return ()=> unsubscribe();
   }, []);
@@ -122,7 +139,27 @@ const Home = ({ navigation }) => {
             <StyledText style={{ color: 'white', flex: 6, fontSize: 17, fontWeight: 'bold' }}>공지사항</StyledText>
           </CompoHeader>
           {/* 내용 */}
-          <View style={{  }}></View>
+          <View style={{ 
+            flex: 1,
+            flexDirection: 'column',
+            paddingBottom: 10,
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            paddingLeft: 20,
+            paddingRight: 10,
+           }}>
+            {/* noticePosts 이용하여 공지사항 글 렌더링 */}
+            {noticePosts.map((item,index)=>{
+              return(
+                <PostContainer key={index}>
+                  {/* 제목 */}
+                  <StyledText style={{flex: 7, fontSize: 16}}>{item.title}</StyledText>
+                  {/* 날짜,시간 */}
+                  <StyledText style={{flex: 1.5, fontSize: 15, color: theme.lstContent}}>{TimeStamp(item.createdAt)}</StyledText>
+                </PostContainer>
+              );
+            })}
+          </View>
         </StyledCompo_g>
       </TouchableOpacity>
       
@@ -192,12 +229,12 @@ const Home = ({ navigation }) => {
             flexDirection: 'column',
             paddingBottom: 10,
             alignItems: 'flex-start',
-            justifyContent: 'space-around',
+            justifyContent: 'flex-start',
             paddingLeft: 20,
             paddingRight: 10,
            }}>
-            {/* emerposts 이용하여 긴급 글 렌더링 */}
-            {emerposts.map((item,index)=>{
+            {/* emerPosts 이용하여 긴급 글 렌더링 */}
+            {emerPosts.map((item,index)=>{
               return(
                 <PostContainer key={index}>
                   {/* 제목 */}
@@ -217,7 +254,7 @@ const Home = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {navigation.navigate('BoardList')}}
         activeOpacity={0.8}>
-        <StyledCompo_w style={{height: 170}}>
+        <StyledCompo_w style={{height: 160}}>
           <CompoHeader style={{ backgroundColor: theme.d_btnBgColor }}>
             <StyledText style={{ color: 'white', flex: 6, fontSize: 17, fontWeight: 'bold' }}>즐겨찾는 게시판</StyledText>
             {/* 전체 게시판 보기 버튼 */}
@@ -250,7 +287,7 @@ const Home = ({ navigation }) => {
             flexDirection: 'column',
             paddingBottom: 10,
             alignItems: 'flex-start',
-            justifyContent: 'space-around',
+            justifyContent: 'flex-start',
             paddingLeft: 20,
            }}>
             {/* starboards 이용하여 즐겨찾는 게시판 렌더링 */}
@@ -269,6 +306,7 @@ const Home = ({ navigation }) => {
                     navigation.navigate('Board', {boardId: item.boardId, boardTitle: item.title, starUsers: item.starUsers});
                   }
                 }}
+                style={{marginVertical: 5}}
                 >
                   <StyledText>{item.title}</StyledText>
                 </TouchableOpacity>

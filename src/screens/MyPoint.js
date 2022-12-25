@@ -72,7 +72,7 @@ const Item= React.memo(
         style={{
           fontSize: 19,
           fontWeight: 'bold',
-          color: '#2980B9'
+          color: theme.l_greenText,
         }}
         >{'+ '+score+' P'}</ItemText>
         {/* 날짜 */}

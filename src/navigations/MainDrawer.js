@@ -10,9 +10,9 @@ import {
   Notice,  
   Profile, 
   MyPoint, 
-  Settings, 
   FindPw,
-  MyPost
+  MyPost,
+  NoticePost
 } from '../screens';
 import { DB, getCurUser } from '../firebase';
 import { collectionGroup, query, where, getDocs, onSnapshot, orderBy, limit, getDoc, doc, updateDoc } from "firebase/firestore";
@@ -207,18 +207,18 @@ export default function MainDrawer() {
         drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/>
       <Drawer.Screen 
-      name='Settings' 
-      component={Settings} 
-      options={{
-        drawerLabel: '환경 설정',
-        title: '환경 설정',
-        drawerLabelStyle: {fontSize: 17, marginLeft: 10},
-      }}/>
-      <Drawer.Screen 
       name='FindPw' 
       component={FindPw} 
       options={{
         title: '비밀번호 재설정',
+        drawerItemStyle: { height: 0 },
+        headerShown: true
+      }}/>
+      <Drawer.Screen 
+      name='NoticePost' 
+      component={NoticePost} 
+      options={{
+        title: '공지사항',
         drawerItemStyle: { height: 0 },
         headerShown: true
       }}/>

@@ -71,7 +71,7 @@ const HeaderInfo = styled.View`
   width: 100%;
   height: 80px;
   padding-top: 20px;
-  //padding-horizontal: 10px; // 찾을 수 없다고 해서 주석 처리함.
+  padding-horizontal: 10px;
 `;
 
 const Post = ({ navigation, route }) => {
@@ -154,7 +154,6 @@ const Post = ({ navigation, route }) => {
           <StyledText>익명의 이화인</StyledText>
           <StyledText
             style={{
-              fontWeight: "normal",
               fontSize: 15,
             }}
           >

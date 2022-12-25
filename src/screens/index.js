@@ -19,11 +19,11 @@ import SetBoard from "./SetBoard";
 import SetDay from "./SetDay";
 import Post from "./Post";
 import MyPoint from "./MyPoint";
-import Settings from "./Settings";
 import MyPost from "./MyPost";
 import FindRoute from "./FindRoute";
 import FastRoute from "./FastRoute";
 import MarkerRead from "./MarkerRead";
+import NoticePost from "./NoticePost";
 
 export {
   Walkthrough,
@@ -47,9 +47,9 @@ export {
   Post,
   MyPoint,
   Profile,
-  Settings,
   MyPost,
   FindRoute,
   FastRoute,
   MarkerRead,
+  NoticePost,
 };
