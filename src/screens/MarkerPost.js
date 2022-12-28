@@ -97,15 +97,15 @@ const MarkerRead = ({ navigation, route }) => {
         onPress: async () => {
           // post 삭제
           // 컬렉션 그룹 - title 확인해서 삭제하기
-          //   const q = query(
-          //     collectionGroup(DB, "posts"),
-          //     where("title", "==", route.params.title)
-          //   );
-          //   const data = await getDocs(q);
-          //   // 여러 개 있으면 모두 삭제
-          //   data.docs.map(async (item, index) => {
-          //     await deleteDoc(data.docs[index].ref);
-          //   });
+          const q = query(
+            collectionGroup(DB, "posts"),
+            where("title", "==", route.params.title)
+          );
+          const data = await getDocs(q);
+          // 여러 개 있으면 모두 삭제
+          data.docs.map(async (item, index) => {
+            await deleteDoc(data.docs[index].ref);
+          });
 
           // marker 삭제
           await deleteDoc(doc(DB, "markers", `${route.params.markerId}`));

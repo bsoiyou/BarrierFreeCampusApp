@@ -22,7 +22,7 @@ import MyPoint from "./MyPoint";
 import MyPost from "./MyPost";
 import FindRoute from "./FindRoute";
 import FastRoute from "./FastRoute";
-import MarkerRead from "./MarkerRead";
+import MarkerPost from "./MarkerPost";
 import NoticePost from "./NoticePost";
 
 export {
@@ -50,6 +50,6 @@ export {
   MyPost,
   FindRoute,
   FastRoute,
-  MarkerRead,
+  MarkerPost,
   NoticePost,
 };
