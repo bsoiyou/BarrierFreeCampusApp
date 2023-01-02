@@ -55,6 +55,7 @@ export default function FindRoute({ navigation }) {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         {/* 출발지 선택 */}
+        <Text style={styles.pickerText}>출발지 선택</Text>
         <Picker
           selectedValue={choosenSrcLabel}
           onValueChange={(itemValue, itemIndex) => {
@@ -70,6 +71,7 @@ export default function FindRoute({ navigation }) {
           })}
         </Picker>
         {/* 도착지 선택 */}
+        <Text style={styles.pickerText}>도착지 선택</Text>
         <Picker
           selectedValue={choosenDestLabel}
           onValueChange={(itemValue, itemIndex) => {
@@ -93,8 +95,8 @@ export default function FindRoute({ navigation }) {
 
       <View
         style={{
-          position: "absolute",
-          bottom: "10%",
+          //position: "absolute",
+          //bottom: "10%",
           alignSelf: "center",
           backgroundColor: "#00462A",
           borderRadius: 25,
@@ -112,6 +114,7 @@ export default function FindRoute({ navigation }) {
               });
             }
           }}
+          backgroundColor="#00462A"
           color="#fff"
         />
       </View>
@@ -123,9 +126,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     flexDirection: "column",
+    alignContent: "center",
   },
   text: {
     fontSize: 20,
     alignSelf: "center",
+  },
+  pickerText: {
+    fontSize: 22,
+    alignSelf: "center",
+    fontWeight: "bold",
   },
 });

@@ -19,6 +19,7 @@ import {
   getGeoPoint,
   collectionGroup,
   document,
+  where,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
@@ -57,21 +58,23 @@ export default function Map({ navigation }) {
     return () => unsubscribe();
   }, []);
 
-  // const [posts, setPosts] = useState([]);
-  // useEffect(() => {
-  //   const q = query(
-  //     collection(DB, "markers", `${marker.markerId}`),
-  //     orderBy("createdAt", "desc")
-  //   );
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     const list = [];
-  //     querySnapshot.forEach((doc) => {
-  //       list.push(doc.data());
-  //     });
-  //     setPosts(list);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
+  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const q = query(
+      collectionGroup(DB, "posts"),
+      where("id", "==", `${marker.postId}`)
+      //     orderBy("createdAt", "desc")
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        list.push(doc.data());
+      });
+      setPosts(list);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // 건물 Markers
   const [bulMarks, setBulMarks] = useState([]);
@@ -125,9 +128,17 @@ export default function Map({ navigation }) {
               onPress={() => {
                 setShowModal(!showModal);
                 setMarker(item);
+
+                posts.map((item) => {
+                  if (posts.markerId == marker.markerId) {
+                    setPost(posts);
+                    console.log(post);
+                  }
+                  console.log(posts);
+                });
               }}
             >
-              <AntDesign name="warning" size={24} color="#82A480" />
+              <AntDesign name="warning" size={24} color="#D30000" />
             </Marker>
           );
         })}
@@ -167,6 +178,7 @@ export default function Map({ navigation }) {
           title="장애물 제보"
           onPress={() => navigation.navigate("CreatePost")}
           color={"white"}
+          backgroundColor="#D30000"
         />
       </View>
 
@@ -186,6 +198,7 @@ export default function Map({ navigation }) {
           title="길찾기"
           onPress={() => navigation.navigate("FindRoute")}
           color="#fff"
+          backgroundColor="#00462A"
         />
       </View>
 
@@ -217,25 +230,43 @@ export default function Map({ navigation }) {
           console.log("Modal has been closed.");
         }}
       >
-        {/*Modal 창 내에서 보일것들*/}
+        {/* 장애물 정보 : Modal 창 내에서 보일것들*/}
         {/*Animation can be slide, slide, none*/}
         <View style={styles.modal}>
-          <Text style={styles.text}>{marker.markerId}</Text>
+          {/* <Text style={styles.text}>{marker.markerId}</Text> */}
+          <Text style={styles.modalText}>
+            해당 장애물에 대해{"\n"} 더 알아보시겠습니까?
+          </Text>
           <Button
+            backgroundColor="#fff"
             color="#00462A"
-            title="장애물 게시물로 가기"
-            onPress={(marker) => {
+            title="세부정보 확인하기"
+            onPress={() => {
               setShowModal(!showModal);
-              navigation.navigate("MarkerRead", {
-                marker,
-                // markerId: marker.markerId,
-                // postId: marker.postId,
-                //boardTitle: "장애물",
-                //starUsers: marker.starUsers,
-              });
+              console.log(marker.postId);
+              console.log(post.id);
+              if (marker.markerId == post.id) {
+                navigation.navigate("MarkerPost", {
+                  //marker,
+                  // markerId: marker.markerId,
+                  createdAt: post.createdAt,
+                  endDate: post.endDate,
+                  postId: post.id,
+                  image: post.image,
+                  isEmer: post.isEmer,
+                  markerId: post.markerId,
+                  startDate: post.startDate,
+                  title: post.title,
+                  boardTitle: "장애물",
+                  // starUsers: marker.starUsers,
+                });
+              } else {
+                alert("해당 게시물을 확인할 수 없습니다.");
+              }
             }}
           />
           <Button
+            backgroundColor="#fff"
             color="#00462A"
             title="지도로 돌아가기"
             onPress={() => {
@@ -245,7 +276,7 @@ export default function Map({ navigation }) {
         </View>
       </Modal>
 
-      {/* Bottom Sheet */}
+      {/* 건물 정보 : Bottom Sheet */}
       {/* {bulMarks.map((item, index) => {
         return ( */}
       <BottomSheet
@@ -278,6 +309,8 @@ export default function Map({ navigation }) {
               {"\n"} {building.description3}
             </Text>
             <Button
+              backgroundColor="#fff"
+              color="#00462A"
               title="게시판으로 이동"
               onPress={() => {
                 setVisible(!visible);
@@ -342,11 +375,17 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 42,
   },
+  modalText: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 5,
+  },
   modal: {
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
     padding: 100,
+    justifyContent: "center",
     // height: "50%",
     // width: "80%",
   },

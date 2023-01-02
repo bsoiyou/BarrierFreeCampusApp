@@ -108,6 +108,7 @@ export default function FastRoute({ navigation, route }) {
           title="지도로 돌아가기"
           onPress={() => navigation.navigate("Map")}
           color="#fff"
+          backgroundColor="#D30000"
         />
       </View>
     </View>
