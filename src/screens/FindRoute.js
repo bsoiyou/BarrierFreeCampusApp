@@ -51,6 +51,20 @@ export default function FindRoute({ navigation }) {
     return () => unsubscribe();
   }, []);
 
+  const [param1, setParam1] = useState(0);
+  const [param2, setParam2] = useState(0);
+  useEffect(() => {
+    if (choosenSrcIndex > choosenDestIndex) {
+      ///console.log(pathIndex);
+      setParam1(choosenDestIndex);
+      setParam2(choosenSrcIndex);
+    } else {
+      //console.log(pathIndex);
+      setParam1(choosenSrcIndex);
+      setParam2(choosenDestIndex);
+    }
+  });
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -106,11 +120,13 @@ export default function FindRoute({ navigation }) {
           style={{}}
           title="경로 설정 완료"
           onPress={(params) => {
-            if (choosenSrcIndex == choosenDestIndex) {
+            if (param1 == param2) {
               alert("출발지와 도착지를 다르게 설정해주세요.");
             } else {
+              console.log(param1, param2);
               navigation.navigate("FastRoute", {
-                pathIndex: choosenSrcIndex,
+                pathIndex1: param1,
+                pathIndex2: param2,
               });
             }
           }}

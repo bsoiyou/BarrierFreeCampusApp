@@ -67,72 +67,70 @@ export default function Map({ navigation }) {
     /* 여러 collection을 동시에 받거나, 
 collection in collection의 경우 하위 collection의 이름이 동일하기만 하면 받아올 수 있는 방식이 안먹어서 부득이하게 이렇게 함. */
   }
-  // //게시판 목록 배열 상태변수
-  // const [boards, setBoards] = useState([]);
-  // // 마운트 될 때 동작
-  // // board collection 모든 문서 불러오기
-  // useEffect(() => {
-  //   const q = query(collection(DB, "boards"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     const list = [];
-  //     querySnapshot.forEach((doc) => {
-  //       list.push(doc.data());
-  //     });
-  //     //boards 변수 업데이트
-  //     setBoards(list);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
+  //게시판 목록 배열 상태변수
+  const [boards, setBoards] = useState([]);
+  // 마운트 될 때 동작
+  // board collection 모든 문서 불러오기
+  useEffect(() => {
+    const q = query(collection(DB, "boards"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const list = [];
+      querySnapshot.forEach((doc) => {
+        list.push(doc.data());
+      });
+      //boards 변수 업데이트
+      setBoards(list);
+    });
+    return () => unsubscribe();
+  }, []);
 
-  // const [post, setPost] = useState([]);
-  // const [posts, setPosts] = useState([]);
-  // useEffect(() => {
-  //   {
-  //     boards.map((item) => {
-  //       const q = query(
-  //         collection(DB, "boards", { boardId }, "posts"),
-  //         //collection(DB, "boards", item.boardId, "posts"),
-  //         // collectionGroup(DB, "boards", item, "posts"),
-  //         orderBy("markerId")
-  //       );
-
-  //       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //         const list = [];
-  //         querySnapshot.forEach((doc) => {
-  //           list.push(doc.data());
-  //         });
-  //         setPosts(list);
-  //         console.log("posts : ", posts);
-  //       });
-
-  //       return () => unsubscribe();
-  //     });
-  //   }
-  // }, []);
-
-  // 장애물 posts를 받아올 변수 설정.
   const [post, setPost] = useState([]);
   const [posts, setPosts] = useState([]);
-
+  const list = [];
   useEffect(() => {
     {
-      const q = query(
-        collection(DB, "boards", "Art", "posts"),
-        //collection(DB, "boards", item.boardId, "posts"),
-        // collectionGroup(DB, "boards", item, "posts"),
-        orderBy("markerId")
-      );
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const list = [];
-        querySnapshot.forEach((doc) => {
-          list.push(doc.data());
+      boards.map((item) => {
+        const q = query(
+          collection(DB, "boards", item.boardId, "posts"),
+          orderBy("markerId")
+        );
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            list.push(doc.data());
+          });
+          setPosts(list);
+          console.log("posts : ", posts);
         });
-        setPosts(list);
-        console.log("posts : ", posts);
+
+        return () => unsubscribe();
       });
-      return () => unsubscribe();
     }
   }, []);
+
+  // // 장애물 posts를 받아올 변수 설정.
+  //const [post, setPost] = useState([]);
+  // const [posts, setPosts] = useState([]);
+
+  // useEffect(() => {
+  //   {
+  //     const q = query(
+  //       //collection(DB, "boards", "Art", "posts"),
+  //       //collection(DB, "boards", item.boardId, "posts"),
+  //       collectionGroup(DB, "posts"),
+  //       orderBy("markerId")
+  //     );
+  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //       const list = [];
+  //       querySnapshot.forEach((doc) => {
+  //         list.push(doc.data());
+  //       });
+  //       setPosts(list);
+  //       console.log("posts : ", posts);
+  //     });
+  //     return () => unsubscribe();
+  //   }
+  // }, []);
 
   // 건물 Markers
   const [bulMarks, setBulMarks] = useState([]);
