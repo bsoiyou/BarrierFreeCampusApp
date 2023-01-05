@@ -20,6 +20,11 @@ import {
   collectionGroup,
   document,
   where,
+  doc,
+  DocumentSnapshot,
+  Firestore,
+  getDoc,
+  orderBy,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
@@ -58,22 +63,75 @@ export default function Map({ navigation }) {
     return () => unsubscribe();
   }, []);
 
+  {
+    /* 여러 collection을 동시에 받거나, 
+collection in collection의 경우 하위 collection의 이름이 동일하기만 하면 받아올 수 있는 방식이 안먹어서 부득이하게 이렇게 함. */
+  }
+  // //게시판 목록 배열 상태변수
+  // const [boards, setBoards] = useState([]);
+  // // 마운트 될 때 동작
+  // // board collection 모든 문서 불러오기
+  // useEffect(() => {
+  //   const q = query(collection(DB, "boards"));
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     const list = [];
+  //     querySnapshot.forEach((doc) => {
+  //       list.push(doc.data());
+  //     });
+  //     //boards 변수 업데이트
+  //     setBoards(list);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
+  // const [post, setPost] = useState([]);
+  // const [posts, setPosts] = useState([]);
+  // useEffect(() => {
+  //   {
+  //     boards.map((item) => {
+  //       const q = query(
+  //         collection(DB, "boards", { boardId }, "posts"),
+  //         //collection(DB, "boards", item.boardId, "posts"),
+  //         // collectionGroup(DB, "boards", item, "posts"),
+  //         orderBy("markerId")
+  //       );
+
+  //       const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //         const list = [];
+  //         querySnapshot.forEach((doc) => {
+  //           list.push(doc.data());
+  //         });
+  //         setPosts(list);
+  //         console.log("posts : ", posts);
+  //       });
+
+  //       return () => unsubscribe();
+  //     });
+  //   }
+  // }, []);
+
+  // 장애물 posts를 받아올 변수 설정.
   const [post, setPost] = useState([]);
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
-    const q = query(
-      collectionGroup(DB, "posts"),
-      where("id", "==", `${marker.postId}`)
-      //     orderBy("createdAt", "desc")
-    );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const list = [];
-      querySnapshot.forEach((doc) => {
-        list.push(doc.data());
+    {
+      const q = query(
+        collection(DB, "boards", "Art", "posts"),
+        //collection(DB, "boards", item.boardId, "posts"),
+        // collectionGroup(DB, "boards", item, "posts"),
+        orderBy("markerId")
+      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const list = [];
+        querySnapshot.forEach((doc) => {
+          list.push(doc.data());
+        });
+        setPosts(list);
+        console.log("posts : ", posts);
       });
-      setPosts(list);
-    });
-    return () => unsubscribe();
+      return () => unsubscribe();
+    }
   }, []);
 
   // 건물 Markers
@@ -129,12 +187,11 @@ export default function Map({ navigation }) {
                 setShowModal(!showModal);
                 setMarker(item);
 
-                posts.map((item) => {
-                  if (posts.markerId == marker.markerId) {
-                    setPost(posts);
-                    console.log(post);
+                posts.map((item2) => {
+                  if (item2.markerId == item.markerId) {
+                    setPost(item2);
+                    console.log("post : ", post);
                   }
-                  console.log(posts);
                 });
               }}
             >
@@ -243,9 +300,31 @@ export default function Map({ navigation }) {
             title="세부정보 확인하기"
             onPress={() => {
               setShowModal(!showModal);
+              // {
+              //   posts.map((item) => {
+              //   // <Marker
+              //   //   key={index}
+              //   //   coordinate={{
+              //   //     latitude: item.loc.latitude,
+              //   //     longitude: item.loc.longitude,
+              //   //   }}
+              //   //   title={item.title}
+              //   //   onPress={() => {
+              //   //     setVisible(!visible);
+              //   //     setBuilding(item);
+              //   //   }}
+              //   // >
+              //   //   <FontAwesome5 name="building" size={24} color="#AAAAAA" />
+              //   // </Marker>
+              //   if (item.id == marker.markerId) {
+              //     setPost(item);
+              //     console.log("post : ", post);
+              //   }
+              // });
+              // }
               console.log(marker.postId);
               console.log(post.id);
-              if (marker.markerId == post.id) {
+              if (toString(marker.markerId) == toString(post.id)) {
                 navigation.navigate("MarkerPost", {
                   //marker,
                   // markerId: marker.markerId,
