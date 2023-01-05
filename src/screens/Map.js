@@ -229,7 +229,9 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           bottom: "10%",
           alignSelf: "center",
           backgroundColor: "#fff",
-          borderRadius: 25,
+          borderColor: "#D30000",
+          borderWidth: 5,
+          borderRadius: 10,
         }}
       >
         <Button
@@ -247,7 +249,9 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           right: "5%",
           //alignSelf: "center",
           backgroundColor: "#fff",
-          borderRadius: 25,
+          borderColor: "#00462A",
+          borderWidth: 5,
+          borderRadius: 10,
         }}
       >
         <Button
