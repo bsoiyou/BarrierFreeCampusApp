@@ -112,7 +112,7 @@ export default function FindRoute({ navigation }) {
           //position: "absolute",
           //bottom: "10%",
           alignSelf: "center",
-          backgroundColor: "#00462A",
+          backgroundColor: "#fff",
           borderRadius: 25,
         }}
       >
@@ -130,8 +130,7 @@ export default function FindRoute({ navigation }) {
               });
             }
           }}
-          backgroundColor="#00462A"
-          color="#fff"
+          color="#00462A"
         />
       </View>
     </SafeAreaView>

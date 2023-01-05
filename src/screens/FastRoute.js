@@ -235,15 +235,14 @@ export default function FastRoute({ navigation, route }) {
           position: "absolute",
           bottom: "10%",
           alignSelf: "center",
-          backgroundColor: "#D30000",
+          backgroundColor: "#fff",
           borderRadius: 25,
         }}
       >
         <Button
           title="지도로 돌아가기"
           onPress={() => navigation.navigate("Map")}
-          color="#fff"
-          backgroundColor="#D30000"
+          color="#00462A"
         />
       </View>
     </View>

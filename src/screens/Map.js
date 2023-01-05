@@ -45,6 +45,7 @@ export default function Map({ navigation }) {
 
   // 장애물 Markers
   const [marks, setMarks] = useState([]);
+
   // markers collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
     const q = query(collection(DB, "markers"));
@@ -99,14 +100,23 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           querySnapshot.forEach((doc) => {
             list.push(doc.data());
           });
+          //console.log(list);
           setPosts(list);
           console.log("posts : ", posts);
         });
-
         return () => unsubscribe();
       });
     }
   }, []);
+
+  useEffect(() => {
+    posts.map((item) => {
+      if (item.markerId == marker.markerId) {
+        setPost(item);
+        console.log("post : ", post);
+      }
+    });
+  });
 
   // // 장애물 posts를 받아올 변수 설정.
   //const [post, setPost] = useState([]);
@@ -184,13 +194,6 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
               onPress={() => {
                 setShowModal(!showModal);
                 setMarker(item);
-
-                posts.map((item2) => {
-                  if (item2.markerId == item.markerId) {
-                    setPost(item2);
-                    console.log("post : ", post);
-                  }
-                });
               }}
             >
               <AntDesign name="warning" size={24} color="#D30000" />
@@ -225,15 +228,14 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           position: "absolute",
           bottom: "10%",
           alignSelf: "center",
-          backgroundColor: "#D30000",
+          backgroundColor: "#fff",
           borderRadius: 25,
         }}
       >
         <Button
           title="장애물 제보"
           onPress={() => navigation.navigate("CreatePost")}
-          color={"white"}
-          backgroundColor="#D30000"
+          color="#D30000"
         />
       </View>
 
@@ -244,7 +246,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           top: "5%",
           right: "5%",
           //alignSelf: "center",
-          backgroundColor: "#00462A",
+          backgroundColor: "#fff",
           borderRadius: 25,
         }}
       >
@@ -252,8 +254,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           style={{}}
           title="길찾기"
           onPress={() => navigation.navigate("FindRoute")}
-          color="#fff"
-          backgroundColor="#00462A"
+          color="#00462A"
         />
       </View>
 
@@ -290,7 +291,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
         <View style={styles.modal}>
           {/* <Text style={styles.text}>{marker.markerId}</Text> */}
           <Text style={styles.modalText}>
-            해당 장애물에 대해{"\n"} 더 알아보시겠습니까?
+            해당 장애물에 대해{"\n"} 더 알아보시겠습니까?{"\n"}
           </Text>
           <Button
             backgroundColor="#fff"
@@ -342,6 +343,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
               }
             }}
           />
+          <Text style={{ fontSize: 10 }}>{"\n"}</Text>
           <Button
             backgroundColor="#fff"
             color="#00462A"
