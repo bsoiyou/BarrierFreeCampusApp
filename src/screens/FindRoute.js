@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, Text, StyleSheet, View, Alert, Dimensions } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  View,
+  Dimensions,
+  Alert,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import {
   addDoc,
@@ -10,14 +17,12 @@ import {
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { theme } from "../theme";
-import {Button} from '../components';
+import { Button, ErrorMsg } from "../components";
 
 export default function FindRoute({ navigation }) {
-  const [choosenSrcLabel, setChoosenSrcLabel] =
-    useState("출발지 선택");
+  const [choosenSrcLabel, setChoosenSrcLabel] = useState("조형예술관");
   const [choosenSrcIndex, setChoosenSrcIndex] = useState("0");
-  const [choosenDestLabel, setChoosenDestLabel] =
-    useState("도착지 선택");
+  const [choosenDestLabel, setChoosenDestLabel] = useState("조형예술관");
   const [choosenDestIndex, setChoosenDestIndex] = useState("0");
 
   // 건물들 불러오기
@@ -68,7 +73,7 @@ export default function FindRoute({ navigation }) {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
+    <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
       <View style={styles.container}>
         {/* 출발지 선택 */}
         <Text style={styles.pickerText}>출발지 선택</Text>
@@ -84,7 +89,7 @@ export default function FindRoute({ navigation }) {
             marginHorizontal: 20,
           }}
           itemStyle={{
-            height: 140
+            height: 140,
           }}
         >
           {/* route 배열에서 하나씩 꺼내서 picker 찍기 */}
@@ -108,7 +113,7 @@ export default function FindRoute({ navigation }) {
             marginBottom: 25,
           }}
           itemStyle={{
-            height: 140
+            height: 140,
           }}
         >
           {/* route 배열에서 하나씩 꺼내서 picker 찍기 */}
@@ -120,14 +125,14 @@ export default function FindRoute({ navigation }) {
         </Picker>
         {/*Text to show selected picker*/}
         <View style={styles.textBox}>
-          <Text style={styles.text}> 출발지  ▶︎  {choosenSrcLabel}</Text>
-          <Text style={styles.text}> 도착지  ▶︎  {choosenDestLabel}</Text>
-        </View> 
+          <Text style={styles.text}> 출발지 ▶︎ {choosenSrcLabel}</Text>
+          <Text style={styles.text}> 도착지 ▶︎ {choosenDestLabel}</Text>
+        </View>
       </View>
 
       <View
         style={{
-          width: '90%',
+          width: "90%",
           alignSelf: "center",
         }}
       >
@@ -135,7 +140,10 @@ export default function FindRoute({ navigation }) {
           title="경로 설정 완료"
           onPress={(params) => {
             if (param1 == param2) {
-              Alert.alert("경로 설정 오류","출발지와 도착지를 다르게 설정해주세요.");
+              Alert.alert(
+                "경로 설정 오류",
+                "출발지와 도착지를 다르게 설정해주세요."
+              );
             } else {
               console.log(param1, param2);
               navigation.navigate("FastRoute", {
@@ -155,20 +163,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column",
     alignContent: "center",
-    width: Dimensions.get('window').width,
+    width: Dimensions.get("window").width,
   },
   textBox: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    width: 'auto',
-    alignSelf: 'center',
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    width: "auto",
+    alignSelf: "center",
     marginVertical: 10,
   },
   text: {
-    fontSize: 22, 
-    marginBottom: 15, 
-    fontWeight: 'bold',
+    fontSize: 22,
+    marginBottom: 15,
+    fontWeight: "bold",
     color: theme.greenText,
   },
   pickerText: {
