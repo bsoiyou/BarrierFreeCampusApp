@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, Text, StyleSheet, View, Button } from "react-native";
+import { SafeAreaView, Text, StyleSheet, View, Alert, Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import {
   addDoc,
@@ -9,13 +9,15 @@ import {
   collectionGroup,
 } from "firebase/firestore";
 import { DB } from "../firebase";
+import { theme } from "../theme";
+import {Button} from '../components';
 
 export default function FindRoute({ navigation }) {
   const [choosenSrcLabel, setChoosenSrcLabel] =
-    useState("출발지를 선택해주세요.");
+    useState("출발지 선택");
   const [choosenSrcIndex, setChoosenSrcIndex] = useState("0");
   const [choosenDestLabel, setChoosenDestLabel] =
-    useState("도착지를 선택해주세요.");
+    useState("도착지 선택");
   const [choosenDestIndex, setChoosenDestIndex] = useState("0");
 
   // 건물들 불러오기
@@ -66,7 +68,7 @@ export default function FindRoute({ navigation }) {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
       <View style={styles.container}>
         {/* 출발지 선택 */}
         <Text style={styles.pickerText}>출발지 선택</Text>
@@ -75,6 +77,14 @@ export default function FindRoute({ navigation }) {
           onValueChange={(itemValue, itemIndex) => {
             setChoosenSrcLabel(itemValue);
             setChoosenSrcIndex(itemIndex);
+          }}
+          style={{
+            height: 140,
+            marginBottom: 25,
+            marginHorizontal: 20,
+          }}
+          itemStyle={{
+            height: 140
           }}
         >
           {/* route 배열에서 하나씩 꺼내서 picker 찍기 */}
@@ -92,6 +102,14 @@ export default function FindRoute({ navigation }) {
             setChoosenDestLabel(itemValue);
             setChoosenDestIndex(itemIndex);
           }}
+          style={{
+            height: 140,
+            marginHorizontal: 20,
+            marginBottom: 25,
+          }}
+          itemStyle={{
+            height: 140
+          }}
         >
           {/* route 배열에서 하나씩 꺼내서 picker 찍기 */}
           {destBuilding.map((item, index) => {
@@ -101,27 +119,23 @@ export default function FindRoute({ navigation }) {
           })}
         </Picker>
         {/*Text to show selected picker*/}
-        <Text style={styles.text}> 출발지 : {choosenSrcLabel}</Text>
-        {/* <Text style={styles.text}>Selected Index: {choosenSrcIndex}</Text> */}
-        <Text style={styles.text}> 도착지 : {choosenDestLabel}</Text>
-        {/* <Text style={styles.text}>Selected Index: {choosenDestIndex}</Text> */}
+        <View style={styles.textBox}>
+          <Text style={styles.text}> 출발지  ▶︎  {choosenSrcLabel}</Text>
+          <Text style={styles.text}> 도착지  ▶︎  {choosenDestLabel}</Text>
+        </View> 
       </View>
 
       <View
         style={{
-          //position: "absolute",
-          //bottom: "10%",
+          width: '90%',
           alignSelf: "center",
-          backgroundColor: "#fff",
-          borderRadius: 25,
         }}
       >
         <Button
-          style={{}}
           title="경로 설정 완료"
           onPress={(params) => {
             if (param1 == param2) {
-              alert("출발지와 도착지를 다르게 설정해주세요.");
+              Alert.alert("경로 설정 오류","출발지와 도착지를 다르게 설정해주세요.");
             } else {
               console.log(param1, param2);
               navigation.navigate("FastRoute", {
@@ -130,7 +144,6 @@ export default function FindRoute({ navigation }) {
               });
             }
           }}
-          color="#00462A"
         />
       </View>
     </SafeAreaView>
@@ -142,14 +155,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column",
     alignContent: "center",
+    width: Dimensions.get('window').width,
+  },
+  textBox: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    width: 'auto',
+    alignSelf: 'center',
+    marginVertical: 10,
   },
   text: {
-    fontSize: 20,
-    alignSelf: "center",
+    fontSize: 22, 
+    marginBottom: 15, 
+    fontWeight: 'bold',
+    color: theme.greenText,
   },
   pickerText: {
-    fontSize: 22,
-    alignSelf: "center",
+    fontSize: 20,
+    alignSelf: "flex-start",
     fontWeight: "bold",
+    marginLeft: 25,
   },
 });

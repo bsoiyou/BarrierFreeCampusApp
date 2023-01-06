@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
-  Button,
+  TouchableOpacity,
   Alert,
   Text,
   Dimensions,
@@ -71,12 +71,14 @@ import {
   PosSci,
 } from "../../assets/images";
 import ImageViewer from "react-native-image-zoom-viewer";
+import { ThemeContext } from "styled-components";
 
 //빠른 길찾기 기본 화면
 
 const { width, height } = Dimensions.get("window");
 
 export default function FastRoute({ navigation, route }) {
+  const theme=useContext(ThemeContext);
   const { params } = route;
   //const pathIndex = params ? params.pathIndex : null;
   const [selectedImages, setSelectedImages] = useState();
@@ -233,17 +235,28 @@ export default function FastRoute({ navigation, route }) {
       <View
         style={{
           position: "absolute",
-          bottom: "10%",
+          bottom: "8%",
           alignSelf: "center",
           backgroundColor: "#fff",
           borderRadius: 25,
         }}
       >
-        <Button
-          title="지도로 돌아가기"
-          onPress={() => navigation.navigate("Map")}
-          color="#00462A"
-        />
+        {/* 지도로 돌아가기 버튼 */}
+        <TouchableOpacity
+            onPress={()=> navigation.navigate("Map")}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'white',
+              width: 200,
+            }}
+            >
+            <Text style={{
+              fontSize: 18,
+              color: theme.greenText,
+              fontWeight: 'bold'
+            }}>지도로 돌아가기</Text>
+          </TouchableOpacity>
       </View>
     </View>
   );

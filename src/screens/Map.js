@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import {
   StyleSheet,
   Text,
   View,
   Dimensions,
-  Button,
   ScrollView,
   Modal,
   SafeAreaView,
+  TouchableOpacity
 } from "react-native";
 import {
   addDoc,
@@ -29,8 +29,11 @@ import {
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
 import { FontAwesome5, AntDesign } from "@expo/vector-icons";
+import { ThemeConsumer, ThemeContext } from "styled-components";
 
 export default function Map({ navigation }) {
+  const theme=useContext(ThemeContext);
+
   // BottomSheet
   const [visible, setVisible] = useState(false);
   const [building, setBuilding] = useState(["건물 정보"]);
@@ -223,44 +226,28 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       </MapView>
 
       {/* 장애물 제보 버튼 */}
-      <View
-        style={{
-          position: "absolute",
-          bottom: "10%",
-          alignSelf: "center",
-          backgroundColor: "#fff",
-          borderColor: "#D30000",
-          borderWidth: 5,
-          borderRadius: 10,
-        }}
-      >
-        <Button
-          title="장애물 제보"
-          onPress={() => navigation.navigate("CreatePost")}
-          color="#D30000"
-        />
-      </View>
-
-      {/* 길찾기 버튼 */}
-      <View
-        style={{
-          position: "absolute",
-          top: "5%",
-          right: "5%",
-          //alignSelf: "center",
-          backgroundColor: "#fff",
-          borderColor: "#00462A",
-          borderWidth: 5,
-          borderRadius: 10,
-        }}
-      >
-        <Button
-          style={{}}
-          title="길찾기"
-          onPress={() => navigation.navigate("FindRoute")}
-          color="#00462A"
-        />
-      </View>
+      <TouchableOpacity
+          onPress={ ()=>
+            navigation.navigate('CreatePost')
+          }
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: theme.errText,
+            width: 110,
+            padding: 10,
+            borderRadius: 20,
+            position: 'absolute',
+            bottom: '7%',
+            right: 20,
+          }}
+          >
+        <Text style={{
+          fontSize: 17,
+          color: 'white',
+          fontWeight: 'bold',
+        }}>장애물 제보</Text>
+      </TouchableOpacity>
 
       {/* //Map 화면 전환 버튼
       <View
@@ -297,65 +284,90 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           <Text style={styles.modalText}>
             해당 장애물에 대해{"\n"} 더 알아보시겠습니까?{"\n"}
           </Text>
-          <Button
-            backgroundColor="#fff"
-            color="#00462A"
-            title="세부정보 확인하기"
-            onPress={() => {
-              setShowModal(!showModal);
-              // {
-              //   posts.map((item) => {
-              //   // <Marker
-              //   //   key={index}
-              //   //   coordinate={{
-              //   //     latitude: item.loc.latitude,
-              //   //     longitude: item.loc.longitude,
-              //   //   }}
-              //   //   title={item.title}
-              //   //   onPress={() => {
-              //   //     setVisible(!visible);
-              //   //     setBuilding(item);
-              //   //   }}
-              //   // >
-              //   //   <FontAwesome5 name="building" size={24} color="#AAAAAA" />
-              //   // </Marker>
-              //   if (item.id == marker.markerId) {
-              //     setPost(item);
-              //     console.log("post : ", post);
-              //   }
-              // });
-              // }
-              console.log(marker.postId);
-              console.log(post.id);
-              if (toString(marker.markerId) == toString(post.id)) {
-                navigation.navigate("MarkerPost", {
-                  //marker,
-                  // markerId: marker.markerId,
-                  createdAt: post.createdAt,
-                  endDate: post.endDate,
-                  postId: post.id,
-                  image: post.image,
-                  isEmer: post.isEmer,
-                  markerId: post.markerId,
-                  startDate: post.startDate,
-                  title: post.title,
-                  boardTitle: "장애물",
-                  // starUsers: marker.starUsers,
-                });
-              } else {
-                alert("해당 게시물을 확인할 수 없습니다.");
-              }
+          {/* 게시글 확인 버튼 */}
+          <TouchableOpacity
+            onPress={ ()=>{
+            setShowModal(!showModal);
+            // {
+            //   posts.map((item) => {
+            //   // <Marker
+            //   //   key={index}
+            //   //   coordinate={{
+            //   //     latitude: item.loc.latitude,
+            //   //     longitude: item.loc.longitude,
+            //   //   }}
+            //   //   title={item.title}
+            //   //   onPress={() => {
+            //   //     setVisible(!visible);
+            //   //     setBuilding(item);
+            //   //   }}
+            //   // >
+            //   //   <FontAwesome5 name="building" size={24} color="#AAAAAA" />
+            //   // </Marker>
+            //   if (item.id == marker.markerId) {
+            //     setPost(item);
+            //     console.log("post : ", post);
+            //   }
+            // });
+            // }
+            console.log(marker.postId);
+            console.log(post.id);
+            if (toString(marker.markerId) == toString(post.id)) {
+              navigation.navigate("MarkerPost", {
+                //marker,
+                // markerId: marker.markerId,
+                createdAt: post.createdAt,
+                endDate: post.endDate,
+                postId: post.id,
+                image: post.image,
+                isEmer: post.isEmer,
+                markerId: post.markerId,
+                startDate: post.startDate,
+                title: post.title,
+                boardTitle: "장애물",
+                // starUsers: marker.starUsers,
+              });
+            } else {
+              alert("해당 게시물을 확인할 수 없습니다.");
+            }
             }}
-          />
-          <Text style={{ fontSize: 10 }}>{"\n"}</Text>
-          <Button
-            backgroundColor="#fff"
-            color="#00462A"
-            title="지도로 돌아가기"
-            onPress={() => {
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: theme.d_btnBgColor,
+              width: 220,
+              padding: 15,
+              marginTop: 30,
+              borderRadius: 10,
+              marginBottom: 150,
+            }}
+            >
+            <Text style={{
+              fontSize: 18,
+              color: 'white',
+              fontWeight: '600',
+            }}>장애물 게시글 확인하기</Text>
+          </TouchableOpacity>
+
+          {/* 지도로 돌아가기 버튼 */}
+          <TouchableOpacity
+            onPress={()=> {
               setShowModal(!showModal);
             }}
-          />
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'white',
+              width: 200,
+              marginTop: 50,
+            }}
+            >
+            <Text style={{
+              fontSize: 18,
+              color: theme.greenText,
+              fontWeight: 'bold'
+            }}>지도로 돌아가기</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
 
@@ -370,32 +382,39 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       >
         {/*Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView style={styles.scrollView}
+          contentContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+            {/* 건물 이름 */}
             <Text
               style={{
                 textAlign: "center",
-                padding: 20,
-                fontSize: 25,
+                fontSize: 26,
+                color: 'black',
+                fontWeight: 'bold',
+                marginTop: 30,
               }}
             >
               {building.title}
             </Text>
+            {/* 건물 설명 */}
             <Text
               style={{
                 textAlign: "center",
-                padding: 25,
-                fontSize: 20,
+                margin: 25,
+                fontSize: 19,
+                lineHeight: 40,
               }}
             >
               {building.description1}
               {"\n"} {building.description2}
               {"\n"} {building.description3}
             </Text>
-            <Button
-              backgroundColor="#fff"
-              color="#00462A"
-              title="게시판으로 이동"
-              onPress={() => {
+            {/* 게시판 이동 버튼 */}
+            <TouchableOpacity
+              onPress={ ()=>{
                 setVisible(!visible);
                 // 전체 게시판
                 if (building.boardId == "All") {
@@ -405,7 +424,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                     starUsers: building.starUsers,
                   });
                 }
-                // 건물 게시판starUser
+                // 건물 게시판
                 else {
                   navigation.navigate("Board", {
                     boardId: building.boardId,
@@ -414,12 +433,24 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                   });
                 }
               }}
-            ></Button>
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: theme.d_btnBgColor,
+                width: 200,
+                padding: 15,
+                borderRadius: 10
+              }}
+              >
+              <Text style={{
+                fontSize: 18,
+                color: 'white',
+                fontWeight: '600'
+              }}>게시판으로 이동</Text>
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </BottomSheet>
-      {/* );
-      })} */}
     </View>
   );
 }
@@ -453,23 +484,22 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: "#fff",
-    marginHorizontal: 20,
+    width: '90%',
   },
   text: {
     fontSize: 42,
   },
   modalText: {
-    fontSize: 20,
+    fontSize: 22,
     textAlign: "center",
-    margin: 5,
+    lineHeight: 40,
+    fontWeight: '600',
+    marginTop: 100,
   },
   modal: {
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
-    padding: 100,
     justifyContent: "center",
-    // height: "50%",
-    // width: "80%",
   },
 });

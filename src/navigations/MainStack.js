@@ -116,6 +116,35 @@ const MainStack = () => {
               </Text>
             </TouchableOpacity>
           ),
+          headerRight: () => (
+            // 길 찾기 버튼
+            <TouchableOpacity
+              style={{
+                width: 40,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                marginHorizontal: 4,
+              }}
+              onPress={() => navigation.navigate("FindRoute")}
+            >
+              <Ionicons
+                name="arrow-redo-sharp"
+                size={26}
+                style={{
+                  color: theme.headerTitle,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: theme.headerTitle,
+                }}
+              >
+                길 찾기
+              </Text>
+            </TouchableOpacity>
+          )
         })}
       />
 
