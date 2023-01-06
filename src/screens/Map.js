@@ -8,7 +8,7 @@ import {
   ScrollView,
   Modal,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import {
   addDoc,
@@ -32,7 +32,7 @@ import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import { ThemeConsumer, ThemeContext } from "styled-components";
 
 export default function Map({ navigation }) {
-  const theme=useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
 
   // BottomSheet
   const [visible, setVisible] = useState(false);
@@ -73,53 +73,129 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
   }
   //게시판 목록 배열 상태변수
   const [boards, setBoards] = useState([]);
+  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const list1 = [];
+  const list2 = [];
   // 마운트 될 때 동작
   // board collection 모든 문서 불러오기
   useEffect(() => {
-    const q = query(collection(DB, "boards"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const list = [];
-      querySnapshot.forEach((doc) => {
-        list.push(doc.data());
-      });
-      //boards 변수 업데이트
-      setBoards(list);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const [post, setPost] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const list = [];
-  useEffect(() => {
     {
-      boards.map((item) => {
-        const q = query(
-          collection(DB, "boards", item.boardId, "posts"),
-          orderBy("markerId")
-        );
-
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            list.push(doc.data());
-          });
-          //console.log(list);
-          setPosts(list);
-          console.log("posts : ", posts);
+      const q1 = query(collection(DB, "boards"));
+      const unsubscribe1 = onSnapshot(q1, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          list1.push(doc.data());
         });
-        return () => unsubscribe();
+        //boards 변수 업데이트
+        setBoards(list1);
+        console.log("boards render완료");
       });
+      loadPosts();
+
+      return () => unsubscribe1();
     }
   }, []);
 
-  useEffect(() => {
-    posts.map((item) => {
-      if (item.markerId == marker.markerId) {
-        setPost(item);
-        console.log("post : ", post);
-      }
+  // const list = [];
+  // useEffect(() => {
+  //   const q = query(collectionGroup(DB, "posts"), orderBy("createdAt", "desc"));
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     let ind = 0;
+  //     querySnapshot.forEach((doc) => {
+  //       list.push(doc.data());
+  //       // 중복글인지 체크
+  //       list.map((item) => {
+  //         // post 하나씩 가져와서 제목이 같으면 list에서 pop
+  //         if (item.title == doc.data().title && list.indexOf(item) !== ind) {
+  //           list.pop();
+  //           ind--;
+  //         }
+  //         if (item.markerId == null) {
+  //           list.pop();
+  //           ind--;
+  //         }
+  //       });
+  //       ind++;
+  //     });
+  //     setPosts(list);
+  //     console.log("boards+posts render완료");
+  //     console.log("posts : ", posts);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
+  // const loadBoard = () => {
+  //   {
+  //     const q1 = query(collection(DB, "boards"));
+  //     const unsubscribe1 = onSnapshot(q1, (querySnapshot) => {
+  //       querySnapshot.forEach((doc) => {
+  //         list1.push(doc.data());
+  //       });
+  //       //boards 변수 업데이트
+  //       setBoards(list1);
+  //       console.log("boards render완료");
+  //     });
+  //     return () => unsubscribe1();
+  //   }
+  // };
+
+  const loadPosts = () => {
+    boards.map((item1) => {
+      const q2 = query(
+        collection(DB, "boards", item1.boardId, "posts"),
+        orderBy("markerId")
+      );
+
+      const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          list2.push(doc.data());
+        });
+        //console.log(list);
+        setPosts(list2);
+        console.log("posts : ", posts);
+      });
+      return () => unsubscribe2();
     });
-  });
+  };
+
+  const loadPost = () => {
+    {
+      posts.map((item2) => {
+        if (item2.markerId == marker.markerId) {
+          setPost(item2);
+          console.log("post : ", post);
+        }
+      });
+    }
+  };
+  // useEffect(() => {
+  //   {
+  //     boards.map((item1) => {
+  //       const q2 = query(
+  //         collection(DB, "boards", item1.boardId, "posts"),
+  //         orderBy("markerId")
+  //       );
+
+  //       const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
+  //         querySnapshot.forEach((doc) => {
+  //           list2.push(doc.data());
+  //         });
+  //         //console.log(list);
+  //         setPosts(list2);
+  //         console.log("posts : ", posts);
+  //       });
+  //       return () => unsubscribe2();
+  //     });
+  //   }
+  //   {
+  //     posts.map((item2) => {
+  //       if (item2.markerId == marker.markerId) {
+  //         setPost(item2);
+  //         console.log("post : ", post);
+  //       }
+  //     });
+  //   }
+  // }, []);
 
   // // 장애물 posts를 받아올 변수 설정.
   //const [post, setPost] = useState([]);
@@ -197,6 +273,9 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
               onPress={() => {
                 setShowModal(!showModal);
                 setMarker(item);
+                //loadBoard();
+                loadPosts();
+                loadPost();
               }}
             >
               <AntDesign name="warning" size={24} color="#D30000" />
@@ -227,26 +306,28 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
 
       {/* 장애물 제보 버튼 */}
       <TouchableOpacity
-          onPress={ ()=>
-            navigation.navigate('CreatePost')
-          }
+        onPress={() => navigation.navigate("CreatePost")}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: theme.errText,
+          width: 110,
+          padding: 10,
+          borderRadius: 20,
+          position: "absolute",
+          bottom: "7%",
+          right: 20,
+        }}
+      >
+        <Text
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: theme.errText,
-            width: 110,
-            padding: 10,
-            borderRadius: 20,
-            position: 'absolute',
-            bottom: '7%',
-            right: 20,
+            fontSize: 17,
+            color: "white",
+            fontWeight: "bold",
           }}
-          >
-        <Text style={{
-          fontSize: 17,
-          color: 'white',
-          fontWeight: 'bold',
-        }}>장애물 제보</Text>
+        >
+          장애물 제보
+        </Text>
       </TouchableOpacity>
 
       {/* //Map 화면 전환 버튼
@@ -286,54 +367,58 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           </Text>
           {/* 게시글 확인 버튼 */}
           <TouchableOpacity
-            onPress={ ()=>{
-            setShowModal(!showModal);
-            // {
-            //   posts.map((item) => {
-            //   // <Marker
-            //   //   key={index}
-            //   //   coordinate={{
-            //   //     latitude: item.loc.latitude,
-            //   //     longitude: item.loc.longitude,
-            //   //   }}
-            //   //   title={item.title}
-            //   //   onPress={() => {
-            //   //     setVisible(!visible);
-            //   //     setBuilding(item);
-            //   //   }}
-            //   // >
-            //   //   <FontAwesome5 name="building" size={24} color="#AAAAAA" />
-            //   // </Marker>
-            //   if (item.id == marker.markerId) {
-            //     setPost(item);
-            //     console.log("post : ", post);
-            //   }
-            // });
-            // }
-            console.log(marker.postId);
-            console.log(post.id);
-            if (toString(marker.markerId) == toString(post.id)) {
-              navigation.navigate("MarkerPost", {
-                //marker,
-                // markerId: marker.markerId,
-                createdAt: post.createdAt,
-                endDate: post.endDate,
-                postId: post.id,
-                image: post.image,
-                isEmer: post.isEmer,
-                markerId: post.markerId,
-                startDate: post.startDate,
-                title: post.title,
-                boardTitle: "장애물",
-                // starUsers: marker.starUsers,
-              });
-            } else {
-              alert("해당 게시물을 확인할 수 없습니다.");
-            }
+            onPress={() => {
+              setShowModal(!showModal);
+              // {
+              //   posts.map((item) => {
+              //   // <Marker
+              //   //   key={index}
+              //   //   coordinate={{
+              //   //     latitude: item.loc.latitude,
+              //   //     longitude: item.loc.longitude,
+              //   //   }}
+              //   //   title={item.title}
+              //   //   onPress={() => {
+              //   //     setVisible(!visible);
+              //   //     setBuilding(item);
+              //   //   }}
+              //   // >
+              //   //   <FontAwesome5 name="building" size={24} color="#AAAAAA" />
+              //   // </Marker>
+              //   if (item.id == marker.markerId) {
+              //     setPost(item);
+              //     console.log("post : ", post);
+              //   }
+              // });
+              // }
+
+              //loadBoard();
+              //loadPosts();
+              loadPost();
+              console.log(marker.postId);
+              console.log(post.id);
+              if (toString(marker.markerId) == toString(post.id)) {
+                navigation.navigate("MarkerPost", {
+                  //marker,
+                  // markerId: marker.markerId,
+                  createdAt: post.createdAt,
+                  endDate: post.endDate,
+                  postId: post.id,
+                  image: post.image,
+                  isEmer: post.isEmer,
+                  markerId: post.markerId,
+                  startDate: post.startDate,
+                  title: post.title,
+                  boardTitle: "장애물",
+                  // starUsers: marker.starUsers,
+                });
+              } else {
+                alert("해당 게시물을 확인할 수 없습니다.");
+              }
             }}
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
               backgroundColor: theme.d_btnBgColor,
               width: 220,
               padding: 15,
@@ -341,32 +426,40 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
               borderRadius: 10,
               marginBottom: 150,
             }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                color: "white",
+                fontWeight: "600",
+              }}
             >
-            <Text style={{
-              fontSize: 18,
-              color: 'white',
-              fontWeight: '600',
-            }}>장애물 게시글 확인하기</Text>
+              장애물 게시글 확인하기
+            </Text>
           </TouchableOpacity>
 
           {/* 지도로 돌아가기 버튼 */}
           <TouchableOpacity
-            onPress={()=> {
+            onPress={() => {
               setShowModal(!showModal);
             }}
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'white',
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "white",
               width: 200,
               marginTop: 50,
             }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme.greenText,
+                fontWeight: "bold",
+              }}
             >
-            <Text style={{
-              fontSize: 18,
-              color: theme.greenText,
-              fontWeight: 'bold'
-            }}>지도로 돌아가기</Text>
+              지도로 돌아가기
+            </Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -382,18 +475,20 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       >
         {/*Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
-          <ScrollView style={styles.scrollView}
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {/* 건물 이름 */}
             <Text
               style={{
                 textAlign: "center",
                 fontSize: 26,
-                color: 'black',
-                fontWeight: 'bold',
+                color: "black",
+                fontWeight: "bold",
                 marginTop: 30,
               }}
             >
@@ -414,7 +509,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
             </Text>
             {/* 게시판 이동 버튼 */}
             <TouchableOpacity
-              onPress={ ()=>{
+              onPress={() => {
                 setVisible(!visible);
                 // 전체 게시판
                 if (building.boardId == "All") {
@@ -434,19 +529,23 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                 }
               }}
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: "center",
+                alignItems: "center",
                 backgroundColor: theme.d_btnBgColor,
                 width: 200,
                 padding: 15,
-                borderRadius: 10
+                borderRadius: 10,
               }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "white",
+                  fontWeight: "600",
+                }}
               >
-              <Text style={{
-                fontSize: 18,
-                color: 'white',
-                fontWeight: '600'
-              }}>게시판으로 이동</Text>
+                게시판으로 이동
+              </Text>
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -484,7 +583,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: "#fff",
-    width: '90%',
+    width: "90%",
   },
   text: {
     fontSize: 42,
@@ -493,7 +592,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: "center",
     lineHeight: 40,
-    fontWeight: '600',
+    fontWeight: "600",
     marginTop: 100,
   },
   modal: {
