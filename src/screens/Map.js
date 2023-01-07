@@ -93,6 +93,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       loadPosts();
 
       return () => unsubscribe1();
+      loadPosts();
     }
   }, []);
 
@@ -156,9 +157,6 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       });
       return () => unsubscribe2();
     });
-  };
-
-  const loadPost = () => {
     {
       posts.map((item2) => {
         if (item2.markerId == marker.markerId) {
@@ -167,6 +165,10 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
         }
       });
     }
+  };
+
+  const loadPost = () => {
+    console.log("=========================================");
   };
   // useEffect(() => {
   //   {
@@ -276,6 +278,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                 //loadBoard();
                 loadPosts();
                 loadPost();
+                loadPosts();
               }}
             >
               <AntDesign name="warning" size={24} color="#D30000" />
@@ -321,7 +324,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       >
         <Text
           style={{
-            fontSize: 17,
+            fontSize: 15,
             color: "white",
             fontWeight: "bold",
           }}
