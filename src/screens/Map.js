@@ -96,6 +96,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       //loadPosts();
 
       return () => unsubscribe1();
+      loadPosts();
     }
   }, []);
 
@@ -144,36 +145,28 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
 
   // markers collection에서 모든 문서 읽어와서 marks 배열에 저장
 
+      const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          list2.push(doc.data());
+        });
+        //console.log(list);
+        setPosts(list2);
+        console.log("posts : ", posts);
+      });
+      return () => unsubscribe2();
+    });
+  };
 
-  // const loadPosts = () => {
-  //   boards.map((item1) => {
-  //     const q2 = query(
-  //       collection(DB, "boards", item1.boardId, "posts"),
-  //       orderBy("markerId")
-  //     );
-
-  //     const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         list2.push(doc.data());
-  //       });
-  //       //console.log(list);
-  //       setPosts(list2);
-  //       console.log("posts : ", posts);
-  //     });
-  //     return () => unsubscribe2();
-  //   });
-  // };
-
-  // const loadPost = () => {
-  //   {
-  //     posts.map((item2) => {
-  //       if (item2.id == marker.postId) {
-  //         setPost(item2);
-  //         console.log("post : ", post);
-  //       }
-  //     });
-  //   }
-  // };
+  const loadPost = () => {
+    {
+      posts.map((item2) => {
+        if (item2.markerId == marker.markerId) {
+          setPost(item2);
+          console.log("post : ", post);
+        }
+      });
+    }
+  };
   // useEffect(() => {
   //   {
   //     boards.map((item1) => {
@@ -280,21 +273,8 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                 setShowModal(!showModal);
                 setMarker(item);
                 //loadBoard();
-                // getPosts()
-                // .then((list3)=> {
-                //   console.log(list3);
-                //   list3.map((item2) => {
-                //     console.log('2.5');
-                //     if (item2.id == marker.postId) {
-                //       setPost(item2);
-                //       console.log("post : ", post);
-                //     }
-                //   });
-                //   console.log('222');
-                // })
-                // .catch((err)=> {
-                //   console.log(err.message);
-                // });
+                loadPosts();
+                loadPost();
               }}
             >
               <AntDesign name="warning" size={24} color="#D30000" />
@@ -340,7 +320,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
       >
         <Text
           style={{
-            fontSize: 17,
+            fontSize: 15,
             color: "white",
             fontWeight: "bold",
           }}
