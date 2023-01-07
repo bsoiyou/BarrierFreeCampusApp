@@ -63,6 +63,7 @@ export default function SetBoard({navigation, route}) {
       updateDoc(curDocRef, {
         image: url,
       });
+      //!!marker도 img 업데이트해주기
     })  
     .catch((error) => {
       console.log(error.message);
@@ -82,7 +83,7 @@ const uploadPost = async ()=>{
       const curUser=getCurUser();
 
       //marker 생성 함수 호출 후 markerId 받기
-      const markerId = await createMarker(route.params.lat, route.params.long);
+      const markerId = await createMarker(route.params.lat, route.params.long, route.params.title, route.params.content, route.params.image);
 
       // selected 배열 원소 각각 업로드 - 반복문
       selected.map(async (board)=>{

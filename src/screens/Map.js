@@ -25,6 +25,7 @@ import {
   Firestore,
   getDoc,
   orderBy,
+  getDocs,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
@@ -44,7 +45,7 @@ export default function Map({ navigation }) {
 
   // Modal
   const [showModal, setShowModal] = useState(false);
-  const [marker, setMarker] = useState(["장애물 정보"]);
+  const [marker, setMarker] = useState({});
 
   // 장애물 Markers
   const [marks, setMarks] = useState([]);
@@ -57,6 +58,8 @@ export default function Map({ navigation }) {
       querySnapshot.forEach((doc) => {
         list.push({
           title: doc.data().title,
+          content: doc.data().content,
+          image: doc.data().image,
           markerId: doc.data().markerId,
           postId: doc.data().postId,
           loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
@@ -87,10 +90,10 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           list1.push(doc.data());
         });
         //boards 변수 업데이트
-        setBoards(list1);
+        setBoards(list1); 
         console.log("boards render완료");
       });
-      loadPosts();
+      //loadPosts();
 
       return () => unsubscribe1();
     }
@@ -139,35 +142,38 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
   //   }
   // };
 
-  const loadPosts = () => {
-    boards.map((item1) => {
-      const q2 = query(
-        collection(DB, "boards", item1.boardId, "posts"),
-        orderBy("markerId")
-      );
+  // markers collection에서 모든 문서 읽어와서 marks 배열에 저장
 
-      const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          list2.push(doc.data());
-        });
-        //console.log(list);
-        setPosts(list2);
-        console.log("posts : ", posts);
-      });
-      return () => unsubscribe2();
-    });
-  };
 
-  const loadPost = () => {
-    {
-      posts.map((item2) => {
-        if (item2.markerId == marker.markerId) {
-          setPost(item2);
-          console.log("post : ", post);
-        }
-      });
-    }
-  };
+  // const loadPosts = () => {
+  //   boards.map((item1) => {
+  //     const q2 = query(
+  //       collection(DB, "boards", item1.boardId, "posts"),
+  //       orderBy("markerId")
+  //     );
+
+  //     const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
+  //       querySnapshot.forEach((doc) => {
+  //         list2.push(doc.data());
+  //       });
+  //       //console.log(list);
+  //       setPosts(list2);
+  //       console.log("posts : ", posts);
+  //     });
+  //     return () => unsubscribe2();
+  //   });
+  // };
+
+  // const loadPost = () => {
+  //   {
+  //     posts.map((item2) => {
+  //       if (item2.id == marker.postId) {
+  //         setPost(item2);
+  //         console.log("post : ", post);
+  //       }
+  //     });
+  //   }
+  // };
   // useEffect(() => {
   //   {
   //     boards.map((item1) => {
@@ -274,8 +280,21 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                 setShowModal(!showModal);
                 setMarker(item);
                 //loadBoard();
-                loadPosts();
-                loadPost();
+                // getPosts()
+                // .then((list3)=> {
+                //   console.log(list3);
+                //   list3.map((item2) => {
+                //     console.log('2.5');
+                //     if (item2.id == marker.postId) {
+                //       setPost(item2);
+                //       console.log("post : ", post);
+                //     }
+                //   });
+                //   console.log('222');
+                // })
+                // .catch((err)=> {
+                //   console.log(err.message);
+                // });
               }}
             >
               <AntDesign name="warning" size={24} color="#D30000" />
@@ -394,27 +413,17 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
 
               //loadBoard();
               //loadPosts();
-              loadPost();
-              console.log(marker.postId);
-              console.log(post.id);
-              if (toString(marker.markerId) == toString(post.id)) {
+              //getPosts();
+              //console.log(marker.postId);
+              //console.log('1');
+              //console.log(post.id);
+              //if (toString(marker.markerId) == toString(post.id)) {
+                
                 navigation.navigate("MarkerPost", {
-                  //marker,
-                  // markerId: marker.markerId,
-                  createdAt: post.createdAt,
-                  endDate: post.endDate,
-                  postId: post.id,
-                  image: post.image,
-                  isEmer: post.isEmer,
-                  markerId: post.markerId,
-                  startDate: post.startDate,
-                  title: post.title,
-                  boardTitle: "장애물",
-                  // starUsers: marker.starUsers,
+                  title: marker.title,
+                  content: marker.content,
+                  image: marker.image,
                 });
-              } else {
-                alert("해당 게시물을 확인할 수 없습니다.");
-              }
             }}
             style={{
               justifyContent: "center",

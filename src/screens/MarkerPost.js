@@ -78,7 +78,7 @@ const HeaderInfo = styled.View`
 // postId가 Image정보를 담은 post.
 // markerId가 개별 게시물 구분.
 
-const MarkerRead = ({ navigation, route }) => {
+const MarkerPost = ({ navigation, route }) => {
   const theme = useContext(ThemeContext);
 
   //user 불러오기
@@ -167,55 +167,6 @@ const MarkerRead = ({ navigation, route }) => {
   return (
     <ScrollView>
       <Container>
-        {/* 헤더 */}
-        <HeaderText>
-          <StyledText>익명의 이화인</StyledText>
-          <StyledText
-            style={{
-              fontWeight: "normal",
-              fontSize: 15,
-            }}
-          >
-            {TimeStamp(route.params.createdAt)}
-          </StyledText>
-        </HeaderText>
-
-        {/* 긴급, 기간 */}
-        <HeaderInfo style={{ marginVertical: -20 }}>
-          {/* 긴급 */}
-          <View
-            style={{
-              width: "auto",
-              height: "auto",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignContent: "flex-start",
-            }}
-          >
-            <Checkbox value={route.params.isEmer} disabled={true} />
-            <Text
-              style={{
-                marginLeft: 12,
-                fontSize: 15,
-                color: theme.errText,
-                textAlign: "center",
-                fontWeight: "bold",
-              }}
-            >
-              긴급
-            </Text>
-          </View>
-          {/* 기간 */}
-          {/* 미정일 경우 미정으로 표시 */}
-          {route.params.startDate !== "" ? (
-            <StyledText style={{ fontSize: 13 }}>
-              {route.params.startDate} ~ {route.params.endDate}
-            </StyledText>
-          ) : (
-            <StyledText style={{ fontSize: 13 }}>기간 미정</StyledText>
-          )}
-        </HeaderInfo>
-
         {/* 제목 */}
         <StyledInput
           label="title"
@@ -243,4 +194,4 @@ const MarkerRead = ({ navigation, route }) => {
   );
 };
 
-export default MarkerRead;
+export default MarkerPost;
