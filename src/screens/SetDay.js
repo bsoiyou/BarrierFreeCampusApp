@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, useContext  } from 'react';
 import styled from 'styled-components';
-import {Text, Button, View} from 'react-native';
+import {Text,  View} from 'react-native';
 import {createPost, getCurUser} from '../firebase';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {storage, DB} from "../firebase";
-import { getFirestore, collection, addDoc, setDoc, doc,updateDoc  } from "firebase/firestore";
+import { doc,updateDoc  } from "firebase/firestore";
 import { ThemeContext } from 'styled-components';
-import { TouchableOpacity, Alert, Dimensions} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity, Alert} from 'react-native';
 import {ProgressContext} from '../contexts';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';

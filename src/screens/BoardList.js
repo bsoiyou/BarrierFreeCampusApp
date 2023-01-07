@@ -1,19 +1,12 @@
-import React, { useState, useEffect, useContext, useLayoutEffect } from "react";
-import styled, { ThemeContext, withTheme } from "styled-components";
-import { Button } from "../components";
-import { TouchableOpacity, Text, FlatList, Dimensions } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import styled, { ThemeContext} from "styled-components";
+import { FlatList, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { DB, getCurUser } from "../firebase";
 import {
   collection,
-  getDoc,
-  orderBy,
   onSnapshot,
   query,
-  doc,
-  updateDoc,
-  arrayRemove,
-  arrayUnion,
 } from "firebase/firestore";
 
 const { width } = Dimensions.get("window");

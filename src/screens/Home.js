@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { Image, Button, TimeStamp } from '../components';
+import { Image, TimeStamp } from '../components';
 import { TouchableOpacity, View, Dimensions, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { DB, getCurUser } from '../firebase';

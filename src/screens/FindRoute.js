@@ -9,15 +9,13 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import {
-  addDoc,
   collection,
   query,
   onSnapshot,
-  collectionGroup,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { theme } from "../theme";
-import { Button, ErrorMsg } from "../components";
+import { Button } from "../components";
 
 export default function FindRoute({ navigation }) {
   const [choosenSrcLabel, setChoosenSrcLabel] = useState("조형예술관");
@@ -62,11 +60,9 @@ export default function FindRoute({ navigation }) {
   const [param2, setParam2] = useState(0);
   useEffect(() => {
     if (choosenSrcIndex > choosenDestIndex) {
-      ///console.log(pathIndex);
       setParam1(choosenDestIndex);
       setParam2(choosenSrcIndex);
     } else {
-      //console.log(pathIndex);
       setParam1(choosenSrcIndex);
       setParam2(choosenDestIndex);
     }
@@ -123,7 +119,6 @@ export default function FindRoute({ navigation }) {
             );
           })}
         </Picker>
-        {/*Text to show selected picker*/}
         <View style={styles.textBox}>
           <Text style={styles.text}> 출발지 ▶︎ {choosenSrcLabel}</Text>
           <Text style={styles.text}> 도착지 ▶︎ {choosenDestLabel}</Text>

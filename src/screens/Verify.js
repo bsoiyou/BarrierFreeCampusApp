@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import styled, {ThemeContext} from 'styled-components';
+import styled from 'styled-components';
 import { Button, Image } from '../components';
 import { auth } from '../firebase';
 import { sendEmailVerification } from "firebase/auth";

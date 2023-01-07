@@ -29,36 +29,18 @@ const Colors = {
     inputNotFocused: Colors.mid_grey,
   
     //Image
-    // imgBtnBg: Colors.main,
-    // imgBtnIcon: Colors.white,
     imgBg: Colors.light_grey,
     imgBtn: Colors.ewha_green,
-   
-    //Walkthrough
-    // wText: Colors.white,
-    // wBgColor: Colors.main,
-    // wImgBgColor: Colors.white,
-  
-    // //Verify
-    // bigText: Colors.red,
-    // smallText: Colors.main,
-  
 
     // SideMenuBar
     activeMenuText: Colors.ewha_green,
-    // menuText: Colors.black,
 
     //Header
     headerTitle: Colors.ewha_green,
     headerGrey: Colors.light_grey,
-  
-    // //Spinner
-    // spinnerBg: Colors.black,
-    // spinnerIndicator: Colors.white, 
 
     //List
     lstContainer: Colors.ewha_green,
     lstBorder: Colors.light_grey,
     lstContent: Colors.mid_grey,
-  
   }

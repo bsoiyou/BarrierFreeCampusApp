@@ -1,12 +1,9 @@
 import {Text} from 'react-native';
-import React, {useState, useEffect, useRef, useLayoutEffect, useContext } from 'react';
+import React, {useState, useEffect, useLayoutEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Button, ErrorMsg } from '../components';
 import { ThemeContext } from 'styled-components';
-import { TouchableOpacity, View, Alert, Platform, ScrollView, Dimensions} from 'react-native';
+import { TouchableOpacity, Dimensions} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons';
-import {ProgressContext} from '../contexts';
 
 
 const Container = styled.View`
@@ -29,13 +26,8 @@ const StyledImg= styled.Image`
 export default function AddImage({navigation, route}) {
 
   const theme=useContext(ThemeContext);
-
-  const [errMsg, setErrMsg] =useState('');
   const [disabled, setDisabled] = useState(true);
   const [image, setImage] = useState(null);
-
-  // const {spinner} = useContext(ProgressContext);
-
 
    //사진 버튼 클릭 - 이미지 선택
   const pickImage = async () => {
@@ -94,14 +86,11 @@ export default function AddImage({navigation, route}) {
 
 return (
   <Container>
-    {/* 에러 메시지 */}
-    {/* <ErrorMsg msg={errMsg}/> */}
 
     {/* 이미지 */}
     <StyledImg source={{ uri: image }} />
 
     <TouchableOpacity
-      // 카메라 버튼으로 수정
       onPress={pickImage}
       style={{
         justifyContent: 'center',

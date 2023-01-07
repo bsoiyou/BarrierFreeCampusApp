@@ -9,10 +9,7 @@ import {
   SafeAreaView,
   Image,
 } from "react-native";
-import { roundToNearestPixel } from "react-native/Libraries/Utilities/PixelRatio";
-//import SwiperWithChildren from "./SwiperWithChildren";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
-//import ImageViewer from "react-native-image-zoom-viewer";
 import {
   ArtAud,
   ArtBus,
@@ -70,7 +67,6 @@ import {
   MusSci,
   PosSci,
 } from "../../assets/images";
-import ImageViewer from "react-native-image-zoom-viewer";
 import { ThemeContext } from "styled-components";
 
 //빠른 길찾기 기본 화면
@@ -80,7 +76,6 @@ const { width, height } = Dimensions.get("window");
 export default function FastRoute({ navigation, route }) {
   const theme=useContext(ThemeContext);
   const { params } = route;
-  //const pathIndex = params ? params.pathIndex : null;
   const [selectedImages, setSelectedImages] = useState();
   useEffect(() => {
     switch (`${route.params.pathIndex1}` + `${route.params.pathIndex2}`) {

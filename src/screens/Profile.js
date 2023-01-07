@@ -1,15 +1,11 @@
 import {Button} from '../components';
 import {UserContext} from '../contexts';
-//import {UserContext, ProgressContext} from '../contexts';
-import {Alert, Text, View, TextInput} from 'react-native';
+import {Alert, View, TextInput} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import {validateEmail, removeWhitespace} from '../util';
-import {auth, createUser, getCurUser, DB} from '../firebase';
+import {auth, getCurUser, DB} from '../firebase';
 import {signOut, deleteUser} from 'firebase/auth';
 import { doc, getDoc, deleteDoc,  } from "firebase/firestore";
-
-
 
 
 const Container = styled.View`

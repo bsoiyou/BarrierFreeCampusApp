@@ -7,7 +7,7 @@ import React, {
   useContext,
 } from "react";
 import styled from "styled-components";
-import { Button, ErrorMsg } from "../components";
+import { ErrorMsg } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ThemeContext } from "styled-components";
 import {
@@ -15,12 +15,9 @@ import {
   View,
   Alert,
   ScrollView,
-  Dimensions,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
-import { Ionicons } from "@expo/vector-icons";
-import { ProgressContext } from "../contexts";
 
 const Container = styled.View`
   flex: 1;
@@ -69,8 +66,6 @@ export default function CreatePost({ navigation, route }) {
   const [isEmer, setIsEmer] = useState(false);
 
   const refContent = useRef(null);
-
-  // const {spinner} = useContext(ProgressContext);
 
   //title 변경
   const _handleTitleChange = (title) => {

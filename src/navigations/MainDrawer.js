@@ -1,8 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer'; 
-import styled, { ThemeContext, withTheme } from 'styled-components';
+import { ThemeContext } from 'styled-components';
 import { Ionicons } from '@expo/vector-icons';
-import { Image, Button } from '../components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {Text, Alert, Modal, StyleSheet, View, Dimensions, Pressable} from 'react-native';
 import {
@@ -15,7 +14,7 @@ import {
   NoticePost
 } from '../screens';
 import { DB, getCurUser } from '../firebase';
-import { collectionGroup, query, where, getDocs, onSnapshot, orderBy, limit, getDoc, doc, updateDoc } from "firebase/firestore";
+import { collectionGroup, query, where, onSnapshot, orderBy, limit, getDoc, doc, updateDoc } from "firebase/firestore";
 
 const Drawer = createDrawerNavigator();
 
@@ -32,7 +31,6 @@ export default function MainDrawer() {
 
   // 마운트될 때 동작
   useEffect(() => {
-
     //user의 lastPost와 현재 가장 최신 글 비교하는 함수
     const lastPhotoFunc = async () => {
       const userRef = doc(DB, 'users', `${curUser.uid}`);
@@ -67,13 +65,10 @@ export default function MainDrawer() {
     return () => unsubscribe();
   }, []);
 
-
   return (
     <Drawer.Navigator 
     initialRouteName='Home'
     backBehavior='order'
-
-    
     screenOptions={{
       //header 설정
       headerTitleStyle: {
@@ -94,6 +89,7 @@ export default function MainDrawer() {
     }}>
         
     {/* screens */}
+     {/* 화면 1 */}
       <Drawer.Screen 
       name='Home' 
       component={Home} 
@@ -176,6 +172,7 @@ export default function MainDrawer() {
         )
       })}
      />
+      {/* 화면 2 */}
       <Drawer.Screen 
       name='Notice' 
       component={Notice} 
@@ -183,6 +180,7 @@ export default function MainDrawer() {
         drawerLabel: '공지사항',
         title: '공지사항',
       }}/>
+      {/* 화면 3 */}
       <Drawer.Screen 
       name='Profile' 
       component={Profile} 
@@ -190,6 +188,7 @@ export default function MainDrawer() {
         drawerLabel: '내 정보',
         title: '내 정보',
       }}/>
+      {/* 화면 4 */}
       <Drawer.Screen 
       name='MyPost' 
       component={MyPost} 
@@ -198,6 +197,7 @@ export default function MainDrawer() {
         title: '내가 쓴 글',
         drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/>
+      {/* 화면 5 */}
       <Drawer.Screen 
       name='MyPoint' 
       component={MyPoint} 
@@ -206,6 +206,7 @@ export default function MainDrawer() {
         title: '포인트 현황',
         drawerLabelStyle: {fontSize: 17, marginLeft: 10},
       }}/>
+      {/* 화면 6 */}
       <Drawer.Screen 
       name='FindPw' 
       component={FindPw} 
@@ -214,6 +215,7 @@ export default function MainDrawer() {
         drawerItemStyle: { height: 0 },
         headerShown: true
       }}/>
+      {/* 화면 7 */}
       <Drawer.Screen 
       name='NoticePost' 
       component={NoticePost} 

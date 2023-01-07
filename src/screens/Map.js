@@ -7,50 +7,39 @@ import {
   Dimensions,
   ScrollView,
   Modal,
-  SafeAreaView,
   TouchableOpacity,
 } from "react-native";
 import {
-  addDoc,
   collection,
   query,
   onSnapshot,
   GeoPoint,
-  getGeoPoint,
-  collectionGroup,
-  document,
-  where,
-  doc,
-  DocumentSnapshot,
-  Firestore,
-  getDoc,
-  orderBy,
-  getDocs,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 import { BottomSheet } from "react-native-btr";
 import { FontAwesome5, AntDesign } from "@expo/vector-icons";
-import { ThemeConsumer, ThemeContext } from "styled-components";
+import { ThemeContext } from "styled-components";
 
 export default function Map({ navigation }) {
   const theme = useContext(ThemeContext);
 
   // BottomSheet
   const [visible, setVisible] = useState(false);
-  const [building, setBuilding] = useState(["건물 정보"]);
-
-  // // SearchBox
-  // const [searchQuery, setSearchQuery] = React.useState("");
-  // const onChangeSearch = (query) => setSearchQuery(query);
-
   // Modal
   const [showModal, setShowModal] = useState(false);
+  
+  // 장애물 목록
+  const [marks, setMarks] = useState([]);
+  // 장애물 정보
   const [marker, setMarker] = useState({});
 
-  // 장애물 Markers
-  const [marks, setMarks] = useState([]);
+  // 건물 목록
+  const [boards, setBoards] = useState([]);
+  // 건물 정보
+  const [building, setBuilding] = useState({});
 
-  // markers collection에서 모든 문서 읽어와서 marks 배열에 저장
+
+  // markers collection 모든 문서 불러오기
   useEffect(() => {
     const q = query(collection(DB, "markers"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -70,176 +59,18 @@ export default function Map({ navigation }) {
     return () => unsubscribe();
   }, []);
 
-  {
-    /* 여러 collection을 동시에 받거나, 
-collection in collection의 경우 하위 collection의 이름이 동일하기만 하면 받아올 수 있는 방식이 안먹어서 부득이하게 이렇게 함. */
-  }
-  //게시판 목록 배열 상태변수
-  const [boards, setBoards] = useState([]);
-  const [post, setPost] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const list1 = [];
-  const list2 = [];
-  // 마운트 될 때 동작
   // board collection 모든 문서 불러오기
-  useEffect(() => {
-    {
-      const q1 = query(collection(DB, "boards"));
-      const unsubscribe1 = onSnapshot(q1, (querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          list1.push(doc.data());
-        });
-        //boards 변수 업데이트
-        setBoards(list1); 
-        console.log("boards render완료");
-      });
-      //loadPosts();
-
-      return () => unsubscribe1();
-      loadPosts();
-    }
-  }, []);
-
-  // const list = [];
-  // useEffect(() => {
-  //   const q = query(collectionGroup(DB, "posts"), orderBy("createdAt", "desc"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     let ind = 0;
-  //     querySnapshot.forEach((doc) => {
-  //       list.push(doc.data());
-  //       // 중복글인지 체크
-  //       list.map((item) => {
-  //         // post 하나씩 가져와서 제목이 같으면 list에서 pop
-  //         if (item.title == doc.data().title && list.indexOf(item) !== ind) {
-  //           list.pop();
-  //           ind--;
-  //         }
-  //         if (item.markerId == null) {
-  //           list.pop();
-  //           ind--;
-  //         }
-  //       });
-  //       ind++;
-  //     });
-  //     setPosts(list);
-  //     console.log("boards+posts render완료");
-  //     console.log("posts : ", posts);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
-
-  // const loadBoard = () => {
-  //   {
-  //     const q1 = query(collection(DB, "boards"));
-  //     const unsubscribe1 = onSnapshot(q1, (querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         list1.push(doc.data());
-  //       });
-  //       //boards 변수 업데이트
-  //       setBoards(list1);
-  //       console.log("boards render완료");
-  //     });
-  //     return () => unsubscribe1();
-  //   }
-  // };
-
-  // markers collection에서 모든 문서 읽어와서 marks 배열에 저장
-
-      const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          list2.push(doc.data());
-        });
-        //console.log(list);
-        setPosts(list2);
-        console.log("posts : ", posts);
-      });
-      return () => unsubscribe2();
-    });
-  };
-
-  const loadPost = () => {
-    {
-      posts.map((item2) => {
-        if (item2.markerId == marker.markerId) {
-          setPost(item2);
-          console.log("post : ", post);
-        }
-      });
-    }
-  };
-  // useEffect(() => {
-  //   {
-  //     boards.map((item1) => {
-  //       const q2 = query(
-  //         collection(DB, "boards", item1.boardId, "posts"),
-  //         orderBy("markerId")
-  //       );
-
-  //       const unsubscribe2 = onSnapshot(q2, (querySnapshot) => {
-  //         querySnapshot.forEach((doc) => {
-  //           list2.push(doc.data());
-  //         });
-  //         //console.log(list);
-  //         setPosts(list2);
-  //         console.log("posts : ", posts);
-  //       });
-  //       return () => unsubscribe2();
-  //     });
-  //   }
-  //   {
-  //     posts.map((item2) => {
-  //       if (item2.markerId == marker.markerId) {
-  //         setPost(item2);
-  //         console.log("post : ", post);
-  //       }
-  //     });
-  //   }
-  // }, []);
-
-  // // 장애물 posts를 받아올 변수 설정.
-  //const [post, setPost] = useState([]);
-  // const [posts, setPosts] = useState([]);
-
-  // useEffect(() => {
-  //   {
-  //     const q = query(
-  //       //collection(DB, "boards", "Art", "posts"),
-  //       //collection(DB, "boards", item.boardId, "posts"),
-  //       collectionGroup(DB, "posts"),
-  //       orderBy("markerId")
-  //     );
-  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //       const list = [];
-  //       querySnapshot.forEach((doc) => {
-  //         list.push(doc.data());
-  //       });
-  //       setPosts(list);
-  //       console.log("posts : ", posts);
-  //     });
-  //     return () => unsubscribe();
-  //   }
-  // }, []);
-
-  // 건물 Markers
-  const [bulMarks, setBulMarks] = useState([]);
-  //boards collection에서 모든 문서 읽어와서 marks 배열에 저장
   useEffect(() => {
     const q = query(collection(DB, "boards"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const list = [];
+      const list=[];
       querySnapshot.forEach((doc) => {
-        list.push({
-          title: doc.data().title,
-          loc: new GeoPoint(doc.data().loc.latitude, doc.data().loc.longitude),
-          boardId: doc.data().boardId,
-          description1: doc.data().des1,
-          description2: doc.data().des2,
-          description3: doc.data().des3,
-          starUsers: doc.data().starUsers,
-        });
+        list.push(doc.data());
       });
-      setBulMarks(list);
+      //boards 변수 업데이트
+      setBoards(list); 
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -251,9 +82,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
           latitude: 37.561025,
           longitude: 126.94654,
           latitudeDelta: 0.01,
-          longitudeDelta:
-            0.01 *
-            (Dimensions.get("window").width / Dimensions.get("window").height),
+          longitudeDelta: 0.01 * (Dimensions.get("window").width / Dimensions.get("window").height),
         }}
         provider={PROVIDER_GOOGLE}
         maxZoomLevel={30}
@@ -268,13 +97,10 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                 longitude: item.loc.longitude,
               }}
               title={`${index + 1}` + "번 장애물"}
-              // description="Marker sample"
               onPress={() => {
                 setShowModal(!showModal);
+                // marker 값 설정
                 setMarker(item);
-                //loadBoard();
-                loadPosts();
-                loadPost();
               }}
             >
               <AntDesign name="warning" size={24} color="#D30000" />
@@ -283,7 +109,7 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
         })}
 
         {/* boards 배열에서 하나씩 꺼내서 marker 찍기 */}
-        {bulMarks.map((item, index) => {
+        {boards.map((item, index) => {
           return (
             <Marker
               key={index}
@@ -329,81 +155,28 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
         </Text>
       </TouchableOpacity>
 
-      {/* //Map 화면 전환 버튼
-      <View
-        style={{
-          position: "absolute",
-          bottom: "5%",
-          left: "5%",
-          //alignSelf: "center",
-          backgroundColor: "#00462A",
-          borderRadius: 25,
-        }}
-      >
-        <Button
-          style={{}}
-          title="←"
-          onPress={() => navigation.navigate("Map2")}
-          color="#fff"
-        />
-      </View> */}
-
-      {/* bottom sheet으로 건물 보이는 거랑 장애물 보이는 거 동시에 연동하는게 힘들어서 장애물은 modal을 사용해보려고 함. */}
+      {/* 장애물 정보 이동 modal */}
       <Modal
         animationType={"slide"}
         transparent={false}
         visible={showModal}
         onRequestClose={() => {
-          console.log("Modal has been closed.");
         }}
       >
-        {/* 장애물 정보 : Modal 창 내에서 보일것들*/}
-        {/*Animation can be slide, slide, none*/}
         <View style={styles.modal}>
-          {/* <Text style={styles.text}>{marker.markerId}</Text> */}
           <Text style={styles.modalText}>
             해당 장애물에 대해{"\n"} 더 알아보시겠습니까?{"\n"}
           </Text>
-          {/* 게시글 확인 버튼 */}
+          {/* 장애물 게시글 확인 버튼 */}
           <TouchableOpacity
             onPress={() => {
               setShowModal(!showModal);
-              // {
-              //   posts.map((item) => {
-              //   // <Marker
-              //   //   key={index}
-              //   //   coordinate={{
-              //   //     latitude: item.loc.latitude,
-              //   //     longitude: item.loc.longitude,
-              //   //   }}
-              //   //   title={item.title}
-              //   //   onPress={() => {
-              //   //     setVisible(!visible);
-              //   //     setBuilding(item);
-              //   //   }}
-              //   // >
-              //   //   <FontAwesome5 name="building" size={24} color="#AAAAAA" />
-              //   // </Marker>
-              //   if (item.id == marker.markerId) {
-              //     setPost(item);
-              //     console.log("post : ", post);
-              //   }
-              // });
-              // }
-
-              //loadBoard();
-              //loadPosts();
-              //getPosts();
-              //console.log(marker.postId);
-              //console.log('1');
-              //console.log(post.id);
-              //if (toString(marker.markerId) == toString(post.id)) {
-                
-                navigation.navigate("MarkerPost", {
-                  title: marker.title,
-                  content: marker.content,
-                  image: marker.image,
-                });
+              // 장애물 게시글 화면으로 이동
+              navigation.navigate("MarkerPost", {
+              title: marker.title,
+              content: marker.content,
+              image: marker.image,
+              });
             }}
             style={{
               justifyContent: "center",
@@ -453,16 +226,13 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
         </View>
       </Modal>
 
-      {/* 건물 정보 : Bottom Sheet */}
-      {/* {bulMarks.map((item, index) => {
-        return ( */}
+      {/* 건물 정보 Bottom Sheet */}
       <BottomSheet
         //BottomSheet이 보이도록 설정
         visible={visible}
         onBackButtonPress={() => setVisible(!visible)}
         onBackdropPress={() => setVisible(!visible)}
       >
-        {/*Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
           <ScrollView
             style={styles.scrollView}
@@ -492,18 +262,18 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
                 lineHeight: 40,
               }}
             >
-              {building.description1}
-              {"\n"} {building.description2}
-              {"\n"} {building.description3}
+              {building.des1}
+              {"\n"} {building.des2}
+              {"\n"} {building.des3}
             </Text>
-            {/* 게시판 이동 버튼 */}
+            {/* 건물 게시판 이동 버튼 */}
             <TouchableOpacity
               onPress={() => {
                 setVisible(!visible);
                 // 전체 게시판
                 if (building.boardId == "All") {
                   navigation.navigate("AllBoard", {
-                    boardid: "All",
+                    boardId: "All",
                     boardTitle: building.title,
                     starUsers: building.starUsers,
                   });
@@ -543,12 +313,6 @@ collection in collection의 경우 하위 collection의 이름이 동일하기�
   );
 }
 
-// //postId 부분을 각 marker가 가진 postId 값으로 들어가게 수정
-// const q1 = query(collectionGroup(DB, 'posts'), where('postId', '==', route.params.postId));
-// const data=getDocs(q);
-// postRef = data.docs[0].ref;
-// const docSnap = getDoc(postRef);
-// console.log(docSnap.data());
 
 const styles = StyleSheet.create({
   container: {
@@ -559,7 +323,6 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    // 수정하기
     height: Dimensions.get("window").height - 20,
   },
   bottomNavigationView: {

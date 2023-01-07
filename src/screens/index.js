@@ -1,4 +1,3 @@
-import Walkthrough from "./Walkthrough";
 import Login from "./Login";
 import Home from "./Home";
 import SignUp from "./SignUp";
@@ -26,7 +25,6 @@ import MarkerPost from "./MarkerPost";
 import NoticePost from "./NoticePost";
 
 export {
-  Walkthrough,
   Login,
   Home,
   SignUp,

@@ -9,7 +9,6 @@ import {auth, createUser, getCurUser} from '../firebase';
 
 import {
   createUserWithEmailAndPassword,
-  updateProfile
 } from 'firebase/auth';
 
 
@@ -108,7 +107,6 @@ const SignUp = ({navigation})=>{
       setPw('');
       setPwCheck('');
 
-      //임시
       navigation.navigate('Verify');
     }
 

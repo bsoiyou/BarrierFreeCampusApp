@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { ThemeContext } from 'styled-components';
-import {Text,
-  FlatList,} from 'react-native';
-import { Button, ErrorMsg } from '../components';
-import { collection, getDoc, onSnapshot, query, doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
-import { TouchableOpacity, View, Alert, ScrollView, Dimensions} from 'react-native';
+import {Text, FlatList,} from 'react-native';
+import { collection, onSnapshot, query, doc, updateDoc, } from "firebase/firestore";
+import { TouchableOpacity, View, Alert, Dimensions} from 'react-native';
 import Checkbox from 'expo-checkbox';
-import {createPost, getCurUser, createBarrierPost, createMarker} from '../firebase';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {getCurUser, createBarrierPost, createMarker} from '../firebase';
+import {ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {storage, DB} from "../firebase";
 import {ProgressContext} from '../contexts';
 
@@ -45,9 +43,8 @@ export default function SetBoard({navigation, route}) {
   //게시판 목록 배열 상태변수
   const [boards, setBoards] =useState([]);
 
-
   // storage에 이미지 올리기
-  const uploadImage = async (image_uri, postId, boardId)=> {
+  const uploadImage = async (image_uri, postId, boardId, markerId)=> {
 
     const response = await fetch(image_uri);
     const blob = await response.blob();
@@ -59,11 +56,16 @@ export default function SetBoard({navigation, route}) {
     // storage에서 img 값 불러오기
     getDownloadURL(storageRef)
     .then((url) => {
+      // post image url 업데이트
       const curDocRef = doc(DB, "boards", `${boardId}/posts/${postId}`);
       updateDoc(curDocRef, {
         image: url,
       });
-      //!!marker도 img 업데이트해주기
+      // marker image url 업데이트
+      const markerDocRef= doc(DB, "markers", `${markerId}`);
+      updateDoc(markerDocRef, {
+        image: url,
+      });
     })  
     .catch((error) => {
       console.log(error.message);
@@ -102,9 +104,8 @@ const uploadPost = async ()=>{
           markerId: markerId,
         });
 
-        uploadImage(route.params.image, postId, board.boardId)
+        uploadImage(route.params.image, postId, board.boardId, markerId)
         .then(() => {
-          //marker에 postId update
           const docRef = doc(DB, "markers", `${markerId}`);
           updateDoc(docRef, {
             postId: postId,

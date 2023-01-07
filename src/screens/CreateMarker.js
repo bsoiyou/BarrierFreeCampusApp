@@ -14,17 +14,12 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
-import { ProgressContext } from "../contexts";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import {
-  addDoc,
   collection,
   query,
   onSnapshot,
   GeoPoint,
-  getGeoPoint,
-  getString,
 } from "firebase/firestore";
 import { DB } from "../firebase";
 
@@ -113,8 +108,6 @@ export default function CreateMarker({ navigation, route }) {
     });
   });
 
-  // 현재 위치로 이동하는 버튼 추가하기!!
-
   return (
     <Container>
       <StyledText>
@@ -149,20 +142,6 @@ export default function CreateMarker({ navigation, route }) {
             />
           );
         })}
-        {/* 중앙 위치 나타내는 빨간색 박스 */}
-        {/* <View style={{
-          width: 100,
-          height: 100,
-          position: 'absolute',
-          transform: [
-            {translateX: Dimensions.get('window').width/2-70}, 
-            {translateY: Dimensions.get('window').width/2-70}
-          ],
-          zIndex: 3,
-          backgroundColor: 'red',
-          opacity: 0.2
-        }}>
-        </View> */}
         <Marker
           coordinate={region}
           title="Location"

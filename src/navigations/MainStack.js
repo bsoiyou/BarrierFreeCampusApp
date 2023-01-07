@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity, View, Alert, Dimensions, Text } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { ThemeContext } from "styled-components";
 
 import {
@@ -76,15 +76,12 @@ const MainStack = () => {
         component={MainDrawer}
         options={{ headerShown: false }}
       />
-
       {/* 화면 2 */}
       <Stack.Screen name="Notice" component={Notice} />
-
-      {/* 화면 3  Map-건물정보*/}
+      {/* 화면 3 */}
       <Stack.Screen
         name="Map"
         component={Map}
-        // Map은 무조건 뒤로가기하면 Home으로
         options={({ navigation }) => ({
           headerTitle: "캠퍼스 지도",
           headerLeft: () => (
@@ -147,8 +144,7 @@ const MainStack = () => {
           )
         })}
       />
-
-      {/* 화면 3-길찾기 화면 */}
+      {/* 화면 4 */}
       <Stack.Screen
         name="FindRoute"
         component={FindRoute}
@@ -156,6 +152,7 @@ const MainStack = () => {
           headerTitle: "경로 설정",
         }}
       />
+      {/* 화면 5 */}
       <Stack.Screen
         name="FastRoute"
         component={FastRoute}
@@ -163,8 +160,7 @@ const MainStack = () => {
           headerTitle: "경로 설명",
         }}
       />
-
-      {/* 화면 4 */}
+      {/* 화면 6 */}
       <Stack.Screen
         name="EmerBoard"
         component={EmerBoard}
@@ -172,8 +168,7 @@ const MainStack = () => {
           headerTitle: "긴급 게시판",
         }}
       />
-
-      {/* 화면 5 */}
+      {/* 화면 7 */}
       <Stack.Screen
         name="BoardList"
         component={BoardList}
@@ -181,7 +176,7 @@ const MainStack = () => {
           headerTitle: "전체 게시판",
         }}
       />
-      {/* 화면 6 */}
+      {/* 화면 8 */}
       <Stack.Screen
         name="AllBoard"
         component={AllBoard}
@@ -189,12 +184,21 @@ const MainStack = () => {
           headerTitle: "전체",
         }}
       />
-
-      {/* --- */}
+      {/* 화면 9 */}
       <Stack.Screen name="MyPoint" component={MyPoint} />
-
+      {/* 화면 10 */}
       <Stack.Screen name="Board" component={Board} />
-      <Stack.Screen name="MarkerPost" component={MarkerPost} />
+      {/* 화면 11 */}
+      <Stack.Screen
+      name="MarkerPost" 
+      component={MarkerPost} 
+      options={{
+        headerTitle: "장애물",
+      }}/>
+      {/* 화면 12 */}
+      <Stack.Screen name="Post" component={Post} />
+
+      {/* 글 올리는 화면들 */}
       <Stack.Screen
         name="CreatePost"
         component={CreatePost}
@@ -230,7 +234,6 @@ const MainStack = () => {
           headerTitle: "기간 설정",
         }}
       />
-      <Stack.Screen name="Post" component={Post} />
     </Stack.Navigator>
   );
 };

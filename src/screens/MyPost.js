@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useContext, useLayoutEffect} from 'react';
 import styled, { ThemeContext }  from 'styled-components';
-import { TouchableOpacity, Text, FlatList, Dimensions, Alert} from 'react-native';
+import { FlatList} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, onSnapshot, query, orderBy, doc, updateDoc, arrayRemove, arrayUnion, collectionGroup, where, getDocs } from "firebase/firestore";
+import { onSnapshot, query, orderBy, collectionGroup, where } from "firebase/firestore";
 import {getCurUser, DB} from '../firebase';
-import { Button, TimeStamp } from '../components';
+import { TimeStamp } from '../components';
 
 
 const Container = styled.View`

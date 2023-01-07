@@ -1,5 +1,5 @@
 
-import {Text, Alert, View} from 'react-native';
+import {Alert, View} from 'react-native';
 import React, {useContext, useState, useRef, useEffect} from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import {Button, ErrorMsg, Input, Image} from '../components';
@@ -12,7 +12,6 @@ import { auth } from '../firebase';
 
 import {
   signInWithEmailAndPassword,
-  onAuthStateChanged
 } from 'firebase/auth';
 
 

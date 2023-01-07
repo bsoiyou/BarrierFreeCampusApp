@@ -9,7 +9,6 @@ import {
   Text,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import { TimeStamp } from "../components";
 import { getCurUser, DB } from "../firebase";

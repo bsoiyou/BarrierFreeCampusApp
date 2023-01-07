@@ -40,9 +40,6 @@ export default function NotVerified({navigation}) {
     if(auth.currentUser.emailVerified) {
       Alert.alert("인증되었습니다.");
       setUser(auth.currentUser);
-      
-      //setUser로 수정  
-      //navigation.navigate('Login');
     }
     else{
       Alert.alert("미인증 상태입니다. 인증 링크를 클릭하셨다면 버튼을 다시 한 번 눌러주세요.");
