@@ -16,7 +16,7 @@ import {
 
 
 //logo img url
-const LOGO='https://imgur.com/WlBv9GC.png';
+const LOGO='https://imgur.com/fHvi2d3.png';
 
 
 //styled-components
