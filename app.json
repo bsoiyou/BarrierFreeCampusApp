@@ -16,7 +16,8 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ahwe.FirstExpo"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +25,10 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.ahwe.FirstExpo",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "google-services.json",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyC8G3rQxgaQG_X2_a8aaspoHjBDW1pOOhk" }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

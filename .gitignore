@@ -13,8 +13,9 @@ web-build/
 # macOS
 .DS_Store
 
-#firebase
-firebase.js
+# firebase
+firebase.json
 
-#app.json
+pc-api-6489950155329927264-722-3f566dc865cb.json
 google-services.json
+eas.json
