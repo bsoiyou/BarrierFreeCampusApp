@@ -1,7 +1,5 @@
-# FirstExpo
-## Download 
-  expo file을처음 다운 받으면 .lock파일들을 모두 삭제한 뒤,
-  <pre><code> npm install</code></pre>     
-  or     
- <pre><code> yarn install </code></pre>
-    
+# 배리어프리 캠퍼스
+
+### 대학 캠퍼스 내 장애 학우들의 정보 접근권 및 이동의 자유를 보장하는 앱
+
+v2: 길 찾기, 장애물 제보 등등 기능 추가
